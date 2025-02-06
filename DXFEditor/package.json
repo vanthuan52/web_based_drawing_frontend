@@ -1,0 +1,51 @@
+{
+  "name": "dxfeditor",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.1.8",
+    "@react-three/drei": "^9.117.0",
+    "@react-three/fiber": "^8.17.10",
+    "dxf": "^5.2.0",
+    "dxf-parser": "^1.1.2",
+    "dxf-writer": "^1.18.4",
+    "fabric": "^5.4.2",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.460.0",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "tailwindcss": "^3.4.15",
+    "three": "^0.170.0",
+    "three-dxf": "^1.3.1",
+    "troika-three-text": "^0.52.0",
+    "troika-three-utils": "^0.52.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/dxf": "^4.6.9",
+    "@types/fabric": "^5.3.9",
+    "@types/lodash": "^4.17.15",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^9.13.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.11.0",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.11.0",
+    "vite": "^5.4.10"
+  }
+}
