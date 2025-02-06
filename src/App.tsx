@@ -1,8 +1,8 @@
-import DXFEditor from './components/viewer';
+import DXFEditor from "~/components/viewer";
 
 function App() {
   return (
-    <div style={{overflowX:"hidden", overflowY:"hidden"}}>
+    <div style={{ overflowX: "hidden", overflowY: "hidden" }}>
       <DXFEditor />
     </div>
   );
