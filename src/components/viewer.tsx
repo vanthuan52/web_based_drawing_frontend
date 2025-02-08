@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { fabric } from "fabric";
 import Toolbars from "./toolBar";
@@ -13,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { MenuIcon } from "lucide-react";
-import { DrawingMode, Point } from "../type/common";
+import { DrawingMode, Point } from "../constant/common";
 import useMultiSelect from "../hooks/useMultiSelect";
 
 const DXFViewer: React.FC = () => {

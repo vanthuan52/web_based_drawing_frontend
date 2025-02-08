@@ -1,4 +1,4 @@
-.loginPage {
+.signupPage {
   padding: 10px;
   width: 700px;
   height: 672px;
@@ -11,7 +11,7 @@
   align-items: center;
   gap: 10px;
 
-  .loginPage__title {
+  .signupPage__title {
     margin: 0;
     padding: 70px 0 20px;
     font-size: 25px;
@@ -20,20 +20,16 @@
     justify-content: center;
   }
 
-  .loginPage__form {
+  .signupPage__form {
     display: flex;
     flex-direction: column;
     align-items: start;
 
-    .loginPage__forgot {
-      display: flex;
-      justify-content: flex-end;
-      font-size: 18px;
-      font-weight: 500;
+    .signupPage__empty {
       margin-bottom: 60px;
     }
 
-    .loginPage__signup {
+    .signupPage__login {
       display: flex;
       justify-content: flex-start;
       font-size: 18px;
@@ -47,7 +43,7 @@
 }
 
 @media screen and (max-width: 991px) {
-  .loginPage {
+  .signupPage {
     padding: 10px;
     width: 700px;
     height: 672px;
@@ -63,7 +59,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .loginPage {
+  .signupPage {
     padding: 10px;
     width: 600px;
     height: 672px;
@@ -79,7 +75,7 @@
 }
 
 @media screen and (max-width: 550px) {
-  .loginPage {
+  .signupPage {
     padding: 10px;
     width: 500px;
     height: 672px;
@@ -95,7 +91,7 @@
 }
 
 @media screen and (max-width: 450px) {
-  .loginPage {
+  .signupPage {
     padding: 10px;
     width: 370px;
     height: 672px;
@@ -111,10 +107,10 @@
 }
 
 @media screen and (max-width: 400px) {
-  .loginPage {
+  .signupPage {
     padding: 10px;
     width: 320px;
-    height: 580px;
+    height: 650px;
     min-height: fit-content;
     color: #000000;
     border-radius: 10px;
