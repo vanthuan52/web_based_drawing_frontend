@@ -11,6 +11,8 @@ import {
   DialogActions,
   DialogContent,
 } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "~/redux/store";
+import { authActions } from "~/redux/slice/authSlice";
 
 const Toolbar = ({
   canvas,
@@ -35,6 +37,9 @@ const Toolbar = ({
   scale,
   handleFileUpload,
 }: IToolbar) => {
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [user, setUser] = useState({ username: "", password: "" });
@@ -56,8 +61,7 @@ const Toolbar = ({
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser({ username: "", password: "" });
+    dispatch(authActions.logout());
   };
 
   const toggleLoginDialog = () => {
@@ -143,7 +147,7 @@ const Toolbar = ({
             paddingBottom: "10px",
           }}
         >
-          {!isLoggedIn ? (
+          {!isAuthenticated ? (
             <Button onClick={toggleLoginDialog} title="Log In" />
           ) : (
             <Box display="flex" flexDirection="column" alignItems="center">
