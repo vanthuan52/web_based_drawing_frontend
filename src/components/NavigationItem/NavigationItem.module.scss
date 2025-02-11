@@ -1,0 +1,24 @@
+@import '@/styles/variables';
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px 10px;
+  cursor: pointer;
+  color: $text-color;
+
+  &.active {
+    border-bottom: 2px solid green;
+  }
+}
+
+.nav-item__icon {
+  font-size: $font-size-lg;
+}
+
+.nav-item__name {
+  font-size: $font-size-md;
+  font-weight: $font-semibold;
+}

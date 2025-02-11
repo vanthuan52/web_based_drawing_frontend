@@ -1,8 +1,8 @@
-.sidebar {
-  width: 250px;
-  background-color: #444;
-  color: white;
+.board {
+  flex: 1;
+  background-color: #f4f4f4;
   padding: 1rem;
+  overflow-y: auto;
   min-height: 100%;
   display: flex;
   align-items: center;

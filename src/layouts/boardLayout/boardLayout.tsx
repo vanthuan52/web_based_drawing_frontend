@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {Outlet, useLocation} from 'react-router-dom';
-import styles from './mainLayout.module.scss';
+import styles from './boardLayout.module.scss';
 import clsx from 'clsx';
 
-const MainLayout = () => {
+const BoardLayout = () => {
   const location = useLocation();
 
   useEffect(() => {
@@ -12,13 +12,11 @@ const MainLayout = () => {
 
   return (
     <React.Fragment>
-      <div
-        className={clsx(styles['main-layout'])}
-        style={{overflowX: 'hidden', overflowY: 'hidden'}}>
+      <div className={clsx(styles['board-layout'])}>
         <Outlet />
       </div>
     </React.Fragment>
   );
 };
 
-export default MainLayout;
+export default BoardLayout;

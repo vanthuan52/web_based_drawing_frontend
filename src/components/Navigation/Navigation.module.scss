@@ -1,0 +1,11 @@
+@import '@/styles/variables';
+
+.navigation {
+  background-color: $primary-bg-color;
+  color: white;
+  text-align: center;
+  overflow-y: auto;
+  display: flex;
+  gap: 10px;
+  padding-left: 10px;
+}
