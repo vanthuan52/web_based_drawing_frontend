@@ -1,0 +1,77 @@
+@import '@/styles/variables';
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 470px;
+  height: 42px;
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+  background-color: $secondary-bg-color;
+  padding: 0 10px;
+  cursor: default;
+
+  &:focus-within {
+    border-color: transparent;
+    outline: none;
+    box-shadow: inset 0 0 0 1px #3b82f6;
+  }
+
+  &.disabled,
+  &.readonly {
+    background-color: #f7f7f7;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &.invalid {
+    border-color: $error-color;
+    box-shadow: inset 0 0 0 1px $error-color;
+  }
+
+  .icon {
+    color: #6b7280;
+  }
+}
+
+.input-field {
+  font-family: $font-primary;
+  outline: none;
+  background-color: inherit;
+  width: 100%;
+  font-size: $font-size-lg;
+  border: none;
+  color: #4f4f4f;
+
+  &::placeholder {
+    color: $text-color;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .input-container {
+    width: 400px;
+    height: 42px;
+  }
+
+  .input-field {
+    font-size: $font-size-md;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .input-container {
+    width: 320px;
+    height: 42px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .input-container {
+    width: 280px;
+    height: 40px;
+  }
+}

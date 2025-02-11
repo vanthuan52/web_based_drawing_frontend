@@ -1,28 +1,53 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+import js from '@eslint/js';
+import importX from 'eslint-plugin-import-x';
+import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+export default [
+  js.configs.recommended,
+  importX.flatConfigs.recommended,
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-    },
+    ignores: [
+      'node_modules',
+      '.turbo',
+      '.next',
+      'build',
+      'coverage',
+      'global.d.ts',
+      'junit.xml',
+      'storybook-static/**',
+    ],
+  },
+  {
+    files: ['**/*.{js,mjs,ts,tsx}'],
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'no-relative-import-paths': noRelativeImportPaths,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
+      'import-x/namespace': 'off',
+      'import-x/no-named-as-default-member': 'off',
+      'import-x/no-unresolved': 'off',
+      'import-x/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['sibling', 'parent'],
+            'index',
+            'unknown',
+          ],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
+      'no-relative-import-paths/no-relative-import-paths': [
         'warn',
-        { allowConstantExport: true },
+        {allowSameFolder: true, prefix: '@'},
       ],
     },
   },
-)
+];

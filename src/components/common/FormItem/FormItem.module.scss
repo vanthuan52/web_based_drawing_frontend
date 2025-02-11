@@ -1,0 +1,18 @@
+@import '@/styles/variables';
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.error-message {
+  font-weight: $font-regular;
+  font-size: $font-size-sm;
+  color: $error-color;
+  margin-left: 12px;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}

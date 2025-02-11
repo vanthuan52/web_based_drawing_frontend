@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { fabric } from "fabric";
-import Toolbars from "./toolBar";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
+import React, {useState, useRef, useEffect, useCallback} from 'react';
+import {fabric} from 'fabric';
+import Toolbars from './toolBar';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
 import {
   Button,
   Drawer,
@@ -12,30 +12,30 @@ import {
   ListItem,
   ListItemText,
   Typography,
-} from "@mui/material";
-import { MenuIcon } from "lucide-react";
-import { DrawingMode, Point } from "../constant/common";
-import useMultiSelect from "../hooks/useMultiSelect";
+} from '@mui/material';
+import {MenuIcon} from 'lucide-react';
+import {DrawingMode, Point} from '../constant/common';
+import useMultiSelect from '../hooks/useMultiSelect';
 
 const DXFViewer: React.FC = () => {
   const [file, setFile] = useState<any>(null);
-  const [drawingMode, setDrawingMode] = useState<DrawingMode>("none");
+  const [drawingMode, setDrawingMode] = useState<DrawingMode>('none');
   const [startPoint, setStartPoint] = useState<Point | null>(null);
   const [polygonPoints, setPolygonPoints] = useState<Point[]>([]);
   const [strokeWidth, setStrokeWidth] = useState<number>(1);
-  const [textInput, setTextInput] = useState<string>("");
+  const [textInput, setTextInput] = useState<string>('');
   const [fontSize, setFontSize] = useState<number>(24);
-  const [textColor, setTextColor] = useState<string>("#000000");
-  const [fontFamily, setFontFamily] = useState<string>("Arial");
+  const [textColor, setTextColor] = useState<string>('#000000');
+  const [fontFamily, setFontFamily] = useState<string>('Arial');
   const [isPannings, setIsPanning] = useState<boolean>(false);
-  const [scale, setScale] = useState("");
+  const [scale, setScale] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [imageData, setImageData] = useState<HTMLImageElement | null>(null);
 
   const drawings = [
-    { id: 1, name: "Drawing 1" },
-    { id: 2, name: "Drawing 2" },
-    { id: 3, name: "Drawing 3" },
+    {id: 1, name: 'Drawing 1'},
+    {id: 2, name: 'Drawing 2'},
+    {id: 3, name: 'Drawing 3'},
   ];
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -45,15 +45,15 @@ const DXFViewer: React.FC = () => {
   const currentCircle = useRef<fabric.Circle | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
-  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
   useEffect(() => {
-    if (isDarkMode) setTextColor("#FFFFFF");
+    if (isDarkMode) setTextColor('#FFFFFF');
   }, [isDarkMode]);
 
   // Reduce image resolution for performance
   const reduceImageResolution = (img: HTMLImageElement): string => {
-    const canvasTemp = document.createElement("canvas");
-    const ctx = canvasTemp.getContext("2d");
+    const canvasTemp = document.createElement('canvas');
+    const ctx = canvasTemp.getContext('2d');
     const scaleFactor = 0.5;
     canvasTemp.width = img.width * scaleFactor;
     canvasTemp.height = img.height * scaleFactor;
@@ -64,12 +64,12 @@ const DXFViewer: React.FC = () => {
   // Convert Fabric canvas to DXF string
   const canvasToDXF = (canvasObj: fabric.Canvas): string => {
     let dxfContent =
-      "0\nSECTION\n2\nHEADER\n0\nENDSEC\n0\nSECTION\n2\nTABLES\n0\nENDSEC\n0\nSECTION\n2\nBLOCKS\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n";
+      '0\nSECTION\n2\nHEADER\n0\nENDSEC\n0\nSECTION\n2\nTABLES\n0\nENDSEC\n0\nSECTION\n2\nBLOCKS\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n';
     canvasObj.getObjects().forEach((obj) => {
-      if (obj.type === "line") {
+      if (obj.type === 'line') {
         const line = obj as fabric.Line;
         dxfContent += `0\nLINE\n8\n0\n10\n${line.x1}\n20\n${line.y1}\n30\n0.0\n11\n${line.x2}\n21\n${line.y2}\n31\n0.0\n`;
-      } else if (obj.type === "circle") {
+      } else if (obj.type === 'circle') {
         const circle = obj as fabric.Circle;
         const left = circle.left ?? 0;
         const top = circle.top ?? 0;
@@ -77,18 +77,18 @@ const DXFViewer: React.FC = () => {
         dxfContent += `0\nCIRCLE\n8\n0\n10\n${left + radius}\n20\n${
           top + radius
         }\n30\n0.0\n40\n${radius}\n`;
-      } else if (obj.type === "polyline") {
+      } else if (obj.type === 'polyline') {
         const points = (obj as fabric.Polyline).points;
         if (points && points.length > 0) {
           dxfContent += `0\nPOLYLINE\n8\n0\n10\n${points[0].x}\n20\n${points[0].y}\n30\n0.0\n`;
           points.slice(1).forEach((point) => {
             dxfContent += `0\nVERTEX\n8\n0\n10\n${point.x}\n20\n${point.y}\n30\n0.0\n`;
           });
-          dxfContent += "0\nSEQEND\n";
+          dxfContent += '0\nSEQEND\n';
         }
       }
     });
-    dxfContent += "0\nENDSEC\n0\nSECTION\n2\nOBJECTS\n0\nENDSEC\n0\nEOF\n";
+    dxfContent += '0\nENDSEC\n0\nSECTION\n2\nOBJECTS\n0\nENDSEC\n0\nEOF\n';
     return dxfContent;
   };
 
@@ -96,10 +96,10 @@ const DXFViewer: React.FC = () => {
   const handleDownloadDXF = useCallback(() => {
     if (canvas.current) {
       const dxfString = canvasToDXF(canvas.current);
-      const blob = new Blob([dxfString], { type: "application/dxf" });
-      const link = document.createElement("a");
+      const blob = new Blob([dxfString], {type: 'application/dxf'});
+      const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = "drawing.dxf";
+      link.download = 'drawing.dxf';
       link.click();
     }
   }, []);
@@ -121,7 +121,7 @@ const DXFViewer: React.FC = () => {
 
   // Load background image
   useEffect(() => {
-    const imageUrl = "your-large-image-url.png";
+    const imageUrl = 'your-large-image-url.png';
     const img = new Image();
     img.onload = () => {
       const reducedSrc = reduceImageResolution(img);
@@ -152,8 +152,8 @@ const DXFViewer: React.FC = () => {
         if (!(obj as any).originalStroke) {
           (obj as any).originalStroke = obj.stroke;
         }
-        obj.set("stroke", "rgba(255, 0, 0, 0.5)");
-        obj.set("strokeWidth", strokeWidth + 1);
+        obj.set('stroke', 'rgba(255, 0, 0, 0.5)');
+        obj.set('strokeWidth', strokeWidth + 1);
         fabricCanvas.renderAll();
       }
     };
@@ -162,10 +162,10 @@ const DXFViewer: React.FC = () => {
       const obj = e.target;
       if (obj) {
         obj.set(
-          "stroke",
-          (obj as any).originalStroke || (isDarkMode ? "white" : "black")
+          'stroke',
+          (obj as any).originalStroke || (isDarkMode ? 'white' : 'black')
         );
-        obj.set("strokeWidth", strokeWidth);
+        obj.set('strokeWidth', strokeWidth);
         fabricCanvas.renderAll();
       }
     };
@@ -173,8 +173,8 @@ const DXFViewer: React.FC = () => {
     const handleMouseDownHighlight = (e: fabric.IEvent) => {
       const obj = e.target;
       if (obj) {
-        obj.set("stroke", "rgb(255, 0, 0)");
-        obj.set("strokeWidth", strokeWidth + 1);
+        obj.set('stroke', 'rgb(255, 0, 0)');
+        obj.set('strokeWidth', strokeWidth + 1);
         fabricCanvas.renderAll();
       }
     };
@@ -185,16 +185,16 @@ const DXFViewer: React.FC = () => {
       }
     };
 
-    fabricCanvas.on("mouse:over", handleMouseOver);
-    fabricCanvas.on("mouse:out", handleMouseOut);
-    fabricCanvas.on("mouse:down", handleMouseDownHighlight);
-    fabricCanvas.on("object:added", handleObjectAdded);
+    fabricCanvas.on('mouse:over', handleMouseOver);
+    fabricCanvas.on('mouse:out', handleMouseOut);
+    fabricCanvas.on('mouse:down', handleMouseDownHighlight);
+    fabricCanvas.on('object:added', handleObjectAdded);
 
     return () => {
-      fabricCanvas.off("mouse:over", handleMouseOver);
-      fabricCanvas.off("mouse:out", handleMouseOut);
-      fabricCanvas.off("mouse:down", handleMouseDownHighlight);
-      fabricCanvas.off("object:added", handleObjectAdded);
+      fabricCanvas.off('mouse:over', handleMouseOver);
+      fabricCanvas.off('mouse:out', handleMouseOut);
+      fabricCanvas.off('mouse:down', handleMouseDownHighlight);
+      fabricCanvas.off('object:added', handleObjectAdded);
     };
   }, [strokeWidth, isDarkMode]);
 
@@ -204,15 +204,15 @@ const DXFViewer: React.FC = () => {
     const fabricCanvas = canvas.current;
 
     // LINE mode: draw a line by dragging
-    if (drawingMode === "line") {
+    if (drawingMode === 'line') {
       const handleMouseDown = (e: fabric.IEvent) => {
         const pointer = fabricCanvas.getPointer(e.e);
         if (pointer) {
-          setStartPoint({ x: pointer.x, y: pointer.y });
+          setStartPoint({x: pointer.x, y: pointer.y});
           const newLine = new fabric.Line(
             [pointer.x, pointer.y, pointer.x, pointer.y],
             {
-              stroke: isDarkMode ? "white" : "blue",
+              stroke: isDarkMode ? 'white' : 'blue',
               strokeWidth,
               selectable: true,
             }
@@ -226,7 +226,7 @@ const DXFViewer: React.FC = () => {
         if (startPoint && currentLine.current) {
           const pointer = fabricCanvas.getPointer(e.e);
           if (pointer) {
-            currentLine.current.set({ x2: pointer.x, y2: pointer.y });
+            currentLine.current.set({x2: pointer.x, y2: pointer.y});
             fabricCanvas.renderAll();
           }
         }
@@ -235,34 +235,34 @@ const DXFViewer: React.FC = () => {
       const handleMouseUp = () => {
         if (startPoint && currentLine.current) {
           setStartPoint(null);
-          currentLine.current.set({ selectable: true });
+          currentLine.current.set({selectable: true});
           currentLine.current = null;
         }
       };
 
-      fabricCanvas.on("mouse:down", handleMouseDown);
-      fabricCanvas.on("mouse:move", handleMouseMove);
-      fabricCanvas.on("mouse:up", handleMouseUp);
+      fabricCanvas.on('mouse:down', handleMouseDown);
+      fabricCanvas.on('mouse:move', handleMouseMove);
+      fabricCanvas.on('mouse:up', handleMouseUp);
 
       return () => {
-        fabricCanvas.off("mouse:down", handleMouseDown);
-        fabricCanvas.off("mouse:move", handleMouseMove);
-        fabricCanvas.off("mouse:up", handleMouseUp);
+        fabricCanvas.off('mouse:down', handleMouseDown);
+        fabricCanvas.off('mouse:move', handleMouseMove);
+        fabricCanvas.off('mouse:up', handleMouseUp);
       };
     }
 
     // POLYGON mode: collect points and draw a polygon
-    if (drawingMode === "polygon") {
+    if (drawingMode === 'polygon') {
       const handleMouseDown = (e: fabric.IEvent) => {
         const pointer = fabricCanvas.getPointer(e.e);
         if (pointer) {
-          setPolygonPoints((prev) => [...prev, { x: pointer.x, y: pointer.y }]);
+          setPolygonPoints((prev) => [...prev, {x: pointer.x, y: pointer.y}]);
           if (polygonPoints.length > 0) {
             const lastPoint = polygonPoints[polygonPoints.length - 1];
             const line = new fabric.Line(
               [lastPoint.x, lastPoint.y, pointer.x, pointer.y],
               {
-                stroke: isDarkMode ? "white" : "blue",
+                stroke: isDarkMode ? 'white' : 'blue',
                 strokeWidth,
                 selectable: true,
               }
@@ -275,8 +275,8 @@ const DXFViewer: React.FC = () => {
       const handleDoubleClick = () => {
         if (polygonPoints.length > 2) {
           const polygon = new fabric.Polygon(polygonPoints, {
-            fill: "rgba(0, 0, 255, 0.3)",
-            stroke: isDarkMode ? "white" : "blue",
+            fill: 'rgba(0, 0, 255, 0.3)',
+            stroke: isDarkMode ? 'white' : 'blue',
             strokeWidth,
             selectable: true,
           });
@@ -286,28 +286,28 @@ const DXFViewer: React.FC = () => {
         }
       };
 
-      fabricCanvas.on("mouse:down", handleMouseDown);
-      fabricCanvas.on("mouse:dblclick", handleDoubleClick);
+      fabricCanvas.on('mouse:down', handleMouseDown);
+      fabricCanvas.on('mouse:dblclick', handleDoubleClick);
 
       return () => {
-        fabricCanvas.off("mouse:down", handleMouseDown);
-        fabricCanvas.off("mouse:dblclick", handleDoubleClick);
+        fabricCanvas.off('mouse:down', handleMouseDown);
+        fabricCanvas.off('mouse:dblclick', handleDoubleClick);
       };
     }
 
     // CIRCLE mode: draw a circle by dragging
-    if (drawingMode === "circle") {
+    if (drawingMode === 'circle') {
       fabricCanvas.selection = false;
       const handleMouseDown = (e: fabric.IEvent) => {
         const pointer = fabricCanvas.getPointer(e.e);
         if (pointer) {
-          setStartPoint({ x: pointer.x, y: pointer.y });
+          setStartPoint({x: pointer.x, y: pointer.y});
           const newCircle = new fabric.Circle({
             left: pointer.x,
             top: pointer.y,
             radius: 0,
-            fill: "transparent",
-            stroke: isDarkMode ? "white" : "blue",
+            fill: 'transparent',
+            stroke: isDarkMode ? 'white' : 'blue',
             strokeWidth,
             selectable: true,
             hasBorders: false,
@@ -326,27 +326,27 @@ const DXFViewer: React.FC = () => {
             Math.pow(pointer.x - startPoint.x, 2) +
               Math.pow(pointer.y - startPoint.y, 2)
           );
-          currentCircle.current.set({ radius });
+          currentCircle.current.set({radius});
           fabricCanvas.renderAll();
         }
       };
 
       const handleMouseUp = () => {
         if (currentCircle.current) {
-          currentCircle.current.set({ selectable: true });
+          currentCircle.current.set({selectable: true});
           currentCircle.current = null;
         }
         setStartPoint(null);
       };
 
-      fabricCanvas.on("mouse:down", handleMouseDown);
-      fabricCanvas.on("mouse:move", handleMouseMove);
-      fabricCanvas.on("mouse:up", handleMouseUp);
+      fabricCanvas.on('mouse:down', handleMouseDown);
+      fabricCanvas.on('mouse:move', handleMouseMove);
+      fabricCanvas.on('mouse:up', handleMouseUp);
 
       return () => {
-        fabricCanvas.off("mouse:down", handleMouseDown);
-        fabricCanvas.off("mouse:move", handleMouseMove);
-        fabricCanvas.off("mouse:up", handleMouseUp);
+        fabricCanvas.off('mouse:down', handleMouseDown);
+        fabricCanvas.off('mouse:move', handleMouseMove);
+        fabricCanvas.off('mouse:up', handleMouseUp);
       };
     }
 
@@ -369,7 +369,7 @@ const DXFViewer: React.FC = () => {
         isPanningLocal = true;
         lastPosX = evt.clientX;
         lastPosY = evt.clientY;
-        fabricCanvas.setCursor("grab");
+        fabricCanvas.setCursor('grab');
         fabricCanvas.selection = false;
       }
     };
@@ -389,7 +389,7 @@ const DXFViewer: React.FC = () => {
       isPanningLocal = false;
       lastPosX = null;
       lastPosY = null;
-      fabricCanvas.setCursor("default");
+      fabricCanvas.setCursor('default');
       fabricCanvas.selection = true;
     };
 
@@ -407,16 +407,16 @@ const DXFViewer: React.FC = () => {
       evt.stopPropagation();
     };
 
-    fabricCanvas.on("mouse:down", handleMouseDown);
-    fabricCanvas.on("mouse:move", handleMouseMove);
-    fabricCanvas.on("mouse:up", handleMouseUp);
-    fabricCanvas.on("mouse:wheel", handleMouseWheel);
+    fabricCanvas.on('mouse:down', handleMouseDown);
+    fabricCanvas.on('mouse:move', handleMouseMove);
+    fabricCanvas.on('mouse:up', handleMouseUp);
+    fabricCanvas.on('mouse:wheel', handleMouseWheel);
 
     return () => {
-      fabricCanvas.off("mouse:down", handleMouseDown);
-      fabricCanvas.off("mouse:move", handleMouseMove);
-      fabricCanvas.off("mouse:up", handleMouseUp);
-      fabricCanvas.off("mouse:wheel", handleMouseWheel);
+      fabricCanvas.off('mouse:down', handleMouseDown);
+      fabricCanvas.off('mouse:move', handleMouseMove);
+      fabricCanvas.off('mouse:up', handleMouseUp);
+      fabricCanvas.off('mouse:wheel', handleMouseWheel);
     };
   }, [isPannings]);
 
@@ -429,11 +429,11 @@ const DXFViewer: React.FC = () => {
   ): void => {
     const uploadedFile = event.target.files?.[0];
     if (!uploadedFile) {
-      console.error("No file selected");
+      console.error('No file selected');
       return;
     }
-    if (!uploadedFile.name.endsWith(".dxf")) {
-      console.error("Invalid file type. Please upload a DXF file.");
+    if (!uploadedFile.name.endsWith('.dxf')) {
+      console.error('Invalid file type. Please upload a DXF file.');
       return;
     }
     if (workerRef.current) workerRef.current.terminate();
@@ -441,8 +441,8 @@ const DXFViewer: React.FC = () => {
   };
 
   const initializeWorker = (file: File) => {
-    workerRef.current = new Worker(new URL("./dxFWorker.ts", import.meta.url), {
-      type: "module",
+    workerRef.current = new Worker(new URL('./dxFWorker.ts', import.meta.url), {
+      type: 'module',
     });
     workerRef.current.postMessage(file);
     workerRef.current.onmessage = (e) => {
@@ -450,11 +450,11 @@ const DXFViewer: React.FC = () => {
       if (datas.success === true) {
         setFile(datas.data);
       } else {
-        console.error("Error parsing DXF:", datas.error);
+        console.error('Error parsing DXF:', datas.error);
       }
     };
     workerRef.current.onerror = (error) => {
-      console.error("Worker error:", error.message);
+      console.error('Worker error:', error.message);
     };
   };
 
@@ -473,13 +473,13 @@ const DXFViewer: React.FC = () => {
         });
       }
     });
-    return { minX, minY, maxX, maxY };
+    return {minX, minY, maxX, maxY};
   };
 
   // Draw DXF file entities on the canvas
   useEffect(() => {
     if (file && canvas.current) {
-      const { minX, minY, maxX, maxY } = calculateBoundingBox(file.entities);
+      const {minX, minY, maxX, maxY} = calculateBoundingBox(file.entities);
       const dxfWidth = maxX - minX;
       const dxfHeight = maxY - minY;
       const canvasWidth = canvas.current.width || 1920;
@@ -494,7 +494,7 @@ const DXFViewer: React.FC = () => {
       canvas.current.clear();
 
       const lines = file.entities.filter(
-        (entity: any) => entity.type === "LINE"
+        (entity: any) => entity.type === 'LINE'
       );
       lines.forEach((line: any, index: number) => {
         setTimeout(() => {
@@ -503,7 +503,7 @@ const DXFViewer: React.FC = () => {
           const x2 = line.vertices[1].x * computedScale + offsetX;
           const y2 = line.vertices[1].y * computedScale + offsetY;
           const fabricLine = new fabric.Line([x1, y1, x2, y2], {
-            stroke: isDarkMode ? "white" : "black",
+            stroke: isDarkMode ? 'white' : 'black',
             strokeWidth,
             selectable: true,
           });
@@ -520,7 +520,7 @@ const DXFViewer: React.FC = () => {
       if (canvas.current) {
         canvas.current
           .getActiveObjects()
-          .forEach((obj) => obj.set("strokeWidth", value));
+          .forEach((obj) => obj.set('strokeWidth', value));
         canvas.current.renderAll();
       }
     }
@@ -538,7 +538,7 @@ const DXFViewer: React.FC = () => {
       });
       canvas.current.add(textObj);
       canvas.current.renderAll();
-      setTextInput("");
+      setTextInput('');
     }
   };
 
@@ -547,8 +547,8 @@ const DXFViewer: React.FC = () => {
     setTextColor(newColor);
     if (canvas.current) {
       const activeObject = canvas.current.getActiveObject();
-      if (activeObject && activeObject.type === "text") {
-        (activeObject as fabric.Text).set({ fill: newColor });
+      if (activeObject && activeObject.type === 'text') {
+        (activeObject as fabric.Text).set({fill: newColor});
         canvas.current.renderAll();
       }
     }
@@ -559,8 +559,8 @@ const DXFViewer: React.FC = () => {
     setFontSize(newSize);
     if (canvas.current) {
       const activeObject = canvas.current.getActiveObject();
-      if (activeObject && activeObject.type === "text") {
-        (activeObject as fabric.Text).set({ fontSize: newSize });
+      if (activeObject && activeObject.type === 'text') {
+        (activeObject as fabric.Text).set({fontSize: newSize});
         canvas.current.renderAll();
       }
     }
@@ -570,27 +570,24 @@ const DXFViewer: React.FC = () => {
     <>
       <div
         style={{
-          display: "block",
-          width: "auto",
-          overflowX: "hidden",
-          overflowY: "hidden",
-        }}
-      >
-        <Box sx={{ flexGrow: 1 }}>
+          display: 'block',
+          width: 'auto',
+          overflowX: 'hidden',
+          overflowY: 'hidden',
+        }}>
+        <Box sx={{flexGrow: 1}}>
           <AppBar position="static">
             <Box
               display="flex"
               alignItems="center"
               justifyContent="space-between"
-              padding={1}
-            >
+              padding={1}>
               <Typography variant="h6">DXF Viewer/Editor</Typography>
               <IconButton
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                onClick={() => toggleDrawer(true)}
-              >
+                onClick={() => toggleDrawer(true)}>
                 <MenuIcon />
               </IconButton>
             </Box>
@@ -600,15 +597,10 @@ const DXFViewer: React.FC = () => {
         <Drawer
           anchor="left"
           open={isDrawerOpen}
-          onClose={() => toggleDrawer(false)}
-        >
+          onClose={() => toggleDrawer(false)}>
           <Box width={250}>
-            <Box width={250} sx={{ borderBottom: 1 }}>
-              <Typography
-                variant="h6"
-                align="center"
-                style={{ padding: "16px" }}
-              >
+            <Box width={250} sx={{borderBottom: 1}}>
+              <Typography variant="h6" align="center" style={{padding: '16px'}}>
                 List of Drawings
               </Typography>
             </Box>
@@ -617,9 +609,8 @@ const DXFViewer: React.FC = () => {
                 <ListItem
                   key={drawing.id}
                   component="li"
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => handleClickItem(drawing)}
-                >
+                  sx={{cursor: 'pointer'}}
+                  onClick={() => handleClickItem(drawing)}>
                   <ListItemText primary={drawing.name} />
                 </ListItem>
               ))}
@@ -627,7 +618,7 @@ const DXFViewer: React.FC = () => {
           </Box>
         </Drawer>
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{flexGrow: 1}}>
           <AppBar position="static">
             <Toolbars
               setFile={setFile}

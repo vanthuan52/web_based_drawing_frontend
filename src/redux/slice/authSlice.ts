@@ -1,16 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
-import {
-  LogInFormType,
-  SignUpFormType,
-} from "~/constant/validation/authSchema";
-import { User, UserRole } from "~/types/entity";
-import { removeToken } from "~/utils/token";
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {toast} from 'react-toastify';
+import {LogInFormType, SignUpFormType} from '@/constant/validation/authSchema';
+import {User, UserRole} from '@/types/entity';
+import {removeToken} from '@/utils/tokenHelper';
 
 interface IAuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
-  user?: User & { role: UserRole };
+  user?: User & {role: UserRole};
 }
 
 const initialState: IAuthState = {
@@ -20,7 +17,7 @@ const initialState: IAuthState = {
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     logout: (state) => {

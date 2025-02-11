@@ -1,0 +1,33 @@
+@import '@/styles/variables';
+
+.form-label {
+  font-size: $font-size-lg;
+  font-weight: $font-bold;
+  display: inline-flex;
+  position: relative;
+  color: #000000;
+
+  &.required::after {
+    content: '*';
+    margin-left: 4px;
+    color: $error-color;
+  }
+}
+
+@media screen and (max-width: 991px) {
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 550px) {
+  .form-label {
+    font-size: $font-size-md;
+  }
+}
+
+@media screen and (max-width: 450px) {
+}
+
+@media screen and (max-width: 400px) {
+}

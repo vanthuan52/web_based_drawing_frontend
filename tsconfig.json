@@ -13,10 +13,10 @@
     "jsx": "react-jsx",
     "noImplicitAny": true,
     "target": "ESNext",
-    "types": ["vite/client", "vitest/globals", "vite-plugin-pwa/client"],
+    "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*"],

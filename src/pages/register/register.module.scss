@@ -1,0 +1,84 @@
+@import '@/styles/variables';
+
+.register-page {
+  padding: 10px;
+  width: 700px;
+  height: 672px;
+  min-height: fit-content;
+  color: #000000;
+  border-radius: $border-radius;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  &__title {
+    margin: 0;
+    padding: 40px 0 20px;
+    font-size: $font-size-xxl;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  &__empty {
+    margin-bottom: 60px;
+  }
+
+  &__login {
+    display: flex;
+    justify-content: flex-start;
+    font-size: $font-size-lg;
+
+    b {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .register-page {
+    width: 700px;
+    height: 672px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .register-page {
+    width: 600px;
+    height: 672px;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+
+    &__login {
+      font-size: $font-size-md;
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .register-page {
+    width: 500px;
+    height: 672px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .register-page {
+    width: 370px;
+    height: 672px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .register-page {
+    width: 340px;
+    height: 650px;
+  }
+}

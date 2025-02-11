@@ -1,7 +1,7 @@
-import { fabric } from "fabric";
-import Button from "./common/button";
-import { IToolbar } from "./types";
-import React, { useState } from "react";
+import React, {useState} from 'react';
+import {fabric} from 'fabric';
+import Button from './Common/Button/Button';
+import {IToolbar} from '@/types/toolbar';
 import {
   TextField,
   Box,
@@ -10,9 +10,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-} from "@mui/material";
-import { useAppDispatch, useAppSelector } from "~/redux/store";
-import { authActions } from "~/redux/slice/authSlice";
+} from '@mui/material';
+import {useAppDispatch, useAppSelector} from '@/redux/store';
+import {authActions} from '@/redux/slice/authSlice';
 
 const Toolbar = ({
   canvas,
@@ -37,26 +37,26 @@ const Toolbar = ({
   scale,
   handleFileUpload,
 }: IToolbar) => {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const {isAuthenticated} = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
-  const [user, setUser] = useState({ username: "", password: "" });
-  const [error, setError] = useState("");
+  const [user, setUser] = useState({username: '', password: ''});
+  const [error, setError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    const {name, value} = e.target;
+    setUser({...user, [name]: value});
   };
 
   const handleLogin = () => {
-    if (user.username === "admin" && user.password === "admin") {
+    if (user.username === 'admin' && user.password === 'admin') {
       setIsLoggedIn(true);
-      setError("");
+      setError('');
       setIsLoginDialogOpen(false);
     } else {
-      setError("Invalid username or password");
+      setError('Invalid username or password');
     }
   };
 
@@ -81,14 +81,14 @@ const Toolbar = ({
 
   const toggleLineMode = () => {
     setIsPanning(false);
-    setDrawingMode((prevMode: any) => (prevMode === "line" ? "none" : "line"));
+    setDrawingMode((prevMode: any) => (prevMode === 'line' ? 'none' : 'line'));
   };
 
   const togglePolygonMode = () => {
     setPolygonPoints([]);
     setIsPanning(false);
     setDrawingMode((prevMode: any) =>
-      prevMode === "polygon" ? "none" : "polygon"
+      prevMode === 'polygon' ? 'none' : 'polygon'
     );
   };
 
@@ -96,13 +96,13 @@ const Toolbar = ({
     setStartPoint(null);
     setIsPanning(false);
     setDrawingMode((prevMode: any) =>
-      prevMode === "circle" ? "none" : "circle"
+      prevMode === 'circle' ? 'none' : 'circle'
     );
   };
 
   const togglePanning = () => {
     setIsPanning(!isPannings);
-    setDrawingMode((prevMode: any) => (prevMode === "pan" ? "none" : "pan"));
+    setDrawingMode((prevMode: any) => (prevMode === 'pan' ? 'none' : 'pan'));
   };
 
   const handleDashedStyle = () => {
@@ -117,7 +117,7 @@ const Toolbar = ({
           const isDashed =
             Array.isArray(obj.strokeDashArray) &&
             obj.strokeDashArray.length > 0;
-          (obj as fabric.Line).set("strokeDashArray", isDashed ? [] : [5, 5]);
+          (obj as fabric.Line).set('strokeDashArray', isDashed ? [] : [5, 5]);
           canvas.current?.renderAll();
         }
       });
@@ -127,26 +127,24 @@ const Toolbar = ({
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-between",
+        display: 'flex',
+        justifyContent: 'space-between',
         gap: 4,
-        backgroundColor: "#269449",
-        border: "solid",
-        borderColor: "#FFFFFF",
-      }}
-    >
-      <div style={{ marginTop: "20px", marginLeft: "40px" }}>
+        backgroundColor: '#269449',
+        border: 'solid',
+        borderColor: '#FFFFFF',
+      }}>
+      <div style={{marginTop: '20px', marginLeft: '40px'}}>
         <input type="file" accept=".dxf" onChange={handleFileUpload} />
       </div>
-      <div style={{ marginTop: "20px", marginRight: "40px", gap: 4 }}>
+      <div style={{marginTop: '20px', marginRight: '40px', gap: 4}}>
         <div
           style={{
-            marginTop: "20px",
-            marginRight: "40px",
+            marginTop: '20px',
+            marginRight: '40px',
             gap: 4,
-            paddingBottom: "10px",
-          }}
-        >
+            paddingBottom: '10px',
+          }}>
           {!isAuthenticated ? (
             <Button onClick={toggleLoginDialog} title="Log In" />
           ) : (
@@ -187,27 +185,27 @@ const Toolbar = ({
             </DialogActions>
           </Dialog>
         </div>
-        <div style={{ display: "flex", gap: 4 }}>
+        <div style={{display: 'flex', gap: 4}}>
           <button onClick={handleDeleteSelected}>Delete Selected</button>
           <Button
             onClick={toggleLineMode}
-            title={drawingMode === "line" ? "Stop Drawing" : "Draw Line"}
+            title={drawingMode === 'line' ? 'Stop Drawing' : 'Draw Line'}
           />
           <Button
             onClick={togglePolygonMode}
-            title={drawingMode === "polygon" ? "Stop Drawing" : "Draw Polygon"}
+            title={drawingMode === 'polygon' ? 'Stop Drawing' : 'Draw Polygon'}
           />
           <Button
             onClick={toggleCircleMode}
-            title={drawingMode === "circle" ? "Stop Drawing" : "Draw Circle"}
+            title={drawingMode === 'circle' ? 'Stop Drawing' : 'Draw Circle'}
           />
           <Button
             onClick={togglePanning}
-            title={drawingMode === "pan" ? "Stop Pan" : "Pan"}
+            title={drawingMode === 'pan' ? 'Stop Pan' : 'Pan'}
           />
           <Button onClick={handleDashedStyle} title="Make Dashed" />
         </div>
-        <div style={{ marginTop: "10px" }}>
+        <div style={{marginTop: '10px'}}>
           <Button onClick={handleDownloadDXF} title="Download" />
         </div>
         <label htmlFor="stroke-width">Stroke Width: </label>
@@ -221,12 +219,11 @@ const Toolbar = ({
         />
         <div
           style={{
-            display: "flex",
-            gap: "10px",
-            paddingTop: "10px",
-            paddingBottom: "5px",
-          }}
-        >
+            display: 'flex',
+            gap: '10px',
+            paddingTop: '10px',
+            paddingBottom: '5px',
+          }}>
           <div>
             <label htmlFor="font-size-input">Font Size: </label>
             <input
@@ -252,8 +249,7 @@ const Toolbar = ({
             <select
               id="font-family-select"
               value={fontFamily}
-              onChange={(e) => setFontFamily(e.target.value)}
-            >
+              onChange={(e) => setFontFamily(e.target.value)}>
               <option value="Arial">Arial</option>
               <option value="Times New Roman">Times New Roman</option>
               <option value="Verdana">Verdana</option>
@@ -269,7 +265,7 @@ const Toolbar = ({
             />
           </div>
         </div>
-        <div style={{ paddingBottom: "5px" }}>
+        <div style={{paddingBottom: '5px'}}>
           <Button onClick={handleAddText} title="Add Text" />
         </div>
         <p>Tỷ lệ hiện tại: {scale}</p>

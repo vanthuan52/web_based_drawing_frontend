@@ -1,16 +1,16 @@
-import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import React from 'react';
+import {createBrowserRouter} from 'react-router-dom';
 
-import ProtectedRoute from "~/components/shared/ProtectedRoute";
+import ProtectedRoute from '@/router/protectedRoute';
 
-import { ROUTER_PATH } from "~/constant/common";
+import {ROUTER_PATH} from '@/constant/common';
 
-import AuthLayout from "~/layouts/AuthLayout/AuthLayout";
-import MainLayout from "~/layouts/MainLayout";
+import AuthLayout from '@/layouts/authLayout/authLayout';
+import MainLayout from '@/layouts/mainLayout';
 
-import LoginPage from "~/pages/Login/Login";
-import SignUpPage from "~/pages/Signup/Signup";
-import DXFEditor from "~/components/viewer";
+import LoginPage from '@/pages/login/login';
+import RegisterPage from '@/pages/register/register';
+import HomePage from '@/pages/home/home';
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
     path: ROUTER_PATH.signup,
     element: (
       <AuthLayout>
-        <SignUpPage />
+        <RegisterPage />
       </AuthLayout>
     ),
   },
@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
         path: ROUTER_PATH.home,
         element: (
           <ProtectedRoute>
-            <DXFEditor />
+            <HomePage />
           </ProtectedRoute>
         ),
       },
