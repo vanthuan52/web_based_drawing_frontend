@@ -7,10 +7,11 @@ import {ROUTER_PATH} from '@/constant/common';
 
 import AuthLayout from '@/layouts/authLayout/authLayout';
 import MainLayout from '@/layouts/mainLayout';
-
+import BoardLayout from '@/layouts/boardLayout/boardLayout';
 import LoginPage from '@/pages/login/login';
 import RegisterPage from '@/pages/register/register';
 import HomePage from '@/pages/home/home';
+import BoardPage from '@/pages/board/board';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,15 @@ export const router = createBrowserRouter([
         <RegisterPage />
       </AuthLayout>
     ),
+  },
+  {
+    element: <BoardLayout />,
+    children: [
+      {
+        path: ROUTER_PATH.board,
+        element: <BoardPage />,
+      },
+    ],
   },
   {
     element: <MainLayout />,

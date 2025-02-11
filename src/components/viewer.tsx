@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {fabric} from 'fabric';
-import Toolbars from './toolBar';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import {
@@ -14,8 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import {MenuIcon} from 'lucide-react';
-import {DrawingMode, Point} from '../constant/common';
+import Toolbars from './toolBar';
+import {DrawingMode, Point} from '@/types/board';
 import useMultiSelect from '../hooks/useMultiSelect';
+import imageHelper from '@/utils/imageHelper';
 
 const DXFViewer: React.FC = () => {
   const [file, setFile] = useState<any>(null);
@@ -49,17 +50,6 @@ const DXFViewer: React.FC = () => {
   useEffect(() => {
     if (isDarkMode) setTextColor('#FFFFFF');
   }, [isDarkMode]);
-
-  // Reduce image resolution for performance
-  const reduceImageResolution = (img: HTMLImageElement): string => {
-    const canvasTemp = document.createElement('canvas');
-    const ctx = canvasTemp.getContext('2d');
-    const scaleFactor = 0.5;
-    canvasTemp.width = img.width * scaleFactor;
-    canvasTemp.height = img.height * scaleFactor;
-    if (ctx) ctx.drawImage(img, 0, 0, canvasTemp.width, canvasTemp.height);
-    return canvasTemp.toDataURL();
-  };
 
   // Convert Fabric canvas to DXF string
   const canvasToDXF = (canvasObj: fabric.Canvas): string => {
@@ -124,7 +114,7 @@ const DXFViewer: React.FC = () => {
     const imageUrl = 'your-large-image-url.png';
     const img = new Image();
     img.onload = () => {
-      const reducedSrc = reduceImageResolution(img);
+      const reducedSrc = imageHelper.reduceImageResolution(img);
       const newImg = new Image();
       newImg.src = reducedSrc;
       setImageData(newImg);

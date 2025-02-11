@@ -9,7 +9,7 @@ const AuthLayout: React.FC<{children: React.ReactNode}> = ({children}) => {
   return isAuthenticated ? (
     <Navigate to="/" />
   ) : (
-    <div className={style['authLayout']}>{children}</div>
+    <div className={style['auth-layout']}>{children}</div>
   );
 };
 
