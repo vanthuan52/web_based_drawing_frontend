@@ -1,0 +1,49 @@
+$primary-bg-color: #f8f9fa;
+$secondary-bg-color: #ffffff;
+
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$success-color: #28a745;
+$error-color: #dc3545;
+$warning-color: #ffc107;
+$text-color: #333;
+$hover-color: #d463d8;
+
+$dark-primary-color: #0056b3;
+$dark-success-color: #218838;
+$dark-error-color: #e6273a;
+$dark-secondary-color: #545b62;
+
+$font-primary: 'Poppins', sans-serif;
+$font-secondary: 'Poppins', sans-serif;
+
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+
+$border-radius: 6px;
+$border-color: #d1d5db;
+
+$font-size-xs: 11px; // Extra small (Mobile)
+$font-size-sm: 13px; // Small (Tablet)
+$font-size-md: 15px; // Medium (Default for Desktop)
+$font-size-lg: 17px; // Large
+$font-size-xl: 19px; // Extra Large
+$font-size-xxl: 23px; // XXL
+
+$font-regular: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+
+@mixin responsive-font($mobile, $tablet, $desktop) {
+  font-size: $mobile;
+
+  @media (min-width: 768px) {
+    font-size: $tablet;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: $desktop;
+  }
+}

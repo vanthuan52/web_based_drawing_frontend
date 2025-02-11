@@ -1,127 +1,97 @@
-.loginPage {
+@import '@/styles/variables';
+
+.login-page {
   padding: 10px;
   width: 700px;
   height: 672px;
   min-height: fit-content;
   color: #000000;
-  border-radius: 10px;
+  border-radius: $border-radius;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 
-  .loginPage__title {
+  &__title {
     margin: 0;
-    padding: 70px 0 20px;
-    font-size: 25px;
+    padding: 40px 0 20px;
+    font-size: $font-size-xxl;
     font-weight: bold;
     display: flex;
     justify-content: center;
   }
 
-  .loginPage__form {
+  &__form {
     display: flex;
     flex-direction: column;
     align-items: start;
+  }
 
-    .loginPage__forgot {
-      display: flex;
-      justify-content: flex-end;
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 60px;
+  &__forgot {
+    display: flex;
+    justify-content: flex-end;
+    font-size: $font-size-lg;
+    font-weight: 500;
+    margin-bottom: 60px;
+    cursor: pointer;
+
+    &:hover {
+      color: $hover-color;
     }
+  }
 
-    .loginPage__signup {
-      display: flex;
-      justify-content: flex-start;
-      font-size: 18px;
+  &__signup {
+    font-size: $font-size-lg;
 
-      b {
-        margin-left: 5px;
-        cursor: pointer;
-      }
+    b {
+      margin-left: 5px;
+      cursor: pointer;
     }
   }
 }
 
 @media screen and (max-width: 991px) {
-  .loginPage {
-    padding: 10px;
+  .login-page {
     width: 700px;
     height: 672px;
-    min-height: fit-content;
-    color: #000000;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .loginPage {
-    padding: 10px;
+  .login-page {
     width: 600px;
     height: 672px;
-    min-height: fit-content;
-    color: #000000;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    box-shadow: unset;
+
+    &__forgot {
+      font-size: $font-size-md;
+      margin-bottom: 40px;
+    }
+
+    &__signup {
+      font-size: $font-size-md;
+    }
   }
 }
 
 @media screen and (max-width: 550px) {
-  .loginPage {
-    padding: 10px;
+  .login-page {
     width: 500px;
     height: 672px;
-    min-height: fit-content;
-    color: #000000;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
   }
 }
 
 @media screen and (max-width: 450px) {
-  .loginPage {
-    padding: 10px;
+  .login-page {
     width: 370px;
     height: 672px;
-    min-height: fit-content;
-    color: #000000;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .loginPage {
-    padding: 10px;
-    width: 320px;
+  .login-page {
+    width: 340px;
     height: 580px;
-    min-height: fit-content;
-    color: #000000;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
   }
 }

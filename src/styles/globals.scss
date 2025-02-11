@@ -1,0 +1,31 @@
+@import 'variables';
+@import 'fonts';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-primary;
+  color: $text-color;
+  background-color: $primary-bg-color;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: $font-size-xl;
+}
+
+p {
+  font-size: $font-size-md;
+}
+
+.title {
+  @include responsive-font($font-size-md, $font-size-lg, $font-size-xl);
+}
+
+.description {
+  @include responsive-font($font-size-sm, $font-size-md, $font-size-lg);
+}

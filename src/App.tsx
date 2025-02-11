@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { RouterProvider } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import React, {useEffect} from 'react';
+import {RouterProvider} from 'react-router-dom';
+import {ToastContainer} from 'react-toastify';
 
-import { router } from "./router";
-import { useAppDispatch } from "./redux/store";
-import { getToken } from "./utils/token";
-import { authActions } from "./redux/slice/authSlice";
+import {router} from './router';
+import {useAppDispatch} from './redux/store';
+import {getToken} from './utils/tokenHelper';
+import {authActions} from './redux/slice/authSlice';
 
 function App() {
   const dispatch = useAppDispatch();

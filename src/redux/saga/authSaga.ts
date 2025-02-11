@@ -1,19 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { call, put, takeLatest } from "redux-saga/effects";
-import { PayloadAction } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
-import {
-  LogInFormType,
-  SignUpFormType,
-} from "~/constant/validation/authSchema";
-import { authActions } from "../slice/authSlice";
-import { IResponse } from "~/types/common";
-import authApi from "~/services/authApi";
-import { setToken } from "~/utils/token";
+import {call, put, takeLatest} from 'redux-saga/effects';
+import {PayloadAction} from '@reduxjs/toolkit';
+import {toast} from 'react-toastify';
+import {LogInFormType, SignUpFormType} from '@/constant/validation/authSchema';
+import {authActions} from '../slice/authSlice';
+import {IResponse} from '@/types/common';
+import authApi from '@/services/authApi';
+import {setToken} from '@/utils/tokenHelper';
 
 function* handleLogin(action: PayloadAction<LogInFormType>) {
   try {
-    const { data, message }: IResponse = yield call(
+    const {data, message}: IResponse = yield call(
       authApi.logIn,
       action.payload
     );
@@ -27,7 +24,7 @@ function* handleLogin(action: PayloadAction<LogInFormType>) {
 
 function* handleSignUp(action: PayloadAction<SignUpFormType>) {
   try {
-    const { status, message } = yield call(authApi.signUp, action.payload);
+    const {status, message} = yield call(authApi.signUp, action.payload);
     if (status) {
       toast.success(message);
       yield put(authActions.signupSuccess());

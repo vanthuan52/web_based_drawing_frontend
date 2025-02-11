@@ -1,9 +1,9 @@
-import axiosClient from "axios";
-import { Config } from "~/config";
-import { ACCESS_TOKEN } from "~/constant/string";
+import axiosClient from 'axios';
+import {Config} from '@/config';
+import {ACCESS_TOKEN} from '@/constant/string';
 
 const instance = axiosClient.create({
-  baseURL: Config.DOMAIN + "api/v1" || "http://localhost:5002/api/v1",
+  baseURL: Config.DOMAIN + 'api/v1',
   withCredentials: false,
 });
 
@@ -12,7 +12,7 @@ instance.interceptors.request.use(
   async function (config) {
     // Do something before request is sent
     if (
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window &&
       window.localStorage &&
       window.localStorage.getItem(ACCESS_TOKEN)
@@ -21,9 +21,9 @@ instance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    if (!config.headers.Accept && config.headers["Content-Type"]) {
-      config.headers.Accept = "application/json";
-      config.headers["Content-Type"] = "application/json; charset=utf-8";
+    if (!config.headers.Accept && config.headers['Content-Type']) {
+      config.headers.Accept = 'application/json';
+      config.headers['Content-Type'] = 'application/json; charset=utf-8';
     }
 
     return config;
