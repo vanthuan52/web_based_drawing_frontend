@@ -1,0 +1,13 @@
+.canvas-board {
+  overflow: hidden;
+  display: flex;
+}
+
+.canvas {
+  display: block;
+  border: 1px solid green;
+}
+
+.lower-canvas {
+  position: initial !important;
+}

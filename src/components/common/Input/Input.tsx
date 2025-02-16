@@ -3,18 +3,25 @@ import styles from './Input.module.scss';
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
+  noPadding?: boolean;
+  noBorder?: boolean;
   label?: string;
   invalid?: boolean;
   icon?: React.ReactNode;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({className, invalid, icon, ...props}, ref) => {
+  (
+    {className, width, height, invalid, noPadding, noBorder, icon, ...props},
+    ref
+  ) => {
     return (
       <div
         className={`${styles['input-container']} 
         ${props.disabled ? styles['disabled'] : ''} 
         ${props.readOnly ? styles['readonly'] : ''} 
+        ${noPadding ? styles['no-padding'] : ''}
+        ${noBorder ? styles['no-border'] : ''}
         ${invalid ? styles['invalid'] : ''} 
         ${className || ''}`}>
         {icon && <div className={styles['icon']}>{icon}</div>}

@@ -1,0 +1,74 @@
+@import '@/styles/variables';
+
+.canvas-layers {
+}
+
+.layers {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+
+  &-header {
+    display: flex;
+    align-items: center;
+  }
+
+  &-title {
+    font-size: $font-size-md;
+    font-weight: 600;
+    padding: 5px 10px;
+  }
+
+  &-body {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+  }
+}
+
+.layer-list {
+  width: 100%;
+}
+.layer {
+  display: flex;
+  flex-direction: column;
+
+  &-actions {
+    padding: 5px 10px;
+    display: flex;
+    gap: 10px;
+
+    &__button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: $secondary-color;
+      border-radius: $border-radius;
+      cursor: pointer;
+    }
+  }
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    &.selected {
+      background-color: rgb(193, 212, 212);
+      font-weight: $font-semibold;
+    }
+
+    &__label {
+      font-size: $font-size-md;
+    }
+  }
+}
