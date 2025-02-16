@@ -4,13 +4,13 @@ import {LogInFormType, SignUpFormType} from '@/constant/validation/authSchema';
 import {User, UserRole} from '@/types/entity';
 import {removeToken} from '@/utils/tokenHelper';
 
-interface IAuthState {
+interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   user?: User & {role: UserRole};
 }
 
-const initialState: IAuthState = {
+const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: false,
   user: undefined,

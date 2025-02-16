@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useState, useRef, useEffect, useCallback} from 'react';
-import {fabric} from 'fabric';
+import * as fabric from 'fabric';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import {
@@ -123,20 +123,21 @@ const DXFViewer: React.FC = () => {
   }, []);
 
   // Add background image to the canvas once loaded
-  useEffect(() => {
-    if (imageData && canvas.current) {
-      fabric.Image.fromURL(imageData.src, (img) => {
-        canvas.current?.add(img);
-      });
-    }
-  }, [imageData]);
+  // useEffect(() => {
+  //   if (imageData && canvas.current) {
+  //     fabric.FabricImage.fromURL(imageData.src, (img: any) => {
+  //       canvas.current?.add(img);
+  //     });
+  //   }
+  // }, [imageData]);
 
   // Object hover and selection highlighting
   useEffect(() => {
     if (!canvas.current) return;
     const fabricCanvas = canvas.current;
 
-    const handleMouseOver = (e: fabric.IEvent) => {
+    // any
+    const handleMouseOver = (e: any) => {
       const obj = e.target;
       if (obj) {
         if (!(obj as any).originalStroke) {
@@ -148,7 +149,7 @@ const DXFViewer: React.FC = () => {
       }
     };
 
-    const handleMouseOut = (e: fabric.IEvent) => {
+    const handleMouseOut = (e: any) => {
       const obj = e.target;
       if (obj) {
         obj.set(
@@ -160,7 +161,7 @@ const DXFViewer: React.FC = () => {
       }
     };
 
-    const handleMouseDownHighlight = (e: fabric.IEvent) => {
+    const handleMouseDownHighlight = (e: any) => {
       const obj = e.target;
       if (obj) {
         obj.set('stroke', 'rgb(255, 0, 0)');
@@ -169,7 +170,7 @@ const DXFViewer: React.FC = () => {
       }
     };
 
-    const handleObjectAdded = (e: fabric.IEvent) => {
+    const handleObjectAdded = (e: any) => {
       if (e.target) {
         (e.target as any).originalStroke = e.target.stroke;
       }
@@ -195,7 +196,7 @@ const DXFViewer: React.FC = () => {
 
     // LINE mode: draw a line by dragging
     if (drawingMode === 'line') {
-      const handleMouseDown = (e: fabric.IEvent) => {
+      const handleMouseDown = (e: any) => {
         const pointer = fabricCanvas.getPointer(e.e);
         if (pointer) {
           setStartPoint({x: pointer.x, y: pointer.y});
@@ -212,7 +213,7 @@ const DXFViewer: React.FC = () => {
         }
       };
 
-      const handleMouseMove = (e: fabric.IEvent) => {
+      const handleMouseMove = (e: any) => {
         if (startPoint && currentLine.current) {
           const pointer = fabricCanvas.getPointer(e.e);
           if (pointer) {
@@ -243,7 +244,7 @@ const DXFViewer: React.FC = () => {
 
     // POLYGON mode: collect points and draw a polygon
     if (drawingMode === 'polygon') {
-      const handleMouseDown = (e: fabric.IEvent) => {
+      const handleMouseDown = (e: any) => {
         const pointer = fabricCanvas.getPointer(e.e);
         if (pointer) {
           setPolygonPoints((prev) => [...prev, {x: pointer.x, y: pointer.y}]);
@@ -288,7 +289,7 @@ const DXFViewer: React.FC = () => {
     // CIRCLE mode: draw a circle by dragging
     if (drawingMode === 'circle') {
       fabricCanvas.selection = false;
-      const handleMouseDown = (e: fabric.IEvent) => {
+      const handleMouseDown = (e: any) => {
         const pointer = fabricCanvas.getPointer(e.e);
         if (pointer) {
           setStartPoint({x: pointer.x, y: pointer.y});
@@ -308,7 +309,7 @@ const DXFViewer: React.FC = () => {
         }
       };
 
-      const handleMouseMove = (e: fabric.IEvent) => {
+      const handleMouseMove = (e: any) => {
         if (!startPoint || !currentCircle.current) return;
         const pointer = fabricCanvas.getPointer(e.e);
         if (pointer) {
@@ -352,7 +353,7 @@ const DXFViewer: React.FC = () => {
     let lastPosX: number | null = null;
     let lastPosY: number | null = null;
 
-    const handleMouseDown = (e: fabric.IEvent<Event>) => {
+    const handleMouseDown = (e: any) => {
       const evt = e.e as MouseEvent;
       // If Alt is pressed, let multi-select handle it
       if (evt.button === 0 && !evt.altKey) {
@@ -364,7 +365,7 @@ const DXFViewer: React.FC = () => {
       }
     };
 
-    const handleMouseMove = (e: fabric.IEvent<Event>) => {
+    const handleMouseMove = (e: any) => {
       const evt = e.e as MouseEvent;
       if (isPanningLocal && lastPosX !== null && lastPosY !== null) {
         const deltaX = evt.clientX - lastPosX;
@@ -383,7 +384,7 @@ const DXFViewer: React.FC = () => {
       fabricCanvas.selection = true;
     };
 
-    const handleMouseWheel = (e: fabric.IEvent<Event>) => {
+    const handleMouseWheel = (e: any) => {
       const evt = e.e as WheelEvent;
       const zoom = fabricCanvas.getZoom();
       const delta = evt.deltaY > 0 ? -0.1 : 0.1;

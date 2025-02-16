@@ -1,18 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import styles from './board.module.scss';
 import Navigation from '@/components/Navigation/Navigation';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import Board from '@/components/Board/Board';
+import CanvasBoard from '@/components/CanvasBoard/CanvasBoard';
+import CanvasTools from '@/components/CanvasTools/CanvasTools';
 
 const BoardPage = () => {
   return (
-    <div className={clsx(styles['board'])}>
-      <Navigation />
-      <div className={clsx(styles['board__content'])}>
-        <Sidebar />
-        <Board />
-      </div>
+    <div className={styles['board']}>
+      <CanvasBoard />
     </div>
   );
 };

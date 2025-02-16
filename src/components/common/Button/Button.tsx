@@ -18,7 +18,7 @@ export interface IButtonProps {
 }
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: 'primary' | 'secondary' | 'danger' | 'success';
+  color?: 'primary' | 'secondary' | 'danger' | 'success' | 'inherit';
   size?: 'small' | 'medium' | 'large';
   block?: boolean;
   loading?: boolean;

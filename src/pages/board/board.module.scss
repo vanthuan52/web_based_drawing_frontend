@@ -1,8 +1,5 @@
 .board {
-  &__content {
-    display: flex;
-    flex: 1;
-    align-items: stretch;
-    overflow: hidden;
-  }
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }

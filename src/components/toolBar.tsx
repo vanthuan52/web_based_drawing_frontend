@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {fabric} from 'fabric';
+import {Line, Polygon, Circle} from 'fabric';
 import Button from './Common/Button/Button';
 import {IToolbar} from '@/types/toolbar';
 import {
@@ -110,14 +110,14 @@ const Toolbar = ({
       const activeObjects = canvas.current.getActiveObjects();
       activeObjects.forEach((obj: any) => {
         if (
-          obj instanceof fabric.Line ||
-          obj instanceof fabric.Polygon ||
-          obj instanceof fabric.Circle
+          obj instanceof Line ||
+          obj instanceof Polygon ||
+          obj instanceof Circle
         ) {
           const isDashed =
             Array.isArray(obj.strokeDashArray) &&
             obj.strokeDashArray.length > 0;
-          (obj as fabric.Line).set('strokeDashArray', isDashed ? [] : [5, 5]);
+          (obj as Line).set('strokeDashArray', isDashed ? [] : [5, 5]);
           canvas.current?.renderAll();
         }
       });
