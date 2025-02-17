@@ -1,0 +1,24 @@
+@import '@/styles/variables';
+
+.zooming {
+  padding: 5px 10px;
+  &-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    border: 1px solid #ddd;
+    width: 70px;
+    max-width: 100px;
+    min-width: 70px;
+  }
+
+  &-input {
+    height: 20px;
+    width: 45px;
+    max-width: 50px;
+  }
+}

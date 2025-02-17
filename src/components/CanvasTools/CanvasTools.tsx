@@ -16,9 +16,11 @@ import Cropping from '../Cropping/Cropping';
 
 interface CanvasToolsProps {
   canvas: Canvas | null;
+  isPanning: boolean;
+  onSetIsPanning: (value: boolean) => void;
 }
 
-const CanvasTools = ({canvas}: CanvasToolsProps) => {
+const CanvasTools = ({canvas, isPanning, onSetIsPanning}: CanvasToolsProps) => {
   const {addLine, addRectangle, addCircle, addPolygon, addText} = useCanvas({
     canvas,
   });
@@ -26,27 +28,31 @@ const CanvasTools = ({canvas}: CanvasToolsProps) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleAddLine = () => {
-    addLine(canvas);
+    addLine();
   };
 
   const handleAddRectangle = () => {
-    addRectangle(canvas);
+    addRectangle();
   };
 
   const handleAddCircle = () => {
-    addCircle(canvas);
+    addCircle();
   };
 
   const handleAddPolygon = () => {
-    addPolygon(canvas);
+    addPolygon();
   };
 
   const handleAddText = () => {
-    addText(canvas);
+    addText();
   };
 
   const handleFramesUpdated = () => {
     setRefreshKey((prevKey) => prevKey + 1);
+  };
+
+  const handleSetIsPanning = () => {
+    onSetIsPanning(!isPanning);
   };
 
   return (
@@ -77,7 +83,11 @@ const CanvasTools = ({canvas}: CanvasToolsProps) => {
           <div className={styles['tools-items__item']} onClick={handleAddText}>
             <Type />
           </div>
-          <div className={styles['tools-items__item']}>
+          <div
+            className={clsx(styles['tools-items__item'], {
+              [styles['active']]: isPanning,
+            })}
+            onClick={handleSetIsPanning}>
             <Hand />
           </div>
           <div className={styles['tools-items__item']}>
