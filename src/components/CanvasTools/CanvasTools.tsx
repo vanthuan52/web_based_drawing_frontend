@@ -19,7 +19,7 @@ interface CanvasToolsProps {
 }
 
 const CanvasTools = ({canvas}: CanvasToolsProps) => {
-  const {addLine, addRectangle, addCircle, addPolygon} = useCanvas({
+  const {addLine, addRectangle, addCircle, addPolygon, addText} = useCanvas({
     canvas,
   });
 
@@ -39,6 +39,10 @@ const CanvasTools = ({canvas}: CanvasToolsProps) => {
 
   const handleAddPolygon = () => {
     addPolygon(canvas);
+  };
+
+  const handleAddText = () => {
+    addText(canvas);
   };
 
   const handleFramesUpdated = () => {
@@ -70,7 +74,7 @@ const CanvasTools = ({canvas}: CanvasToolsProps) => {
             onClick={handleAddPolygon}>
             <Hexagon />
           </div>
-          <div className={styles['tools-items__item']}>
+          <div className={styles['tools-items__item']} onClick={handleAddText}>
             <Type />
           </div>
           <div className={styles['tools-items__item']}>
