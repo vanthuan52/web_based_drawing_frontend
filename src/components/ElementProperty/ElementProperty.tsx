@@ -10,6 +10,7 @@ import Button from '../Common/Button/Button';
 import Cropping from '../Cropping/Cropping';
 import CroppingSetting from '../CroppingSetting/CroppingSetting';
 import {numberToString} from '@/utils/common';
+import Typography from '../Typography/Typography';
 
 interface ElementPropertyProps {
   canvas: Canvas | null;
@@ -258,6 +259,8 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
           </div>
         </div>
       </div>
+
+      <Typography canvas={canvas} />
 
       <div className={styles['actions']}>
         <div className={styles['actions-header']}>

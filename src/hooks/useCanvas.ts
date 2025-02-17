@@ -1,5 +1,5 @@
 import React from 'react';
-import {Canvas, Line, Polygon, Rect, Circle} from 'fabric';
+import {Canvas, Line, Polygon, Rect, Circle, Textbox} from 'fabric';
 
 interface UseFabricCanvasProps {
   canvas: Canvas | null;
@@ -63,7 +63,23 @@ const useCanvas = ({canvas}: UseFabricCanvasProps) => {
     }
   };
 
-  return {addLine, addRectangle, addPolygon, addCircle};
+  const addText = (canvas: Canvas | null) => {
+    if (!canvas) return;
+
+    const text = new Textbox('Enter text here', {
+      left: 50,
+      top: 50,
+      fontSize: 24,
+      fill: '#000000',
+      fontFamily: 'Arial',
+      width: 200,
+      editable: true,
+    });
+
+    canvas.add(text);
+  };
+
+  return {addLine, addRectangle, addPolygon, addCircle, addText};
 };
 
 export default useCanvas;
