@@ -1,16 +1,16 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Canvas, Circle, FabricObject, Line, Polygon, Rect} from 'fabric';
+import {Canvas, FabricObject} from 'fabric';
 import clsx from 'clsx';
 import {Trash} from 'lucide-react';
-import {SketchPicker} from 'react-color';
 import styles from './ElementProperty.module.scss';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
-import Input from '../Common/Input/Input';
-import Button from '../Common/Button/Button';
-import Cropping from '../Cropping/Cropping';
-import CroppingSetting from '../CroppingSetting/CroppingSetting';
+import Input from '@/components/Common/Input/Input';
+import Button from '@/components/Common/Button/Button';
+import CroppingSetting from '@/components/CroppingSetting/CroppingSetting';
 import {numberToString} from '@/utils/common';
-import Typography from '../Typography/Typography';
+import Typography from '@/components/Typography/Typography';
+import Theme from '@/components/Theme/Theme';
+import CanvasZooming from '../CanvasZooming/CanvasZooming';
 
 interface ElementPropertyProps {
   canvas: Canvas | null;
@@ -27,7 +27,6 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
   const [diameter, setDiameter] = useState(0);
   const [color, setColor] = useState(DEFAULT_OBJECT_COLOR);
   const [opacity, setOpacity] = useState<string>('0');
-  const [showColorPicker, setShowColorPicker] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
@@ -151,13 +150,16 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
       canvas.renderAll();
     };
 
-  const handleColorChange = (color: any) => {
-    setColor(color.hex);
-    if (selectedObject) {
-      selectedObject.set({fill: color.hex});
-      canvas?.renderAll();
-    }
-  };
+  const handleColorChange = useCallback(
+    (color: {hex: string}) => {
+      setColor(color.hex);
+      if (selectedObject && canvas) {
+        selectedObject.set({fill: color.hex});
+        canvas.renderAll();
+      }
+    },
+    [selectedObject, canvas]
+  );
 
   const handleOpacityChange = (e: any) => {
     if (!canvas || !selectedObject) return;
@@ -180,6 +182,7 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
 
   return (
     <div className={clsx(styles['element'])}>
+      <CanvasZooming canvas={canvas} />
       <div className={styles['property']}>
         <div className={styles['property-header']}>
           <span className={styles['property-title']}>Properties</span>
@@ -227,38 +230,7 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
         </div>
       </div>
 
-      <div className={styles['theme']}>
-        <div className={styles['theme-header']}>
-          <span className={styles['theme-title']}>Fill</span>
-        </div>
-        <div className={styles['theme-body']}>
-          <div className={styles['theme-item']}>
-            <div
-              className={styles['theme-color']}
-              onClick={() => setShowColorPicker(!showColorPicker)}>
-              <div
-                className={styles['theme-color__preview']}
-                style={{
-                  backgroundColor: color,
-                }}></div>
-              <span className={styles['theme-color__value']}>
-                {color.toUpperCase()}
-              </span>
-            </div>
-
-            {showColorPicker && (
-              <div className={styles['theme-color__modal']}>
-                <SketchPicker color={color} onChange={handleColorChange} />
-                <button
-                  className={styles['theme-color__button']}
-                  onClick={() => setShowColorPicker(false)}>
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <Theme color={color} onColorChange={handleColorChange} />
 
       <Typography canvas={canvas} />
 

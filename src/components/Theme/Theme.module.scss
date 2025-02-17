@@ -1,0 +1,79 @@
+@import '@/styles/variables';
+
+.theme {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+
+  &-header {
+    display: flex;
+    align-items: center;
+  }
+
+  &-title {
+    font-size: $font-size-md;
+    font-weight: 600;
+    padding: 5px 10px;
+  }
+
+  &-body {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 5px 10px;
+  }
+
+  &-color {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: $border-radius;
+    cursor: pointer;
+    background: #fff;
+    width: 105px;
+    max-width: 105px;
+
+    &__preview {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    &__value {
+      font-size: $font-size-md;
+    }
+
+    &__modal {
+      position: absolute;
+      z-index: 10;
+      top: 40px;
+      left: 0;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &__button {
+      width: 100%;
+      margin-top: 8px;
+      padding: 5px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}

@@ -10,6 +10,7 @@ import CanvasProperty from '../CanvasProperty/CanvasProperty';
 import Sidebar from '../Sidebar/Sidebar';
 import {RootState, useAppSelector} from '@/redux/store';
 import {canvasManagerActions} from '@/redux/slice/canvasManagerSlice';
+import useCanvasPanning from '@/hooks/useCanvasPanning';
 
 const CanvasBoard: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const CanvasBoard: React.FC = () => {
   );
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = useState<Canvas | null>(null);
+  const [isPanning, setIsPanning] = useState(false);
+  const [scale, setScale] = useState('1:1');
 
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
 
@@ -25,6 +28,8 @@ const CanvasBoard: React.FC = () => {
     width: window.innerWidth - 250 - 250 - 3,
     height: window.innerHeight - 3,
   });
+
+  useCanvasPanning({canvas, isPanning, setScale});
 
   // Firstly, grab the user's screen to set canvas width and height
   useEffect(() => {
@@ -93,7 +98,11 @@ const CanvasBoard: React.FC = () => {
     <div className={clsx(styles['canvas-board'])}>
       <Sidebar canvas={canvas} />
       <canvas id="canvas" ref={canvasRef} className={styles['canvas']} />
-      <CanvasTools canvas={canvas} />
+      <CanvasTools
+        canvas={canvas}
+        isPanning={isPanning}
+        onSetIsPanning={setIsPanning}
+      />
       <CanvasProperty canvas={canvas} />
     </div>
   );

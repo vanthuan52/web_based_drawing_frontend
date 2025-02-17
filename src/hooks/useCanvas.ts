@@ -5,7 +5,7 @@ interface UseFabricCanvasProps {
   canvas: Canvas | null;
 }
 const useCanvas = ({canvas}: UseFabricCanvasProps) => {
-  const addLine = (canvas: Canvas | null) => {
+  const addLine = () => {
     if (canvas) {
       const rect = new Line([70, 100, 100, 150], {
         left: 50,
@@ -17,7 +17,7 @@ const useCanvas = ({canvas}: UseFabricCanvasProps) => {
     }
   };
 
-  const addRectangle = (canvas: Canvas | null) => {
+  const addRectangle = () => {
     if (canvas) {
       const rect = new Rect({
         top: 100,
@@ -30,7 +30,7 @@ const useCanvas = ({canvas}: UseFabricCanvasProps) => {
     }
   };
 
-  const addCircle = (canvas: Canvas | null) => {
+  const addCircle = () => {
     if (canvas) {
       const rect = new Circle({
         radius: 100,
@@ -44,7 +44,7 @@ const useCanvas = ({canvas}: UseFabricCanvasProps) => {
     }
   };
 
-  const addPolygon = (canvas: Canvas | null) => {
+  const addPolygon = () => {
     if (canvas) {
       const rect = new Polygon(
         [
@@ -63,7 +63,7 @@ const useCanvas = ({canvas}: UseFabricCanvasProps) => {
     }
   };
 
-  const addText = (canvas: Canvas | null) => {
+  const addText = () => {
     if (!canvas) return;
 
     const text = new Textbox('Enter text here', {
