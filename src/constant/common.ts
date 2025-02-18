@@ -6,6 +6,9 @@ export const ROUTER_PATH = {
 };
 
 export const CANVAS_OBJECT_TYPE = {
+  TEXTBOX: 'textbox',
+  TEXT: 'text',
+  POLYGON: 'polygon',
   CIRCLE: 'circle',
   RECT: 'rect',
   LINE: 'line',
@@ -17,4 +20,16 @@ export const DEFAULT_INITIAL_CANVAS = {
   name: 'Untitled-1',
   json: null,
   active: true,
+};
+
+export const TEXT_ALIGNMENT = {
+  LEFT: 'left',
+  CENTER: 'center',
+  RIGHT: 'right',
+};
+
+export const VERTICAL_ALIGNMENT = {
+  TOP: 'TOP',
+  CENTER: 'center',
+  BOTTOM: 'bottom',
 };

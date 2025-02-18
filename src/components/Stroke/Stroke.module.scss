@@ -1,6 +1,6 @@
 @import '@/styles/variables';
 
-.theme {
+.stroke {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #ccc;
@@ -79,7 +79,7 @@
     }
   }
 
-  &-opacity {
+  &-width {
     display: flex;
     gap: 3px;
     align-items: center;
@@ -91,6 +91,33 @@
       height: 20px;
       width: 70px;
       max-width: 70px;
+    }
+
+    &__icon {
+      display: flex;
+      align-items: center;
+    }
+
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 5px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    &:hover::after {
+      opacity: 1;
+      visibility: visible;
     }
   }
 }
