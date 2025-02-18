@@ -12,7 +12,8 @@ import {
 } from 'lucide-react';
 import styles from './CanvasTools.module.scss';
 import useCanvas from '@/hooks/useCanvas';
-import Cropping from '../Cropping/Cropping';
+import Cropping from '@/components/Cropping/Cropping';
+import useTextEditing from '@/hooks/useTextEditing';
 
 interface CanvasToolsProps {
   canvas: Canvas | null;
@@ -21,9 +22,11 @@ interface CanvasToolsProps {
 }
 
 const CanvasTools = ({canvas, isPanning, onSetIsPanning}: CanvasToolsProps) => {
-  const {addLine, addRectangle, addCircle, addPolygon, addText} = useCanvas({
+  const {addLine, addRectangle, addCircle, addPolygon} = useCanvas({
     canvas,
   });
+
+  const {addText, selectedText} = useTextEditing({canvas});
 
   const [refreshKey, setRefreshKey] = useState(0);
 

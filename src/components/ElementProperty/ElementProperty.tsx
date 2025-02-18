@@ -7,10 +7,11 @@ import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
 import Input from '@/components/Common/Input/Input';
 import Button from '@/components/Common/Button/Button';
 import CroppingSetting from '@/components/CroppingSetting/CroppingSetting';
-import {numberToString} from '@/utils/common';
-import Typography from '@/components/Typography/Typography';
+import TypographyControls from '@/components/TypographyControls/TypographyControls';
 import Theme from '@/components/Theme/Theme';
-import CanvasZooming from '../CanvasZooming/CanvasZooming';
+import CanvasZooming from '@/components/CanvasZooming/CanvasZooming';
+import Stroke from '@/components/Stroke/Stroke';
+import {Tooltip} from 'react-tooltip';
 
 interface ElementPropertyProps {
   canvas: Canvas | null;
@@ -26,6 +27,8 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
   const [height, setHeight] = useState(0);
   const [diameter, setDiameter] = useState(0);
   const [color, setColor] = useState(DEFAULT_OBJECT_COLOR);
+  const [strokeColor, setStrokeColor] = useState(DEFAULT_OBJECT_COLOR);
+  const [strokeWidth, setStrokeWidth] = useState(1);
   const [opacity, setOpacity] = useState<string>('0');
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -88,7 +91,13 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
     setLeft(Math.round(object.left ?? 0));
     setTop(Math.round(object.top ?? 0));
     setColor(object.get('fill') ?? DEFAULT_OBJECT_COLOR);
-    setOpacity(numberToString(object.opacity) ?? '0');
+    setOpacity(
+      object.opacity !== undefined
+        ? `${Math.round(object.opacity * 100)}`
+        : '100'
+    );
+    setStrokeColor(object.get('stroke') ?? DEFAULT_OBJECT_COLOR);
+    setStrokeWidth(object.get('strokeWidth') ?? 0);
 
     if (object.type === 'rect') {
       setWidth(Math.round((object.width ?? 0) * (object.scaleX ?? 1)));
@@ -110,6 +119,8 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
     setHeight(0);
     setDiameter(0);
     setColor(DEFAULT_OBJECT_COLOR);
+    setStrokeColor(DEFAULT_OBJECT_COLOR);
+    setStrokeWidth(0);
     setOpacity('0');
   };
 
@@ -161,12 +172,34 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
     [selectedObject, canvas]
   );
 
-  const handleOpacityChange = (e: any) => {
-    if (!canvas || !selectedObject) return;
-    const value = e.target.value;
-    setOpacity(value);
+  const handleStrokeColorChange = useCallback(
+    (color: {hex: string}) => {
+      setStrokeColor(color.hex);
+      if (selectedObject && canvas) {
+        selectedObject.set({stroke: color.hex});
+        canvas.renderAll();
+      }
+    },
+    [selectedObject, canvas]
+  );
 
-    selectedObject.set({opacity: value});
+  const handleStrokeWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!canvas || !selectedObject) return;
+    let value = parseFloat(e.target.value) || 0;
+    value = Math.min(20, Math.max(0, value)); // limit 0 to 20
+    setStrokeWidth(value);
+
+    selectedObject.set({strokeWidth: value});
+    canvas.renderAll();
+  };
+
+  const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!canvas || !selectedObject) return;
+    let value = parseInt(e.target.value, 10) || 0;
+    value = Math.min(100, Math.max(0, value)); // limit 0 to 100%
+    setOpacity(value.toString());
+
+    selectedObject.set({opacity: value / 100});
     canvas.renderAll();
   };
 
@@ -189,19 +222,46 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
         </div>
         <div className={styles['property-body']}>
           {[
-            {label: 'X', value: left, setter: setLeft, prop: 'left'},
-            {label: 'Y', value: top, setter: setTop, prop: 'top'},
-            {label: 'W', value: width, setter: setWidth, prop: 'width'},
-            {label: 'H', value: height, setter: setHeight, prop: 'height'},
+            {
+              label: 'X',
+              value: left,
+              setter: setLeft,
+              prop: 'left',
+              tooltipId: 'x-position-tooltip',
+            },
+            {
+              label: 'Y',
+              value: top,
+              setter: setTop,
+              prop: 'top',
+              tooltipId: 'y-position-tooltip',
+            },
+            {
+              label: 'W',
+              value: width,
+              setter: setWidth,
+              prop: 'width',
+              tooltipId: 'width-tooltip',
+            },
+            {
+              label: 'H',
+              value: height,
+              setter: setHeight,
+              prop: 'height',
+              tooltipId: 'height-tooltip',
+            },
             {
               label: 'D',
               value: diameter,
               setter: setDiameter,
               prop: 'diameter',
+              tooltipId: 'diameter-tooltip',
             },
-          ].map(({label, value, setter, prop}) => (
+          ].map(({label, value, setter, prop, tooltipId}) => (
             <div key={label} className={styles['property-item']}>
-              <div className={styles['property-item__value']}>
+              <div
+                className={styles['property-item__value']}
+                data-tooltip-id={tooltipId}>
                 <div className={styles['property-item__label']}>{label}</div>
                 <Input
                   placeholder={prop}
@@ -214,25 +274,24 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
               </div>
             </div>
           ))}
-          <div key={'O'} className={styles['property-item']}>
-            <div className={styles['property-item__value']}>
-              <div className={styles['property-item__label']}>{'O'}</div>
-              <Input
-                placeholder={'1'}
-                className={styles['property-item__input']}
-                value={opacity}
-                noBorder
-                noPadding
-                onChange={handleOpacityChange}
-              />
-            </div>
-          </div>
         </div>
       </div>
 
-      <Theme color={color} onColorChange={handleColorChange} />
+      <Theme
+        color={color}
+        onColorChange={handleColorChange}
+        opacity={opacity}
+        onOpacityChange={handleOpacityChange}
+      />
 
-      <Typography canvas={canvas} />
+      <TypographyControls canvas={canvas} />
+
+      <Stroke
+        strokeColor={strokeColor}
+        onStrokeColorChange={handleStrokeColorChange}
+        strokeWidth={strokeWidth}
+        onStrokeWidthChange={handleStrokeWidthChange}
+      />
 
       <div className={styles['actions']}>
         <div className={styles['actions-header']}>
@@ -251,7 +310,7 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
         </div>
       </div>
 
-      <div className={styles['frams']}>
+      <div className={styles['frames']}>
         <div className={styles['frames-header']}>
           <span className={styles['frames-title']}>Frames</span>
         </div>
@@ -263,6 +322,12 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
           </div>
         </div>
       </div>
+
+      <Tooltip id="x-position-tooltip" place="top" content="X-position" />
+      <Tooltip id="y-position-tooltip" place="top" content="Y-position" />
+      <Tooltip id="width-tooltip" place="top" content="Width" />
+      <Tooltip id="height-tooltip" place="top" content="Height" />
+      <Tooltip id="diameter-tooltip" place="top" content="Diameter" />
     </div>
   );
 };
