@@ -1,0 +1,16 @@
+.popover-container {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+}
+
+.popover-content {
+  position: absolute;
+  background: #222;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 100px;
+  z-index: 1000;
+}
