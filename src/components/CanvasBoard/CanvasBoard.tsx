@@ -1,16 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import clsx from 'clsx';
-import {Canvas, Rect, Point, Line} from 'fabric';
+import {Canvas} from 'fabric';
 import styles from './CanvasBoard.module.scss';
-import CanvasTools from '../CanvasTools/CanvasTools';
-import {handleObjectMoving, clearGuidelines} from '@/utils/snappingHelper';
-import {Guideline} from '@/types/canvas';
-import CanvasProperty from '../CanvasProperty/CanvasProperty';
-import Sidebar from '../Sidebar/Sidebar';
+import CanvasTools from '@/components/CanvasTools/CanvasTools';
+import {CanvasObjectType, Guideline} from '@/types/canvas';
+import Properties from '@/components/Properties/Properties';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import {RootState, useAppSelector} from '@/redux/store';
 import {canvasManagerActions} from '@/redux/slice/canvasManagerSlice';
 import useCanvasPanning from '@/hooks/useCanvasPanning';
+import useCanvasDrawing from '@/hooks/useCanvasDrawing';
+import useCanvasHistory from '@/hooks/useCanvasHistory';
+import useCanvasSnapping from '@/hooks/useCanvasSnapping';
+import useCanvasResize from '@/hooks/useCanvasResize';
+import useCanvasFreeDrawing from '@/hooks/useCanvasFreeDrawing';
 
 const CanvasBoard: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,7 +24,8 @@ const CanvasBoard: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = useState<Canvas | null>(null);
   const [isPanning, setIsPanning] = useState(false);
-  const [scale, setScale] = useState('1:1');
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [tool, setTool] = useState<CanvasObjectType>('line');
 
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
 
@@ -29,28 +34,15 @@ const CanvasBoard: React.FC = () => {
     height: window.innerHeight - 3,
   });
 
-  useCanvasPanning({canvas, isPanning, setScale});
-
-  // Firstly, grab the user's screen to set canvas width and height
-  useEffect(() => {
-    const handleResize = () => {
-      setDimensions({width: window.innerWidth, height: window.innerHeight});
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
+  useCanvasResize({canvas, dimensions, setDimensions});
+  useCanvasPanning({canvas, isPanning});
+  //useCanvasDrawing({canvas, isDrawing, setIsDrawing, tool});
+  useCanvasSnapping({canvas, guidelines, setGuidelines});
+  useCanvasFreeDrawing({canvas, isDrawing});
+  //const {undo, redo, canUndo, canRedo} = useCanvasHistory({canvas});
 
   useEffect(() => {
-    if (!activeCanvas) {
-      console.log('Canvas starting up failed');
-      return;
-    }
-
-    if (!canvasRef.current) {
+    if (!activeCanvas || !canvasRef.current) {
       console.log('Canvas starting up failed');
       return;
     }
@@ -75,14 +67,6 @@ const CanvasBoard: React.FC = () => {
 
     setCanvas(initCanvas);
 
-    initCanvas.on('object:moving', (event: any) => {
-      handleObjectMoving(initCanvas, event.target, guidelines, setGuidelines);
-    });
-
-    initCanvas.on('object:modified', () => {
-      clearGuidelines(initCanvas);
-    });
-
     return () => {
       dispatch(
         canvasManagerActions.saveCanvasState({
@@ -102,8 +86,10 @@ const CanvasBoard: React.FC = () => {
         canvas={canvas}
         isPanning={isPanning}
         onSetIsPanning={setIsPanning}
+        isDrawing={isDrawing}
+        onSetIsDrawing={setIsDrawing}
       />
-      <CanvasProperty canvas={canvas} />
+      <Properties canvas={canvas} />
     </div>
   );
 };

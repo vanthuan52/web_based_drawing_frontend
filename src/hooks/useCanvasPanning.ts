@@ -4,14 +4,9 @@ import {Canvas, Point} from 'fabric';
 interface UseCanvasPanningProps {
   canvas: Canvas | null;
   isPanning: boolean;
-  setScale: (scale: string) => void;
 }
 
-const useCanvasPanning = ({
-  canvas,
-  isPanning,
-  setScale,
-}: UseCanvasPanningProps) => {
+const useCanvasPanning = ({canvas, isPanning}: UseCanvasPanningProps) => {
   useEffect(() => {
     if (!canvas || !isPanning) return;
 
@@ -57,8 +52,6 @@ const useCanvasPanning = ({
       const pointer = canvas.getPointer(event);
       canvas.zoomToPoint(pointer, newZoom);
       canvas.setZoom(newZoom);
-      const scaleRatio = Math.round((1 / newZoom) * 500);
-      setScale(`1"${scaleRatio}`);
       event.preventDefault();
       event.stopPropagation();
     };
@@ -74,7 +67,7 @@ const useCanvasPanning = ({
       canvas.off('mouse:up', handleMouseUp);
       canvas.off('mouse:wheel', handleMouseWheel);
     };
-  }, [canvas, isPanning, setScale]);
+  }, [canvas, isPanning]);
 };
 
 export default useCanvasPanning;

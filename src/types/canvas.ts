@@ -13,3 +13,14 @@ export interface FabricObjectProperty {
   color: string;
   diameter: number;
 }
+
+export type CanvasObjectType =
+  | 'textbox'
+  | 'text'
+  | 'line'
+  | 'rect'
+  | 'circle'
+  | 'polygon'
+  | 'point'
+  | 'pencil'
+  | 'ellipse';

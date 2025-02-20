@@ -13,6 +13,7 @@ export const CANVAS_OBJECT_TYPE = {
   RECT: 'rect',
   LINE: 'line',
   POINT: 'point',
+  ELLIPSE: 'ellipse',
 };
 
 export const DEFAULT_INITIAL_CANVAS = {
@@ -32,4 +33,11 @@ export const VERTICAL_ALIGNMENT = {
   TOP: 'TOP',
   CENTER: 'center',
   BOTTOM: 'bottom',
+};
+
+export const TOOLTIP_CONTENT = {
+  ZOOMING_RATIO: {
+    id: 'zooming-ratio-tooltip',
+    content: 'Scale ratio',
+  },
 };
