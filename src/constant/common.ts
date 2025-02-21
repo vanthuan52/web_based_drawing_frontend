@@ -16,6 +16,17 @@ export const CANVAS_OBJECT_TYPE = {
   ELLIPSE: 'ellipse',
 };
 
+export const FABRIC_OBJECT_PROPERTIES = {
+  LEFT: 'left',
+  RIGHT: 'right',
+  TOP: 'top',
+  BOTTOM: 'bottom',
+  WIDTH: 'width',
+  HEIGHT: 'height',
+  DIAMETER: 'diameter',
+  OPACITY: 'opacity',
+};
+
 export const DEFAULT_INITIAL_CANVAS = {
   id: 'canvas-1',
   name: 'Untitled-1',
@@ -30,7 +41,7 @@ export const TEXT_ALIGNMENT = {
 };
 
 export const VERTICAL_ALIGNMENT = {
-  TOP: 'TOP',
+  TOP: 'top',
   CENTER: 'center',
   BOTTOM: 'bottom',
 };
@@ -40,4 +51,90 @@ export const TOOLTIP_CONTENT = {
     id: 'zooming-ratio-tooltip',
     content: 'Scale ratio',
   },
+  X_POSITION: {
+    id: 'left-tooltip',
+    content: 'Left',
+  },
+  Y_POSITION: {
+    id: 'top-tooltip',
+    content: 'Top',
+  },
+  WIDTH: {
+    id: 'width-tooltip',
+    content: 'Width',
+  },
+  HEIGHT: {
+    id: 'height-tooltip',
+    content: 'Height',
+  },
+  DIAMETER: {
+    id: 'diameter-tooltip',
+    content: 'Diameter',
+  },
+  OPACITY: {
+    id: 'opacity-tooltip',
+    content: 'Opacity',
+  },
+  FILL: {
+    id: 'fill-tooltip',
+    content: 'Background color',
+  },
+  STROKE_COLOR: {
+    id: 'stroke-color-tooltip',
+    content: 'Stroke color',
+  },
+  STROKE_WIDTH: {
+    id: 'stroke-width-tooltip',
+    content: 'Stroke width',
+  },
+  FONT_SIZE: {
+    id: 'font-size-tooltip',
+    content: 'Font size',
+  },
+  FONT_WEIGHT: {
+    id: 'font-weight-tooltip',
+    content: 'Font weight',
+  },
+  FONT_FAMILY: {
+    id: 'font-family-tooltip',
+    content: 'Font family',
+  },
+  ALIGN_LEFT: {
+    id: 'align-left-tooltip',
+    content: 'Align left',
+  },
+  ALIGN_CENTER: {
+    id: 'align-center-tooltip',
+    content: 'Align center',
+  },
+  ALIGN_RIGHT: {
+    id: 'align-right-tooltip',
+    content: 'Align right',
+  },
+  HIDE_SHOW: {
+    id: 'hide-show-tooltip',
+    content: 'Hide/Shon',
+  },
+  MOVE_UP: {
+    id: 'move-up-tooltip',
+    content: 'Move up',
+  },
+  MOVE_DOWN: {
+    id: 'move-down-tooltip',
+    content: 'Move down',
+  },
+};
+
+export const CANVAS_TOOLS = {
+  SELECT: 'select',
+  ZOOM: 'zooming',
+  HAND: 'panning', // hand tool
+  TEXT: 'text',
+  RECT: 'rect',
+  CIRCLE: 'circle',
+  POLYGON: 'polygon',
+  LINE: 'line',
+  PENCIL: 'pencil',
+  UNDO: 'undo',
+  REDO: 'redo',
 };

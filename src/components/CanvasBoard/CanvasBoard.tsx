@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import {Canvas} from 'fabric';
 import styles from './CanvasBoard.module.scss';
 import CanvasTools from '@/components/CanvasTools/CanvasTools';
-import {CanvasObjectType, Guideline} from '@/types/canvas';
+import {CanvasObjectType, CanvasTool, Guideline} from '@/types/canvas';
 import Properties from '@/components/Properties/Properties';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import {RootState, useAppSelector} from '@/redux/store';
@@ -15,17 +15,25 @@ import useCanvasHistory from '@/hooks/useCanvasHistory';
 import useCanvasSnapping from '@/hooks/useCanvasSnapping';
 import useCanvasResize from '@/hooks/useCanvasResize';
 import useCanvasFreeDrawing from '@/hooks/useCanvasFreeDrawing';
+import useCanvasPolygon from '@/hooks/useCanvasPolygon';
 
 const CanvasBoard: React.FC = () => {
   const dispatch = useDispatch();
   const activeCanvas = useAppSelector((state: RootState) =>
     state.canvasManager.canvases.find((canvas) => canvas.active)
   );
+  const activeTool = useAppSelector(
+    (state: RootState) => state.canvas.activeTool
+  );
+
+  useEffect(() => {
+    console.log('active tool: ', activeTool);
+  }, [activeTool]);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = useState<Canvas | null>(null);
   const [isPanning, setIsPanning] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [tool, setTool] = useState<CanvasObjectType>('line');
 
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
 
@@ -36,9 +44,10 @@ const CanvasBoard: React.FC = () => {
 
   useCanvasResize({canvas, dimensions, setDimensions});
   useCanvasPanning({canvas, isPanning});
-  //useCanvasDrawing({canvas, isDrawing, setIsDrawing, tool});
+  useCanvasDrawing({canvas, activeTool});
   useCanvasSnapping({canvas, guidelines, setGuidelines});
   useCanvasFreeDrawing({canvas, isDrawing});
+  useCanvasPolygon({canvas, activeTool});
   //const {undo, redo, canUndo, canRedo} = useCanvasHistory({canvas});
 
   useEffect(() => {
