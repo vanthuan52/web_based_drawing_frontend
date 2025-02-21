@@ -1,6 +1,7 @@
-import {FabricObjectProperty} from '@/types/canvas';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Canvas} from 'fabric';
+import {FabricObjectProperty} from '@/types/canvas';
+import {CanvasTool} from '@/types/canvas';
 
 export const DRAWING_ACTION = {
   DRAW_RECTANGLE: 'DRAW_RECTANGLE',
@@ -26,18 +27,14 @@ interface CanvasStoredInstance {
 }
 
 interface CanvasState {
-  canvases: CanvasStoredInstance;
-  activeCanvasId: String | null;
-  canvasInstance: Canvas | null;
   action: DrawingAction;
+  activeTool: CanvasTool;
   objectProperty: FabricObjectProperty;
 }
 
 const initialState: CanvasState = {
-  canvases: {},
-  activeCanvasId: null,
-  canvasInstance: null,
   action: null,
+  activeTool: 'select',
   objectProperty: defaultObjectProperty,
 };
 
@@ -45,36 +42,11 @@ const canvasSlice = createSlice({
   name: 'canvas',
   initialState,
   reducers: {
-    createCanvas: (state, action) => {
-      const {id, data} = action.payload;
-      state.canvases[id] = data;
-      state.activeCanvasId = id;
+    setActiveTool: (state, action: PayloadAction<CanvasTool>) => {
+      state.activeTool = action.payload;
     },
-    switchCanvas: (state, action) => {
-      state.activeCanvasId = action.payload;
-    },
-    updateCanvas: (state, action) => {
-      const {id, data} = action.payload;
-      if (state.canvases[id]) {
-        state.canvases[id] = data;
-      }
-    },
-    clearCanvas: (state, action) => {
-      const {id} = action.payload;
-      state.canvases[id] = null;
-    },
-    saveCanvas: (state, action) => {
-      const {id, data} = action.payload;
-      state.canvases[id] = data;
-    },
-    deleteCanvas: (state, action) => {
-      delete state.canvases[action.payload];
-      if (state.activeCanvasId === action.payload) {
-        state.activeCanvasId = Object.keys(state.canvases)[0] || null;
-      }
-    },
-    setCanvasInstance: (state, action: PayloadAction<Canvas>) => {
-      Object.assign(state, {canvasInstance: action.payload});
+    resetActiveTool: (state) => {
+      state.activeTool = 'select';
     },
     drawRectangle: (state) => {
       state.action = 'DRAW_RECTANGLE';

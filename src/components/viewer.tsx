@@ -15,7 +15,7 @@ import {
 import {MenuIcon} from 'lucide-react';
 import Toolbars from './toolBar';
 import {DrawingMode, Point} from '@/types/board';
-import useMultiSelect from '../hooks/useMultiSelect';
+import useMultiSelect from '@/hooks/useMultiSelect';
 import imageHelper from '@/utils/imageHelper';
 
 const DXFViewer: React.FC = () => {

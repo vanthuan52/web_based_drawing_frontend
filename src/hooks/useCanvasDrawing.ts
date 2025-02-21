@@ -5,117 +5,117 @@ import {
   Rect,
   Line,
   Point,
+  Polyline,
+  Path,
   Ellipse,
+  Circle,
   Polygon,
-  PencilBrush,
 } from 'fabric';
-import {CanvasObjectType} from '@/types/canvas';
+import {CanvasTool} from '@/types/canvas';
+import {useDispatch} from 'react-redux';
+import {canvasActions} from '@/redux/slice/canvasSlice';
 
 interface UseCanvasDrawingProps {
   canvas: Canvas | null;
-  tool: CanvasObjectType;
-  isDrawing: boolean;
-  setIsDrawing: any;
+  activeTool: CanvasTool;
   color?: string;
   thickness?: number;
 }
 
+type CursorPosition = {
+  x: number;
+  y: number;
+};
+
 const useCanvasDrawing = ({
   canvas,
-  tool,
-  isDrawing,
-  setIsDrawing,
+  activeTool,
   color = '#000000',
   thickness = 2,
 }: UseCanvasDrawingProps) => {
-  const polygonPoints = useRef<Point[]>([]);
-  const currentShape = useRef<FabricObject | PencilBrush | null>(null);
+  const dispatch = useDispatch();
+  const [startPoint, setStartPoint] = useState<CursorPosition | null>(null);
+  const currentShape = useRef<FabricObject | null>(null);
 
   useEffect(() => {
-    if (!canvas || !isDrawing) return;
-
+    if (!canvas) return;
     const startDrawing = (event: any) => {
       if (!canvas) return;
-      console.log('start drawing');
+      if (
+        activeTool !== 'line' &&
+        activeTool !== 'rect' &&
+        activeTool !== 'circle' &&
+        activeTool !== 'ellipse'
+      ) {
+        return;
+      }
+
       const pointer = canvas.getPointer(event.e);
-      switch (tool) {
-        case 'pencil':
-          canvas.isDrawingMode = true;
-          currentShape.current = new PencilBrush(canvas);
-          canvas.freeDrawingBrush = currentShape.current;
 
-          // @ts-ignore
-          canvas.freeDrawingBrush.color = color;
-          // @ts-ignore
-          canvas.freeDrawingBrush.width = thickness;
-          break;
-
-        case 'rect':
-          currentShape.current = new Rect({
-            left: pointer.x,
-            top: pointer.y,
-            width: 0,
-            height: 0,
-            fill: 'transparent',
-            stroke: color,
-            strokeWidth: thickness,
-          });
-          canvas.add(currentShape.current);
-          break;
-
-        case 'line':
+      switch (activeTool) {
+        case 'line': {
           currentShape.current = new Line(
             [pointer.x, pointer.y, pointer.x, pointer.y],
             {
               stroke: color,
               strokeWidth: thickness,
-              selectable: false,
             }
           );
           canvas.add(currentShape.current);
           break;
-
-        case 'ellipse':
-          currentShape.current = new Ellipse({
+        }
+        case 'rect': {
+          currentShape.current = new Rect({
             left: pointer.x,
             top: pointer.y,
-            rx: 0,
-            ry: 0,
-            fill: 'transparent',
+            width: 0,
+            height: 0,
+            fill: '#ddd',
             stroke: color,
             strokeWidth: thickness,
           });
           canvas.add(currentShape.current);
           break;
+        }
 
-        case 'polygon':
-          if (!isDrawing) {
-            polygonPoints.current = [new Point(pointer.x, pointer.y)];
-          } else {
-            polygonPoints.current.push(new Point(pointer.x, pointer.y));
-            if (polygonPoints.current.length > 2) {
-              const polygon = new Polygon(polygonPoints.current, {
-                fill: 'transparent',
-                stroke: color,
-                strokeWidth: thickness,
-              });
-              canvas.add(polygon);
-              polygonPoints.current = [];
-              setIsDrawing(false);
-            }
-          }
+        case 'ellipse': {
+          currentShape.current = new Ellipse({
+            left: pointer.x,
+            top: pointer.y,
+            rx: 0,
+            ry: 0,
+            fill: '#ddd',
+            stroke: color,
+            strokeWidth: thickness,
+          });
+          canvas.add(currentShape.current);
           break;
-        default:
+        }
+
+        case 'circle': {
+          setStartPoint({x: pointer.x, y: pointer.y});
+          currentShape.current = new Circle({
+            left: pointer.x,
+            top: pointer.y,
+            radius: 0,
+            fill: '#ddd',
+            stroke: color,
+            strokeWidth: thickness,
+          });
+          canvas.add(currentShape.current);
           break;
+        }
+        default: {
+          break;
+        }
       }
     };
 
     const drawing = (event: any) => {
-      if (!isDrawing || !canvas || !currentShape.current) return;
+      if (!canvas || !currentShape.current) return;
 
-      console.log('drawing...');
       const pointer = canvas.getPointer(event.e);
-      switch (tool) {
+      switch (activeTool) {
         case 'line': {
           const line = currentShape.current as Line;
           line.set({x2: pointer.x, y2: pointer.y});
@@ -127,6 +127,19 @@ const useCanvasDrawing = ({
             width: pointer.x - rect.left!,
             height: pointer.y - rect.top!,
           });
+          break;
+        }
+
+        case 'circle': {
+          if (!startPoint || !currentShape.current) return;
+
+          if (pointer) {
+            const radius = Math.sqrt(
+              Math.pow(pointer.x - startPoint.x, 2) +
+                Math.pow(pointer.y - startPoint.y, 2)
+            );
+            currentShape.current.set({radius});
+          }
           break;
         }
 
@@ -145,12 +158,25 @@ const useCanvasDrawing = ({
 
     const stopDrawing = () => {
       if (!canvas) return;
-      console.log('stop drawing');
-      if (tool !== 'polygon') {
+
+      if (currentShape.current && activeTool === 'line') {
+        //currentShape.current.set({selectable: true});
         currentShape.current = null;
+        dispatch(canvasActions.resetActiveTool());
       }
-      if (tool !== 'pencil') {
+      if (activeTool !== 'pencil') {
         canvas.isDrawingMode = false;
+      }
+
+      if (activeTool === 'circle') {
+        currentShape.current = null;
+        dispatch(canvasActions.resetActiveTool());
+        setStartPoint(null);
+      }
+
+      if (activeTool === 'ellipse') {
+        currentShape.current = null;
+        dispatch(canvasActions.resetActiveTool());
       }
     };
 
@@ -163,7 +189,7 @@ const useCanvasDrawing = ({
       canvas.off('mouse:move', drawing);
       canvas.off('mouse:up', stopDrawing);
     };
-  }, [canvas, tool, isDrawing, color, thickness]);
+  }, [canvas, activeTool, startPoint]);
 };
 
 export default useCanvasDrawing;

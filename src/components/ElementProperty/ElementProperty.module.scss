@@ -1,56 +1,5 @@
 @import '@/styles/variables';
 
-.property {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
-
-  &-header {
-    display: flex;
-    align-items: center;
-  }
-
-  &-title {
-    font-size: $font-size-md;
-    font-weight: 600;
-    padding: 5px 10px;
-  }
-
-  &-body {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    padding: 5px 10px;
-
-    &__value {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: $border-radius;
-    }
-
-    &__input {
-      height: 25px;
-      width: 70px;
-      max-width: 70px;
-    }
-
-    &__label {
-      width: 15px;
-      min-width: 15px;
-    }
-  }
-}
-
 .actions {
   display: flex;
   flex-direction: column;

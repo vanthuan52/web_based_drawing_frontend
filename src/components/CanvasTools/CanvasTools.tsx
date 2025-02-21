@@ -1,20 +1,20 @@
 import React, {useState} from 'react';
 import clsx from 'clsx';
-import {Canvas, Line} from 'fabric';
+import {useDispatch} from 'react-redux';
+import {Canvas} from 'fabric';
 import {
   ChevronDown,
   Circle,
   Component,
-  Ellipsis,
   Hand,
   Hexagon,
   Minus,
   MousePointer2,
-  Navigation,
   Pencil,
-  Plus,
+  PenTool,
   Redo2,
   Square,
+  Trash2,
   Type,
   Undo2,
 } from 'lucide-react';
@@ -22,9 +22,9 @@ import styles from './CanvasTools.module.scss';
 import useCanvas from '@/hooks/useCanvas';
 import Cropping from '@/components/Cropping/Cropping';
 import useTextEditing from '@/hooks/useTextEditing';
-import Button from '@/components/Common/Button/Button';
 import CustomPopover from '@/components/Common/CustomPopover/CustomPopoper';
-import {Popover} from '@mui/material';
+import {RootState, useAppSelector} from '@/redux/store';
+import {canvasActions} from '@/redux/slice/canvasSlice';
 
 interface CanvasToolsProps {
   canvas: Canvas | null;
@@ -49,6 +49,11 @@ const CanvasTools = ({
   redo,
   canRedo,
 }: CanvasToolsProps) => {
+  const dispatch = useDispatch();
+  const activeTool = useAppSelector(
+    (state: RootState) => state.canvas.activeTool
+  );
+
   const {addLine, addRectangle, addCircle, addPolygon} = useCanvas({
     canvas,
   });
@@ -57,23 +62,39 @@ const CanvasTools = ({
 
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const handleAddLine = () => {
-    addLine();
+  const resetTool = () => {
+    onSetIsPanning(false);
+    onSetIsDrawing(false);
   };
 
-  const handleAddRectangle = () => {
-    addRectangle();
+  const toggleDrawLine = () => {
+    dispatch(canvasActions.setActiveTool('line'));
+    resetTool();
   };
 
-  const handleAddCircle = () => {
-    addCircle();
+  const toggleDrawRect = () => {
+    dispatch(canvasActions.setActiveTool('rect'));
+    resetTool();
   };
 
-  const handleAddPolygon = () => {
-    addPolygon();
+  const toggleDrawCircle = () => {
+    dispatch(canvasActions.setActiveTool('circle'));
+    resetTool();
   };
 
-  const handleAddText = () => {
+  const toggleDrawEllipse = () => {
+    dispatch(canvasActions.setActiveTool('ellipse'));
+    resetTool();
+  };
+
+  const toggleDrawPolygon = () => {
+    dispatch(canvasActions.setActiveTool('polygon'));
+    resetTool();
+  };
+
+  const toggleAddText = () => {
+    dispatch(canvasActions.setActiveTool('text'));
+    resetTool();
     addText();
   };
 
@@ -82,16 +103,32 @@ const CanvasTools = ({
   };
 
   const handleSetIsPanning = () => {
-    onSetIsPanning(!isPanning);
+    dispatch(canvasActions.setActiveTool('panning'));
+    onSetIsPanning(true);
+    onSetIsDrawing(false);
   };
 
   const handleSetIsDrawing = () => {
-    onSetIsDrawing(!isDrawing);
+    dispatch(canvasActions.setActiveTool('pencil'));
+    onSetIsPanning(false);
+    onSetIsDrawing(true);
+  };
+
+  const togglePenAction = () => {
+    dispatch(canvasActions.setActiveTool('pen'));
+    onSetIsPanning(false);
+    onSetIsDrawing(false);
   };
 
   const handleResetDefaultCursor = () => {
+    dispatch(canvasActions.setActiveTool('select'));
     onSetIsDrawing(false);
     onSetIsPanning(false);
+  };
+
+  const handleClearAllCanvas = () => {
+    canvas?.clear();
+    canvas?.renderAll();
   };
 
   return (
@@ -100,7 +137,7 @@ const CanvasTools = ({
         <div className={styles['tools-item']}>
           <div
             className={clsx(styles['tools-item__main'], {
-              [styles['active']]: !isPanning,
+              [styles['active']]: activeTool === 'select',
             })}
             onClick={handleResetDefaultCursor}>
             <MousePointer2 />
@@ -110,7 +147,7 @@ const CanvasTools = ({
               <div className={styles['menu']}>
                 <div
                   className={clsx(styles['menu-item'], {
-                    [styles['active']]: !isPanning,
+                    [styles['active']]: activeTool === 'select',
                   })}
                   onClick={handleResetDefaultCursor}>
                   <div className={styles['menu-item__icon']}>
@@ -120,7 +157,7 @@ const CanvasTools = ({
                 </div>
                 <div
                   className={clsx(styles['menu-item'], {
-                    [styles['active']]: isPanning,
+                    [styles['active']]: activeTool === 'panning',
                   })}
                   onClick={handleSetIsPanning}>
                   <div className={styles['menu-item__icon']}>
@@ -135,32 +172,60 @@ const CanvasTools = ({
 
         <div className={styles['tools-item']}>
           <div
-            className={clsx(styles['tools-item__main'], {})}
-            onClick={handleAddRectangle}>
+            className={clsx(styles['tools-item__main'], {
+              [styles['active']]: activeTool === 'rect',
+            })}
+            onClick={toggleDrawRect}>
             <Square />
           </div>
           <div className={styles['tools-item__dropdown']}>
             <CustomPopover trigger={<ChevronDown size={14} />}>
               <div className={styles['menu']}>
-                <div className={styles['menu-item']} onClick={handleAddCircle}>
+                <div
+                  className={clsx(styles['menu-item'], {
+                    [styles['active']]: activeTool === 'rect',
+                  })}
+                  onClick={toggleDrawRect}>
                   <div className={styles['menu-item__icon']}>
                     <Square size={18} />
                   </div>
                   <div className={styles['menu-item__label']}>Rectangle</div>
                 </div>
-                <div className={styles['menu-item']} onClick={handleAddCircle}>
+                <div
+                  className={clsx(styles['menu-item'], {
+                    [styles['active']]: activeTool === 'circle',
+                  })}
+                  onClick={toggleDrawCircle}>
                   <div className={styles['menu-item__icon']}>
                     <Circle size={18} />
                   </div>
                   <div className={styles['menu-item__label']}>Circle</div>
                 </div>
-                <div className={styles['menu-item']} onClick={handleAddPolygon}>
+                <div
+                  className={clsx(styles['menu-item'], {
+                    [styles['active']]: activeTool === 'ellipse',
+                  })}
+                  onClick={toggleDrawEllipse}>
+                  <div className={styles['menu-item__icon']}>
+                    <Circle size={18} />
+                  </div>
+                  <div className={styles['menu-item__label']}>Ellipse</div>
+                </div>
+                <div
+                  className={clsx(styles['menu-item'], {
+                    [styles['active']]: activeTool === 'polygon',
+                  })}
+                  onClick={toggleDrawPolygon}>
                   <div className={styles['menu-item__icon']}>
                     <Hexagon size={18} />
                   </div>
                   <div className={styles['menu-item__label']}>Polygon</div>
                 </div>
-                <div className={styles['menu-item']} onClick={handleAddLine}>
+                <div
+                  className={clsx(styles['menu-item'], {
+                    [styles['active']]: activeTool === 'line',
+                  })}
+                  onClick={toggleDrawLine}>
                   <div className={styles['menu-item__icon']}>
                     <Minus size={18} />
                   </div>
@@ -173,7 +238,7 @@ const CanvasTools = ({
         <div className={styles['tools-item']}>
           <div
             className={clsx(styles['tools-item__main'], {})}
-            onClick={handleAddText}>
+            onClick={toggleAddText}>
             <Type />
           </div>
         </div>
@@ -182,21 +247,32 @@ const CanvasTools = ({
           <div
             className={clsx(styles['tools-item__main'], {
               [styles['active']]: isDrawing,
-            })}>
-            <Pencil onClick={handleSetIsDrawing} />
+            })}
+            onClick={handleSetIsDrawing}>
+            <Pencil />
           </div>
           <div className={styles['tools-item__dropdown']}>
             <CustomPopover trigger={<ChevronDown size={14} />}>
               <div className={styles['menu']}>
                 <div
                   className={clsx(styles['menu-item'], {
-                    [styles['active']]: !isPanning,
+                    [styles['active']]: activeTool === 'pen',
                   })}
-                  onClick={handleResetDefaultCursor}>
+                  onClick={togglePenAction}>
                   <div className={styles['menu-item__icon']}>
-                    <MousePointer2 size={18} />
+                    <PenTool size={18} />
                   </div>
-                  <div className={styles['menu-item__label']}>Move</div>
+                  <div className={styles['menu-item__label']}>Pen</div>
+                </div>
+                <div
+                  className={clsx(styles['menu-item'], {
+                    [styles['active']]: activeTool === 'pencil',
+                  })}
+                  onClick={handleSetIsDrawing}>
+                  <div className={styles['menu-item__icon']}>
+                    <Pencil size={18} />
+                  </div>
+                  <div className={styles['menu-item__label']}>Pencil</div>
                 </div>
               </div>
             </CustomPopover>
@@ -223,15 +299,10 @@ const CanvasTools = ({
                       <Undo2 />
                     </button>
                   </div>
-                  <div className={styles['menu-item__label']}>Move</div>
+                  <div className={styles['menu-item__label']}>Undo</div>
                 </div>
-              </div>
-
-              <div className={styles['menu']}>
                 <div
-                  className={clsx(styles['menu-item'], {
-                    [styles['active']]: !isPanning,
-                  })}
+                  className={clsx(styles['menu-item'], {})}
                   onClick={handleResetDefaultCursor}>
                   <div className={styles['menu-item__icon']}>
                     <button
@@ -241,7 +312,21 @@ const CanvasTools = ({
                       <Redo2 />
                     </button>
                   </div>
-                  <div className={styles['menu-item__label']}>Move</div>
+                  <div className={styles['menu-item__label']}>Redo</div>
+                </div>
+
+                <div
+                  className={clsx(styles['menu-item'], {})}
+                  onClick={handleClearAllCanvas}>
+                  <div className={styles['menu-item__icon']}>
+                    <button
+                      disabled={!canRedo}
+                      onClick={redo}
+                      className={styles['tools-items__button']}>
+                      <Trash2 />
+                    </button>
+                  </div>
+                  <div className={styles['menu-item__label']}>Clean</div>
                 </div>
               </div>
             </CustomPopover>

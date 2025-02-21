@@ -2,16 +2,17 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {Canvas, FabricObject} from 'fabric';
 import clsx from 'clsx';
 import {Trash} from 'lucide-react';
+import {Tooltip} from 'react-tooltip';
 import styles from './ElementProperty.module.scss';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
-import Input from '@/components/Common/Input/Input';
 import Button from '@/components/Common/Button/Button';
 import CroppingSetting from '@/components/CroppingSetting/CroppingSetting';
 import TypographyControls from '@/components/TypographyControls/TypographyControls';
-import Theme from '@/components/Theme/Theme';
+import Appearance from '@/components/Appearance/Appearance';
 import CanvasZooming from '@/components/CanvasZooming/CanvasZooming';
 import Stroke from '@/components/Stroke/Stroke';
-import {Tooltip} from 'react-tooltip';
+import ShapeProperties from '@/components/ShapeProperties/ShapeProperties';
+import {FABRIC_OBJECT_PROPERTIES} from '@/constant/common';
 
 interface ElementPropertyProps {
   canvas: Canvas | null;
@@ -21,11 +22,11 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
   const [selectedObject, setSelectedObject] = useState<FabricObject | null>(
     null
   );
-  const [left, setLeft] = useState(0);
-  const [top, setTop] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [diameter, setDiameter] = useState(0);
+  const [left, setLeft] = useState('0');
+  const [top, setTop] = useState('0');
+  const [width, setWidth] = useState('0');
+  const [height, setHeight] = useState('0');
+  const [diameter, setDiameter] = useState('0');
   const [color, setColor] = useState(DEFAULT_OBJECT_COLOR);
   const [strokeColor, setStrokeColor] = useState(DEFAULT_OBJECT_COLOR);
   const [strokeWidth, setStrokeWidth] = useState(1);
@@ -88,8 +89,8 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
     if (!object) return;
     setSelectedObject(object);
 
-    setLeft(Math.round(object.left ?? 0));
-    setTop(Math.round(object.top ?? 0));
+    setLeft(Math.round(object.left ?? 0).toString());
+    setTop(Math.round(object.top ?? 0).toString());
     setColor(object.get('fill') ?? DEFAULT_OBJECT_COLOR);
     setOpacity(
       object.opacity !== undefined
@@ -100,24 +101,30 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
     setStrokeWidth(object.get('strokeWidth') ?? 0);
 
     if (object.type === 'rect') {
-      setWidth(Math.round((object.width ?? 0) * (object.scaleX ?? 1)));
-      setHeight(Math.round((object.height ?? 0) * (object.scaleY ?? 1)));
-      setDiameter(0);
+      setWidth(
+        Math.round((object.width ?? 0) * (object.scaleX ?? 1)).toString()
+      );
+      setHeight(
+        Math.round((object.height ?? 0) * (object.scaleY ?? 1)).toString()
+      );
+      setDiameter('0');
     } else if (object.type === 'circle') {
       setDiameter(
-        Math.round((object.get('radius') ?? 0) * 2 * (object.scaleX ?? 1))
+        Math.round(
+          (object.get('radius') ?? 0) * 2 * (object.scaleX ?? 1)
+        ).toString()
       );
-      setWidth(0);
-      setHeight(0);
+      setWidth('0');
+      setHeight('0');
     }
   }, []);
 
   const resetProperties = () => {
-    setLeft(0);
-    setTop(0);
-    setWidth(0);
-    setHeight(0);
-    setDiameter(0);
+    setLeft('0');
+    setTop('0');
+    setWidth('0');
+    setHeight('0');
+    setDiameter('0');
     setColor(DEFAULT_OBJECT_COLOR);
     setStrokeColor(DEFAULT_OBJECT_COLOR);
     setStrokeWidth(0);
@@ -160,6 +167,82 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
       selectedObject.setCoords();
       canvas.renderAll();
     };
+
+  const handleLeftChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    setLeft(intValue.toString());
+
+    if (!selectedObject || !canvas) return;
+    selectedObject.set({[FABRIC_OBJECT_PROPERTIES.LEFT]: intValue});
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    setTop(intValue.toString());
+
+    if (!selectedObject || !canvas) return;
+    selectedObject.set({[FABRIC_OBJECT_PROPERTIES.TOP]: intValue});
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    setWidth(intValue.toString());
+
+    if (!selectedObject || !canvas) return;
+
+    const originalWidth = selectedObject.width || 1;
+
+    const newScaleX = intValue / originalWidth;
+    const newScaleY = selectedObject.scaleY;
+
+    selectedObject.set({
+      scaleX: newScaleX,
+      scaleY: newScaleY,
+    });
+
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    setHeight(intValue.toString());
+
+    if (!selectedObject || !canvas) return;
+
+    const originalHeight = selectedObject.height || 1;
+
+    const newScaleX = selectedObject.scaleX;
+    const newScaleY = intValue / originalHeight;
+
+    selectedObject.set({
+      scaleX: newScaleX,
+      scaleY: newScaleY,
+    });
+
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleDiameterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    setDiameter(intValue.toString());
+
+    if (!selectedObject || !canvas || selectedObject.type !== 'circle') return;
+
+    selectedObject.set({
+      radius: intValue / 2, // half of diameter
+      scaleX: 1,
+      scaleY: 1,
+    });
+
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
 
   const handleColorChange = useCallback(
     (color: {hex: string}) => {
@@ -216,68 +299,22 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
   return (
     <div className={clsx(styles['element'])}>
       <CanvasZooming canvas={canvas} />
-      <div className={styles['property']}>
-        <div className={styles['property-header']}>
-          <span className={styles['property-title']}>Properties</span>
-        </div>
-        <div className={styles['property-body']}>
-          {[
-            {
-              label: 'X',
-              value: left,
-              setter: setLeft,
-              prop: 'left',
-              tooltipId: 'x-position-tooltip',
-            },
-            {
-              label: 'Y',
-              value: top,
-              setter: setTop,
-              prop: 'top',
-              tooltipId: 'y-position-tooltip',
-            },
-            {
-              label: 'W',
-              value: width,
-              setter: setWidth,
-              prop: 'width',
-              tooltipId: 'width-tooltip',
-            },
-            {
-              label: 'H',
-              value: height,
-              setter: setHeight,
-              prop: 'height',
-              tooltipId: 'height-tooltip',
-            },
-            {
-              label: 'D',
-              value: diameter,
-              setter: setDiameter,
-              prop: 'diameter',
-              tooltipId: 'diameter-tooltip',
-            },
-          ].map(({label, value, setter, prop, tooltipId}) => (
-            <div key={label} className={styles['property-item']}>
-              <div
-                className={styles['property-item__value']}
-                data-tooltip-id={tooltipId}>
-                <div className={styles['property-item__label']}>{label}</div>
-                <Input
-                  placeholder={prop}
-                  className={styles['property-item__input']}
-                  value={value}
-                  noBorder
-                  noPadding
-                  onChange={handleChange(setter, prop)}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      <Theme
+      <ShapeProperties
+        canvas={canvas}
+        left={left}
+        onLeftChange={handleLeftChange}
+        top={top}
+        onTopChange={handleTopChange}
+        width={width}
+        onWidthChange={handleWidthChange}
+        height={height}
+        onHeightChange={handleHeightChange}
+        diameter={diameter}
+        onDiameterChange={handleDiameterChange}
+      />
+
+      <Appearance
         color={color}
         onColorChange={handleColorChange}
         opacity={opacity}
@@ -322,12 +359,6 @@ const ElementProperty = ({canvas = null}: ElementPropertyProps) => {
           </div>
         </div>
       </div>
-
-      <Tooltip id="x-position-tooltip" place="top" content="X-position" />
-      <Tooltip id="y-position-tooltip" place="top" content="Y-position" />
-      <Tooltip id="width-tooltip" place="top" content="Width" />
-      <Tooltip id="height-tooltip" place="top" content="Height" />
-      <Tooltip id="diameter-tooltip" place="top" content="Diameter" />
     </div>
   );
 };

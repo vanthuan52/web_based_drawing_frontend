@@ -1,22 +1,22 @@
 import React, {useState} from 'react';
 import {SketchPicker} from 'react-color';
-import styles from './Theme.module.scss';
+import styles from './Appearance.module.scss';
 import Input from '../Common/Input/Input';
 import {Tooltip} from 'react-tooltip';
 
-interface ThemeProps {
+interface AppearanceProps {
   color: string;
   onColorChange: (color: {hex: string}) => void;
   opacity: string;
   onOpacityChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Theme = ({
+const Appearance = ({
   color,
   onColorChange,
   opacity,
   onOpacityChange,
-}: ThemeProps) => {
+}: AppearanceProps) => {
   const [showColorPicker, setShowColorPicker] = useState(false);
 
   const handleOnColorChange = (color: {hex: string}) => {
@@ -80,4 +80,4 @@ const Theme = ({
   );
 };
 
-export default Theme;
+export default Appearance;

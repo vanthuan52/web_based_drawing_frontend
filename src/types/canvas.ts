@@ -17,6 +17,8 @@ export interface FabricObjectProperty {
 export type CanvasObjectType =
   | 'textbox'
   | 'text'
+  | 'path'
+  | 'polyline'
   | 'line'
   | 'rect'
   | 'circle'
@@ -24,3 +26,12 @@ export type CanvasObjectType =
   | 'point'
   | 'pencil'
   | 'ellipse';
+
+export type CanvasTool =
+  | CanvasObjectType
+  | 'pen'
+  | 'select'
+  | 'zooming'
+  | 'panning'
+  | 'undo'
+  | 'redo';
