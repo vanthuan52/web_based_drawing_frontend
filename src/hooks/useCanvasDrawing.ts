@@ -178,6 +178,10 @@ const useCanvasDrawing = ({
         currentShape.current = null;
         dispatch(canvasActions.resetActiveTool());
       }
+      if (activeTool === 'rect') {
+        currentShape.current = null;
+        dispatch(canvasActions.resetActiveTool());
+      }
     };
 
     canvas.on('mouse:down', startDrawing);

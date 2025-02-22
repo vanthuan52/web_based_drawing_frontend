@@ -4,7 +4,7 @@ import {CanvasTool} from '@/types/canvas';
 import {useDispatch} from 'react-redux';
 import {canvasActions} from '@/redux/slice/canvasSlice';
 
-interface UseCanvasDrawingProps {
+interface UseCanvasPolygonProps {
   canvas: Canvas | null;
   activeTool: CanvasTool;
   color?: string;
@@ -21,10 +21,11 @@ const useCanvasPolygon = ({
   activeTool,
   color = '#000000',
   thickness = 2,
-}: UseCanvasDrawingProps) => {
+}: UseCanvasPolygonProps) => {
   const dispatch = useDispatch();
   const polygonPoints = useRef<CursorPosition[]>([]);
   const tempLines = useRef<Line[]>([]);
+  const previewLine = useRef<Line | null>(null);
   const currentShape = useRef<Polygon | null>(null);
 
   useEffect(() => {
@@ -32,11 +33,9 @@ const useCanvasPolygon = ({
 
     const startDrawing = (event: any) => {
       if (!canvas || activeTool !== 'polygon') return;
-
       const pointer = canvas.getPointer(event.e);
       polygonPoints.current.push({x: pointer.x, y: pointer.y});
 
-      // If there are at least two points, make a line between them
       if (polygonPoints.current.length > 1) {
         const lastPoint =
           polygonPoints.current[polygonPoints.current.length - 2];
@@ -49,9 +48,38 @@ const useCanvasPolygon = ({
             evented: false,
           }
         );
-
         canvas.add(newLine);
         tempLines.current.push(newLine);
+      }
+
+      if (!previewLine.current) {
+        previewLine.current = new Line(
+          [pointer.x, pointer.y, pointer.x, pointer.y],
+          {
+            stroke: color,
+            strokeWidth: thickness,
+            selectable: false,
+            evented: false,
+          }
+        );
+        canvas.add(previewLine.current);
+      }
+    };
+
+    const updatePreviewLine = (event: any) => {
+      if (!canvas || activeTool !== 'polygon' || !previewLine.current) return;
+      const pointer = canvas.getPointer(event.e);
+
+      if (polygonPoints.current.length > 0) {
+        const lastPoint =
+          polygonPoints.current[polygonPoints.current.length - 1];
+        previewLine.current.set({
+          x1: lastPoint.x,
+          y1: lastPoint.y,
+          x2: pointer.x,
+          y2: pointer.y,
+        });
+        canvas.renderAll();
       }
     };
 
@@ -61,8 +89,13 @@ const useCanvasPolygon = ({
       tempLines.current.forEach((line) => canvas.remove(line));
       tempLines.current = [];
 
+      if (previewLine.current) {
+        canvas.remove(previewLine.current);
+        previewLine.current = null;
+      }
+
       const polygon = new Polygon(polygonPoints.current, {
-        fill: '#dddddd',
+        fill: 'transparent',
         stroke: color,
         strokeWidth: thickness,
         selectable: true,
@@ -74,15 +107,16 @@ const useCanvasPolygon = ({
 
       polygonPoints.current = [];
       currentShape.current = polygon;
-
       dispatch(canvasActions.resetActiveTool());
     };
 
     canvas.on('mouse:down', startDrawing);
+    canvas.on('mouse:move', updatePreviewLine);
     canvas.on('mouse:dblclick', handleDoubleClick);
 
     return () => {
       canvas.off('mouse:down', startDrawing);
+      canvas.off('mouse:move', updatePreviewLine);
       canvas.off('mouse:dblclick', handleDoubleClick);
     };
   }, [canvas, activeTool, color, thickness]);

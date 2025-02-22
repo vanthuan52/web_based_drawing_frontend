@@ -1,6 +1,14 @@
 import {Canvas, Line, FabricObject} from 'fabric';
 import {Guideline} from '@/types/canvas';
 
+/**
+ * This 'helper' enables snapping an object to the edges and the
+ * center of the canvas
+ * It supports snapping to the left, right, and certer vertically,
+ * as well as the top, bottom, and center horizontally
+ * @param param0
+ */
+
 // Minimum distance to snap an object to a guideline
 const SNAPPING_DISTANCE = 10;
 export const CANVAS_POSITION = {

@@ -12,10 +12,12 @@ import {canvasManagerActions} from '@/redux/slice/canvasManagerSlice';
 import useCanvasPanning from '@/hooks/useCanvasPanning';
 import useCanvasDrawing from '@/hooks/useCanvasDrawing';
 import useCanvasHistory from '@/hooks/useCanvasHistory';
-import useCanvasSnapping from '@/hooks/useCanvasSnapping';
 import useCanvasResize from '@/hooks/useCanvasResize';
 import useCanvasFreeDrawing from '@/hooks/useCanvasFreeDrawing';
 import useCanvasPolygon from '@/hooks/useCanvasPolygon';
+import useSnapping from '@/hooks/useSnapping';
+import useObjectSnapping from '@/hooks/useObjectSnapping';
+import useCanvasCopyPaste from '@/hooks/useCanvasCopyPaste';
 
 const CanvasBoard: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,10 +27,6 @@ const CanvasBoard: React.FC = () => {
   const activeTool = useAppSelector(
     (state: RootState) => state.canvas.activeTool
   );
-
-  useEffect(() => {
-    console.log('active tool: ', activeTool);
-  }, [activeTool]);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = useState<Canvas | null>(null);
@@ -45,10 +43,26 @@ const CanvasBoard: React.FC = () => {
   useCanvasResize({canvas, dimensions, setDimensions});
   useCanvasPanning({canvas, isPanning});
   useCanvasDrawing({canvas, activeTool});
-  useCanvasSnapping({canvas, guidelines, setGuidelines});
   useCanvasFreeDrawing({canvas, isDrawing});
   useCanvasPolygon({canvas, activeTool});
+  useObjectSnapping({canvas, guidelines, setGuidelines});
+  useSnapping({canvas});
+  const {copy, paste} = useCanvasCopyPaste({canvas});
   //const {undo, redo, canUndo, canRedo} = useCanvasHistory({canvas});
+
+  // useEffect(() => {
+  //   const handleKeyDown = (event: KeyboardEvent) => {
+  //     if (event.ctrlKey || event.metaKey) {
+  //       if (event.key === 'c') {
+  //         copy();
+  //       } else if (event.key === 'v') {
+  //         paste();
+  //       }
+  //     }
+  //   };
+  //   window.addEventListener('keydown', handleKeyDown);
+  //   return () => window.removeEventListener('keydown', handleKeyDown);
+  // }, [copy, paste]);
 
   useEffect(() => {
     if (!activeCanvas || !canvasRef.current) {

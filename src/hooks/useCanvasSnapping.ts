@@ -8,6 +8,13 @@ interface UseCanvasSnappingProps {
   guidelines: Guideline[];
   setGuidelines: any;
 }
+/**
+ * This hook enables snapping an object to the edges and the
+ * center of the canvas
+ * It supports snapping to the left, right, and certer vertically,
+ * as well as the top, bottom, and center horizontally
+ * @param param0
+ */
 const useCanvasSnapping = ({
   canvas,
   guidelines,
