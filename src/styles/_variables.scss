@@ -36,6 +36,8 @@ $font-medium: 500;
 $font-semibold: 600;
 $font-bold: 700;
 
+$sidebar-width: 250px;
+
 @mixin responsive-font($mobile, $tablet, $desktop) {
   font-size: $mobile;
 

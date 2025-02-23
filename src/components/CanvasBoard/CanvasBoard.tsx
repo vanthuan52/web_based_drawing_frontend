@@ -37,7 +37,7 @@ const CanvasBoard: React.FC = () => {
 
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth - 250 - 250 - 3,
-    height: window.innerHeight - 3,
+    height: window.innerHeight - 2,
   });
 
   useCanvasResize({canvas, dimensions, setDimensions});
@@ -45,24 +45,11 @@ const CanvasBoard: React.FC = () => {
   useCanvasDrawing({canvas, activeTool});
   useCanvasFreeDrawing({canvas, isDrawing});
   useCanvasPolygon({canvas, activeTool});
+  useCanvasCopyPaste({canvas});
   useObjectSnapping({canvas, guidelines, setGuidelines});
   useSnapping({canvas});
-  const {copy, paste} = useCanvasCopyPaste({canvas});
-  //const {undo, redo, canUndo, canRedo} = useCanvasHistory({canvas});
 
-  // useEffect(() => {
-  //   const handleKeyDown = (event: KeyboardEvent) => {
-  //     if (event.ctrlKey || event.metaKey) {
-  //       if (event.key === 'c') {
-  //         copy();
-  //       } else if (event.key === 'v') {
-  //         paste();
-  //       }
-  //     }
-  //   };
-  //   window.addEventListener('keydown', handleKeyDown);
-  //   return () => window.removeEventListener('keydown', handleKeyDown);
-  // }, [copy, paste]);
+  //const {undo, redo, canUndo, canRedo} = useCanvasHistory({canvas});
 
   useEffect(() => {
     if (!activeCanvas || !canvasRef.current) {
