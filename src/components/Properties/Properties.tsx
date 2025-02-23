@@ -11,14 +11,12 @@ interface CanvasPropertyProps {
 const Properties = ({canvas}: CanvasPropertyProps) => {
   return (
     <div className={styles['properties']}>
-      <div className={styles['property']}>
-        <div className={styles['property-header']}>
-          <span className={styles['property-header__label']}>Settings</span>
-        </div>
+      <div className={styles['properties-header']}>
+        <span className={styles['properties-header__label']}>Settings</span>
+      </div>
 
-        <div className={styles['property-body']}>
-          <ElementProperty canvas={canvas} />
-        </div>
+      <div className={styles['properties-body']}>
+        <ElementProperty canvas={canvas} />
       </div>
     </div>
   );
