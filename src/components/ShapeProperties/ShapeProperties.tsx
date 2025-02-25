@@ -1,36 +1,132 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Tooltip} from 'react-tooltip';
-import {Canvas} from 'fabric';
+import {Canvas, FabricObject} from 'fabric';
 import './ShapeProperties.scss';
-import Input from '../Common/Input/Input';
+import {FabricObjectProperty} from '@/types/canvas';
+import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
+import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
+import Input from '@/components/Common/Input/Input';
 
 interface ShapePropertiesProps {
   canvas: Canvas | null;
-  left: string;
-  onLeftChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  top: string;
-  onTopChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  width: string;
-  onWidthChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  height: string;
-  onHeightChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  diameter: string;
-  onDiameterChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedObject: FabricObject | null;
 }
 
-const ShapeProperties = ({
-  canvas,
-  left,
-  onLeftChange,
-  top,
-  onTopChange,
-  width,
-  onWidthChange,
-  height,
-  onHeightChange,
-  diameter,
-  onDiameterChange,
-}: ShapePropertiesProps) => {
+const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
+  const dispatch = useAppDispatch();
+
+  const {left, top, width, height, diameter} = useAppSelector(
+    (state: RootState) => state.canvasObject
+  );
+
+  const handleLeftChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    const stringValue = intValue.toString();
+
+    if (!selectedObject || !canvas) return;
+
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        left: stringValue,
+      } as FabricObjectProperty)
+    );
+
+    selectedObject.set({left: intValue});
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    const stringValue = intValue.toString();
+
+    if (!selectedObject || !canvas) return;
+
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        top: stringValue,
+      } as FabricObjectProperty)
+    );
+
+    selectedObject.set({top: intValue});
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    const stringValue = intValue.toString();
+
+    if (!selectedObject || !canvas) return;
+
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        width: stringValue,
+      } as FabricObjectProperty)
+    );
+
+    const originalWidth = selectedObject.width || 1;
+
+    const newScaleX = intValue / originalWidth;
+    const newScaleY = selectedObject.scaleY;
+
+    selectedObject.set({
+      scaleX: newScaleX,
+      scaleY: newScaleY,
+    });
+
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    const stringValue = intValue.toString();
+
+    if (!selectedObject || !canvas) return;
+
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        height: stringValue,
+      } as FabricObjectProperty)
+    );
+
+    const originalHeight = selectedObject.height || 1;
+
+    const newScaleX = selectedObject.scaleX;
+    const newScaleY = intValue / originalHeight;
+
+    selectedObject.set({
+      scaleX: newScaleX,
+      scaleY: newScaleY,
+    });
+
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
+  const handleDiameterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
+    const stringValue = intValue.toString();
+
+    if (!selectedObject || !canvas || selectedObject.type !== 'circle') return;
+
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        diameter: stringValue,
+      } as FabricObjectProperty)
+    );
+
+    selectedObject.set({
+      radius: intValue / 2, // half of diameter
+      scaleX: 1,
+      scaleY: 1,
+    });
+
+    selectedObject.setCoords();
+    canvas.renderAll();
+  };
+
   return (
     <div className="property">
       <div className="property-header">
@@ -41,35 +137,35 @@ const ShapeProperties = ({
           {
             label: 'X',
             value: left,
-            setter: onLeftChange,
+            setter: handleLeftChange,
             prop: 'left',
             tooltipId: 'x-position-tooltip',
           },
           {
             label: 'Y',
             value: top,
-            setter: onTopChange,
+            setter: handleTopChange,
             prop: 'top',
             tooltipId: 'y-position-tooltip',
           },
           {
             label: 'W',
             value: width,
-            setter: onWidthChange,
+            setter: handleWidthChange,
             prop: 'width',
             tooltipId: 'width-tooltip',
           },
           {
             label: 'H',
             value: height,
-            setter: onHeightChange,
+            setter: handleHeightChange,
             prop: 'height',
             tooltipId: 'height-tooltip',
           },
           {
             label: 'D',
             value: diameter,
-            setter: onDiameterChange,
+            setter: handleDiameterChange,
             prop: 'diameter',
             tooltipId: 'diameter-tooltip',
           },

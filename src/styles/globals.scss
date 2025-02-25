@@ -1,12 +1,12 @@
-@import 'variables';
-@import 'fonts';
+@use 'variables' as vars;
+@use 'fonts';
 
 body {
   margin: 0;
   padding: 0;
-  font-family: $font-primary;
-  color: $text-color;
-  background-color: $primary-bg-color;
+  font-family: vars.$font-primary;
+  color: vars.$text-color;
+  background-color: vars.$primary-bg-color;
 }
 
 .container {
@@ -19,17 +19,9 @@ body {
 }
 
 h1 {
-  font-size: $font-size-xl;
+  font-size: vars.$font-size-xl;
 }
 
 p {
-  font-size: $font-size-md;
-}
-
-.title {
-  @include responsive-font($font-size-md, $font-size-lg, $font-size-xl);
-}
-
-.description {
-  @include responsive-font($font-size-sm, $font-size-md, $font-size-lg);
+  font-size: vars.$font-size-md;
 }

@@ -1,11 +1,11 @@
-@import '@/styles/variables';
+@use '@/styles/variables' as vars;
 
 .sidebar {
   left: 0;
   top: 0;
   height: 100vh;
-  width: $sidebar-width;
-  min-width: $sidebar-width;
+  width: vars.$sidebar-width;
+  min-width: vars.$sidebar-width;
   background: #fff;
   color: #000;
   padding-top: 10px;
@@ -19,6 +19,6 @@
   font-weight: 600;
 
   &__label {
-    font-size: $font-size-md;
+    font-size: vars.$font-size-md;
   }
 }

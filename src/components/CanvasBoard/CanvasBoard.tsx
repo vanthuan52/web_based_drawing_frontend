@@ -1,13 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {useDispatch} from 'react-redux';
 import clsx from 'clsx';
 import {Canvas} from 'fabric';
 import styles from './CanvasBoard.module.scss';
 import CanvasTools from '@/components/CanvasTools/CanvasTools';
-import {CanvasObjectType, CanvasTool, Guideline} from '@/types/canvas';
+import {Guideline} from '@/types/canvas';
 import Properties from '@/components/Properties/Properties';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import {RootState, useAppSelector} from '@/redux/store';
+import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import {canvasManagerActions} from '@/redux/slice/canvasManagerSlice';
 import useCanvasPanning from '@/hooks/useCanvasPanning';
 import useCanvasDrawing from '@/hooks/useCanvasDrawing';
@@ -18,9 +17,10 @@ import useCanvasPolygon from '@/hooks/useCanvasPolygon';
 import useSnapping from '@/hooks/useSnapping';
 import useObjectSnapping from '@/hooks/useObjectSnapping';
 import useCanvasCopyPaste from '@/hooks/useCanvasCopyPaste';
+import useObjectDeletion from '@/hooks/useObjectDeletion';
 
 const CanvasBoard: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const activeCanvas = useAppSelector((state: RootState) =>
     state.canvasManager.canvases.find((canvas) => canvas.active)
   );
@@ -46,6 +46,7 @@ const CanvasBoard: React.FC = () => {
   useCanvasFreeDrawing({canvas, isDrawing});
   useCanvasPolygon({canvas, activeTool});
   useCanvasCopyPaste({canvas});
+  useObjectDeletion({canvas});
   useObjectSnapping({canvas, guidelines, setGuidelines});
   useSnapping({canvas});
 

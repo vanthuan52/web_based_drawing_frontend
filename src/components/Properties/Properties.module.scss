@@ -1,12 +1,12 @@
-@import '@/styles/variables';
+@use '@/styles/variables' as vars;
 
 .properties {
   position: fixed;
   right: 0;
   top: 0;
   height: 100vh;
-  width: $sidebar-width;
-  min-width: $sidebar-width;
+  width: vars.$sidebar-width;
+  min-width: vars.$sidebar-width;
   background: #fff;
   color: #000;
   padding-top: 10px;
@@ -20,6 +20,39 @@
   font-weight: 600;
 
   &__label {
-    font-size: $font-size-md;
+    font-size: vars.$font-size-md;
+  }
+}
+
+.frames {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+
+  &-header {
+    display: flex;
+    align-items: center;
+  }
+
+  &-title {
+    font-size: vars.$font-size-md;
+    font-weight: 600;
+    padding: 5px 10px;
+  }
+
+  &-body {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    &__button {
+    }
   }
 }

@@ -1,4 +1,4 @@
-@import '@/styles/variables';
+@use '@/styles/variables' as vars;
 
 .form-item {
   display: flex;
@@ -7,9 +7,9 @@
 }
 
 .error-message {
-  font-weight: $font-regular;
-  font-size: $font-size-sm;
-  color: $error-color;
+  font-weight: vars.$font-regular;
+  font-size: vars.$font-size-sm;
+  color: vars.$error-color;
   margin-left: 12px;
 
   &:first-letter {

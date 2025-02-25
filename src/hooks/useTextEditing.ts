@@ -27,7 +27,7 @@ const useTextEditing = ({canvas}: UseTextEditingProps) => {
     return () => {
       canvas.off('selection:created', handleSelection);
       canvas.off('selection:updated', handleSelection);
-      canvas.off('selection:cleared');
+      canvas.off('selection:cleared', () => setSelectedText(null));
     };
   }, [canvas]);
 
