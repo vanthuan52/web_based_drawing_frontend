@@ -1,4 +1,4 @@
-@import '@/styles/variables';
+@use '@/styles/variables' as vars;
 
 .input-container {
   display: flex;
@@ -6,9 +6,9 @@
   gap: 8px;
   width: 470px;
   height: 42px;
-  border-radius: $border-radius;
-  border: 1px solid $border-color;
-  background-color: $secondary-bg-color;
+  border-radius: vars.$border-radius;
+  border: 1px solid vars.$border-color;
+  background-color: vars.$secondary-bg-color;
   padding: 0 10px;
   cursor: default;
 
@@ -28,8 +28,8 @@
   }
 
   &.invalid {
-    border-color: $error-color;
-    box-shadow: inset 0 0 0 1px $error-color;
+    border-color: vars.$error-color;
+    box-shadow: inset 0 0 0 1px vars.$error-color;
   }
 
   &.no-border {
@@ -46,16 +46,16 @@
 }
 
 .input-field {
-  font-family: $font-primary;
+  font-family: vars.$font-primary;
   outline: none;
   background-color: inherit;
   width: 100%;
-  font-size: $font-size-lg;
+  font-size: vars.$font-size-lg;
   border: none;
   color: #4f4f4f;
 
   &::placeholder {
-    color: $text-color;
+    color: vars.$text-color;
   }
 }
 
@@ -66,7 +66,7 @@
   }
 
   .input-field {
-    font-size: $font-size-md;
+    font-size: vars.$font-size-md;
   }
 }
 

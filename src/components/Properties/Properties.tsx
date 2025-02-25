@@ -1,22 +1,50 @@
-import React from 'react';
-import clsx from 'clsx';
+import React, {useState} from 'react';
 import {Canvas} from 'fabric';
-import styles from './Properties.module.scss';
-import ElementProperty from '../ElementProperty/ElementProperty';
+import clsx from 'clsx';
 
-interface CanvasPropertyProps {
+import CroppingSetting from '@/components/CroppingSetting/CroppingSetting';
+import TypographyControls from '@/components/TypographyControls/TypographyControls';
+import Appearance from '@/components/Appearance/Appearance';
+import CanvasZooming from '@/components/CanvasZooming/CanvasZooming';
+import Stroke from '@/components/Stroke/Stroke';
+import ShapeProperties from '@/components/ShapeProperties/ShapeProperties';
+import useCanvasSelection from '@/hooks/useCanvasSelection';
+import ObjectAction from '@/components/ObjectAction/ObjectAction';
+import styles from './properties.module.scss';
+
+interface ElementPropertyProps {
   canvas: Canvas | null;
 }
 
-const Properties = ({canvas}: CanvasPropertyProps) => {
-  return (
-    <div className={styles['properties']}>
-      <div className={styles['properties-header']}>
-        <span className={styles['properties-header__label']}>Settings</span>
-      </div>
+const Properties = ({canvas = null}: ElementPropertyProps) => {
+  const {selectedObject} = useCanvasSelection({canvas});
+  const [refreshKey, setRefreshKey] = useState(0);
 
-      <div className={styles['properties-body']}>
-        <ElementProperty canvas={canvas} />
+  return (
+    <div className={clsx(styles['properties'])}>
+      <CanvasZooming canvas={canvas} />
+
+      <ShapeProperties canvas={canvas} selectedObject={selectedObject} />
+
+      <Appearance canvas={canvas} selectedObject={selectedObject} />
+
+      <TypographyControls canvas={canvas} />
+
+      <Stroke canvas={canvas} selectedObject={selectedObject} />
+
+      <ObjectAction canvas={canvas} selectedObject={selectedObject} />
+
+      <div className={styles['frames']}>
+        <div className={styles['frames-header']}>
+          <span className={styles['frames-title']}>Frames</span>
+        </div>
+        <div className={styles['frames-body']}>
+          <div className={styles['frames-item']}>
+            <div className={styles['frames-item__setting']}>
+              <CroppingSetting canvas={canvas} refreshKey={refreshKey} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

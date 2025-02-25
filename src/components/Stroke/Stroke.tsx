@@ -1,24 +1,59 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {SketchPicker} from 'react-color';
 import {Tooltip} from 'react-tooltip';
 import {FlipVertical2} from 'lucide-react';
 import styles from './Stroke.module.scss';
 import Input from '../Common/Input/Input';
+import {Canvas, FabricObject} from 'fabric';
+import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
+import {FabricObjectProperty} from '@/types/canvas';
+import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 
 interface ThemeProps {
-  strokeColor: string;
-  onStrokeColorChange: (color: {hex: string}) => void;
-  strokeWidth: number;
-  onStrokeWidthChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  canvas: Canvas | null;
+  selectedObject: FabricObject | null;
 }
 
-const Stroke = ({
-  strokeColor,
-  onStrokeColorChange,
-  strokeWidth,
-  onStrokeWidthChange,
-}: ThemeProps) => {
+const Stroke = ({canvas, selectedObject}: ThemeProps) => {
+  const dispatch = useAppDispatch();
+
+  const {strokeColor, strokeWidth} = useAppSelector(
+    (state: RootState) => state.canvasObject
+  );
   const [showStrokeColorPicker, setShowStrokeColorPicker] = useState(false);
+
+  const onStrokeColorChange = useCallback(
+    (color: {hex: string}) => {
+      dispatch(
+        canvasObjectActions.updateObjectProperties({
+          strokeColor: color.hex,
+        } as FabricObjectProperty)
+      );
+
+      if (selectedObject && canvas) {
+        selectedObject.set({stroke: color.hex});
+        canvas.renderAll();
+      }
+    },
+    [selectedObject, canvas]
+  );
+
+  const handleStrokeWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!canvas || !selectedObject) return;
+
+    let value = parseFloat(e.target.value) || 0;
+    value = Math.min(20, Math.max(0, value)); // limit 0 to 20
+    const stringValue = value.toString();
+
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        strokeWidth: stringValue,
+      } as FabricObjectProperty)
+    );
+
+    selectedObject.set({strokeWidth: value});
+    canvas.renderAll();
+  };
 
   const handleOnStrokeColorChange = (color: {hex: string}) => {
     onStrokeColorChange(color);
@@ -54,7 +89,7 @@ const Stroke = ({
               value={strokeWidth}
               noBorder
               noPadding
-              onChange={onStrokeWidthChange}
+              onChange={handleStrokeWidthChange}
             />
             <span className={styles['stroke-width__icon']}>
               <FlipVertical2 size={15} />

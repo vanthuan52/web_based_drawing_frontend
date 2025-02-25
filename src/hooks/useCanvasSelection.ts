@@ -1,54 +1,61 @@
 import {useState, useEffect, useCallback} from 'react';
 import {FabricObject, Canvas} from 'fabric';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
+import {CanvasObjectType, FabricObjectProperty} from '@/types/canvas';
+import {useAppDispatch} from '@/redux/store';
+import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
 
-export const useCanvasSelection = (canvas: Canvas | null) => {
+interface UseCanvasSelectionProps {
+  canvas: Canvas | null;
+}
+
+const useCanvasSelection = ({canvas = null}: UseCanvasSelectionProps) => {
   const [selectedObject, setSelectedObject] = useState<FabricObject | null>(
     null
   );
-  const [properties, setProperties] = useState({
-    left: 0,
-    top: 0,
-    width: 0,
-    height: 0,
-    diameter: 0,
-    color: DEFAULT_OBJECT_COLOR,
-  });
 
-  const resetProperties = () => {
-    setProperties({
-      left: 0,
-      top: 0,
-      width: 0,
-      height: 0,
-      diameter: 0,
-      color: DEFAULT_OBJECT_COLOR,
-    });
-  };
+  const dispatch = useAppDispatch();
 
   const handleObjectSelection = useCallback((object: FabricObject | null) => {
     if (!object) return;
 
-    setProperties({
-      left: Math.round(object.left ?? 0),
-      top: Math.round(object.top ?? 0),
-      width:
-        object.type === 'rect'
-          ? Math.round((object.width ?? 0) * (object.scaleX ?? 1))
-          : 0,
-      height:
-        object.type === 'rect'
-          ? Math.round((object.height ?? 0) * (object.scaleY ?? 1))
-          : 0,
+    setSelectedObject(object);
 
-      diameter:
-        object.type === 'circle'
-          ? // @ts-ignore
-            Math.round((object.radius ?? 0) * 2 * (object.scaleX ?? 1))
-          : 0,
-      // @ts-ignore
-      color: object.fill ?? DEFAULT_OBJECT_COLOR,
-    });
+    // basic properties of an object
+    const properties = {} as FabricObjectProperty;
+    properties.left = Math.round(object.left ?? 0).toString();
+    properties.top = Math.round(object.top ?? 0).toString();
+    properties.color = object.get('fill') ?? DEFAULT_OBJECT_COLOR;
+    properties.strokeColor = object.get('stroke') ?? DEFAULT_OBJECT_COLOR;
+    properties.strokeWidth = object.get('strokeWidth') ?? 0;
+    properties.opacity =
+      object.opacity !== undefined
+        ? `${Math.round(object.opacity * 100)}`
+        : '100';
+
+    properties.diameter = '0';
+    properties.width = '0';
+    properties.height = '0';
+
+    const type = object.type as CanvasObjectType;
+
+    if (type === 'rect') {
+      properties.width = Math.round(
+        (object.width ?? 0) * (object.scaleX ?? 1)
+      ).toString();
+      properties.height = Math.round(
+        (object.height ?? 0) * (object.scaleY ?? 1)
+      ).toString();
+    } else if (type === 'circle') {
+      properties.diameter = Math.round(
+        (object.get('radius') ?? 0) * 2 * (object.scaleX ?? 1)
+      ).toString();
+    } else if (type === 'ellipse') {
+      // do something
+    }
+
+    dispatch(canvasObjectActions.setSelectedObject(object));
+    dispatch(canvasObjectActions.updateObjectProperties(properties));
   }, []);
 
   useEffect(() => {
@@ -56,9 +63,10 @@ export const useCanvasSelection = (canvas: Canvas | null) => {
 
     const handleSelection = (event: any) =>
       handleObjectSelection(event.selected?.[0]);
+
     const handleCleared = () => {
-      setSelectedObject(null);
-      resetProperties();
+      dispatch(canvasObjectActions.resetSelectedObject());
+      dispatch(canvasObjectActions.resetProperty());
     };
 
     canvas.on('selection:created', handleSelection);
@@ -78,6 +86,9 @@ export const useCanvasSelection = (canvas: Canvas | null) => {
       canvas.off('object:modified', handleObjectSelection);
       canvas.off('object:scaling', handleObjectSelection);
     };
-  }, [canvas, handleObjectSelection]);
-  return {selectedObject, setSelectedObject, properties, setProperties};
+  }, [canvas]);
+
+  return {selectedObject};
 };
+
+export default useCanvasSelection;

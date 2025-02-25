@@ -1,7 +1,7 @@
-@import '@/styles/variables';
+@use '@/styles/variables' as vars;
 
 .navigation {
-  background-color: $primary-bg-color;
+  background-color: vars.$primary-bg-color;
   color: white;
   text-align: center;
   overflow-y: auto;

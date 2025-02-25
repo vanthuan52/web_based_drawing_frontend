@@ -1,8 +1,8 @@
-@import '@/styles/variables';
+@use '@/styles/variables' as vars;
 
 .form-label {
-  font-size: $font-size-lg;
-  font-weight: $font-bold;
+  font-size: vars.$font-size-lg;
+  font-weight: vars.$font-bold;
   display: inline-flex;
   position: relative;
   color: #000000;
@@ -10,7 +10,7 @@
   &.required::after {
     content: '*';
     margin-left: 4px;
-    color: $error-color;
+    color: vars.$error-color;
   }
 }
 
@@ -22,7 +22,7 @@
 
 @media screen and (max-width: 550px) {
   .form-label {
-    font-size: $font-size-md;
+    font-size: vars.$font-size-md;
   }
 }
 

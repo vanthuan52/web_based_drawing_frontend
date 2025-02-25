@@ -1,7 +1,4 @@
-@import '@/styles/variables';
-
-.canvas-layers {
-}
+@use '@/styles/variables' as vars;
 
 .layers {
   display: flex;
@@ -15,7 +12,7 @@
   }
 
   &-title {
-    font-size: $font-size-md;
+    font-size: vars.$font-size-md;
     font-weight: 600;
     padding: 5px 10px;
   }
@@ -50,8 +47,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: $secondary-color;
-      border-radius: $border-radius;
+      background: vars.$secondary-color;
+      border-radius: vars.$border-radius;
       cursor: pointer;
     }
   }
@@ -64,11 +61,11 @@
 
     &.selected {
       background-color: rgb(193, 212, 212);
-      font-weight: $font-semibold;
+      font-weight: vars.$font-semibold;
     }
 
     &__label {
-      font-size: $font-size-md;
+      font-size: vars.$font-size-md;
     }
   }
 }

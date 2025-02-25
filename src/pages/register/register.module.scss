@@ -1,4 +1,4 @@
-@import '@/styles/variables';
+@use '@/styles/variables' as vars;
 
 .register-page {
   padding: 10px;
@@ -6,7 +6,7 @@
   height: 672px;
   min-height: fit-content;
   color: #000000;
-  border-radius: $border-radius;
+  border-radius: vars.$border-radius;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@
   &__title {
     margin: 0;
     padding: 40px 0 20px;
-    font-size: $font-size-xxl;
+    font-size: vars.$font-size-xxl;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -34,7 +34,7 @@
   &__login {
     display: flex;
     justify-content: flex-start;
-    font-size: $font-size-lg;
+    font-size: vars.$font-size-lg;
 
     b {
       margin-left: 5px;
@@ -57,7 +57,7 @@
     box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
 
     &__login {
-      font-size: $font-size-md;
+      font-size: vars.$font-size-md;
     }
   }
 }

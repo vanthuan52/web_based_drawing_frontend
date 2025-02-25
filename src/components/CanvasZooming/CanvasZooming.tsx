@@ -47,7 +47,7 @@ const CanvasZooming = ({canvas}: CanvasZoomingProps) => {
       <div className={styles['zooming']}>
         <div
           className={styles['zooming-box']}
-          data-tooltip-id={TOOLTIP_CONTENT.ZOOMING_RATIO.id}>
+          data-tooltip-id={TOOLTIP_CONTENT.zooming_ratio.id}>
           <span className="zooming-ratio">%</span>
           <Input
             className={styles['zooming-input']}
@@ -61,9 +61,9 @@ const CanvasZooming = ({canvas}: CanvasZoomingProps) => {
           <ChevronDown className={styles['zooming-dropdown']} size={12} />
         </div>
         <Tooltip
-          id={TOOLTIP_CONTENT.ZOOMING_RATIO.id}
+          id={TOOLTIP_CONTENT.zooming_ratio.id}
           place="top"
-          content={TOOLTIP_CONTENT.ZOOMING_RATIO.content}
+          content={TOOLTIP_CONTENT.zooming_ratio.content}
         />
       </div>
     </div>

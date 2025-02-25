@@ -1,6 +1,6 @@
 @use '@/styles/variables' as vars;
 
-.property {
+.actions {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #ccc;
@@ -29,24 +29,11 @@
     align-items: center;
     padding: 5px 10px;
 
-    &__value {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: vars.$border-radius;
+    &__button {
+      font-size: 10px;
     }
 
-    &__input {
-      height: 25px;
-      width: 70px;
-      max-width: 70px;
-    }
-
-    &__label {
-      width: 15px;
-      min-width: 15px;
+    &__icon {
     }
   }
 }
