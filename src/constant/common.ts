@@ -125,6 +125,18 @@ export const TOOLTIP_CONTENT = {
     id: 'align-right-tooltip',
     content: 'Align right',
   },
+  align_top: {
+    id: 'align-top-tooltip',
+    content: 'Align top',
+  },
+  align_middle: {
+    id: 'align-middle-tooltip',
+    content: 'Align middle',
+  },
+  align_bottom: {
+    id: 'align-bottom-tooltip',
+    content: 'Align bottom',
+  },
   hide_show: {
     id: 'hide-show-tooltip',
     content: 'Hide/Shon',
@@ -136,6 +148,10 @@ export const TOOLTIP_CONTENT = {
   move_down: {
     id: 'move-down-tooltip',
     content: 'Move down',
+  },
+  delete_button: {
+    id: 'delete-button-tooltip',
+    content: 'Delete object(s)',
   },
 };
 
@@ -163,4 +179,14 @@ export const DEFAULT_OBJECT_PROPERTIES = {
   strokeColor: DEFAULT_OBJECT_COLOR,
   strokeWidth: '1',
   opacity: '100',
+  scaleX: '1',
+  scaleY: '1',
+  radius: '1',
+  textAlign: 'left',
+  fontFamily: 'Inter',
+  fontSize: '24',
+  fontWeight: 'normal',
+  fontStyle: 'normal',
+  originX: 'left',
+  originY: 'top',
 };

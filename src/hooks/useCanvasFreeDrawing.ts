@@ -1,17 +1,18 @@
-import {useState, useEffect} from 'react';
+import {useEffect} from 'react';
 import {Canvas, PencilBrush} from 'fabric';
+import {ApplicationTool} from '@/types/application';
 
 interface UseCanvasFreeDrawingProps {
   canvas: Canvas | null;
-  isDrawing: boolean;
+  activeTool: ApplicationTool;
 }
 const useCanvasFreeDrawing = ({
   canvas,
-  isDrawing,
+  activeTool,
 }: UseCanvasFreeDrawingProps) => {
   useEffect(() => {
     if (!canvas) return;
-    if (isDrawing) {
+    if (activeTool === 'pencil') {
       canvas.isDrawingMode = true;
       canvas.freeDrawingBrush = new PencilBrush(canvas);
       canvas.freeDrawingBrush.color = '#000000';
@@ -21,7 +22,7 @@ const useCanvasFreeDrawing = ({
     }
 
     canvas.renderAll();
-  }, [canvas, isDrawing]);
+  }, [canvas, activeTool]);
 };
 
 export default useCanvasFreeDrawing;

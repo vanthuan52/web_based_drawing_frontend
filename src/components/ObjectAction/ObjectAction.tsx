@@ -2,8 +2,8 @@ import React from 'react';
 import {Canvas, FabricObject} from 'fabric';
 import {Trash} from 'lucide-react';
 import {Tooltip} from 'react-tooltip';
-import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import Button from '@/components/Common/Button/Button';
+import {TOOLTIP_CONTENT} from '@/constant/common';
 import './ObjectAction.scss';
 
 interface ObjectActionProps {
@@ -12,12 +12,6 @@ interface ObjectActionProps {
 }
 
 const ObjectAction = ({canvas, selectedObject}: ObjectActionProps) => {
-  const dispatch = useAppDispatch();
-
-  const {strokeColor, strokeWidth} = useAppSelector(
-    (state: RootState) => state.canvasObject
-  );
-
   const handleDeleteObject = () => {
     if (selectedObject && canvas) {
       canvas.remove(selectedObject);
@@ -33,7 +27,9 @@ const ObjectAction = ({canvas, selectedObject}: ObjectActionProps) => {
         <span className={'actions-title'}>Actions</span>
       </div>
       <div className={'actions-body'}>
-        <div className={'actions-item'}>
+        <div
+          className={'actions-item'}
+          data-tooltip-id={TOOLTIP_CONTENT.delete_button.id}>
           <Button
             className={'actions-item__button'}
             color={'danger'}
@@ -43,6 +39,11 @@ const ObjectAction = ({canvas, selectedObject}: ObjectActionProps) => {
           </Button>
         </div>
       </div>
+      <Tooltip
+        id={TOOLTIP_CONTENT.delete_button.id}
+        place="top"
+        content={TOOLTIP_CONTENT.delete_button.content}
+      />
     </div>
   );
 };

@@ -14,7 +14,7 @@ const useTextEditing = ({canvas}: UseTextEditingProps) => {
 
     const handleSelection = () => {
       const activeObject = canvas.getActiveObject();
-      if (activeObject && activeObject.type === CANVAS_OBJECT_TYPE.TEXTBOX) {
+      if (activeObject && activeObject.type === CANVAS_OBJECT_TYPE.textbox) {
         setSelectedText(activeObject as Textbox);
       } else {
         setSelectedText(null);

@@ -1,12 +1,12 @@
 import {useEffect, useRef, useState} from 'react';
 import {Canvas, Line, Polygon} from 'fabric';
-import {CanvasTool} from '@/types/canvas';
+import {ApplicationTool} from '@/types/application';
 import {useDispatch} from 'react-redux';
-import {canvasActions} from '@/redux/slice/canvasSlice';
+import {toolActions} from '@/redux/slice/toolSlice';
 
 interface UseCanvasPolygonProps {
   canvas: Canvas | null;
-  activeTool: CanvasTool;
+  activeTool: ApplicationTool;
   color?: string;
   thickness?: number;
 }
@@ -107,7 +107,7 @@ const useCanvasPolygon = ({
 
       polygonPoints.current = [];
       currentShape.current = polygon;
-      dispatch(canvasActions.resetActiveTool());
+      dispatch(toolActions.resetActiveTool());
     };
 
     canvas.on('mouse:down', startDrawing);

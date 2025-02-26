@@ -6,7 +6,7 @@ import styles from './Stroke.module.scss';
 import Input from '../Common/Input/Input';
 import {Canvas, FabricObject} from 'fabric';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
-import {FabricObjectProperty} from '@/types/canvas';
+import {ObjectProperty} from '@/types/canvas';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 
 interface ThemeProps {
@@ -27,7 +27,7 @@ const Stroke = ({canvas, selectedObject}: ThemeProps) => {
       dispatch(
         canvasObjectActions.updateObjectProperties({
           strokeColor: color.hex,
-        } as FabricObjectProperty)
+        } as ObjectProperty)
       );
 
       if (selectedObject && canvas) {
@@ -48,7 +48,7 @@ const Stroke = ({canvas, selectedObject}: ThemeProps) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
         strokeWidth: stringValue,
-      } as FabricObjectProperty)
+      } as ObjectProperty)
     );
 
     selectedObject.set({strokeWidth: value});

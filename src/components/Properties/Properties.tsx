@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Canvas} from 'fabric';
 import clsx from 'clsx';
-
 import CroppingSetting from '@/components/CroppingSetting/CroppingSetting';
 import TypographyControls from '@/components/TypographyControls/TypographyControls';
 import Appearance from '@/components/Appearance/Appearance';
@@ -22,6 +21,10 @@ const Properties = ({canvas = null}: ElementPropertyProps) => {
 
   return (
     <div className={clsx(styles['properties'])}>
+      <div className={styles['properties-header']}>
+        <span className={styles['properties-header__label']}>Settings</span>
+      </div>
+
       <CanvasZooming canvas={canvas} />
 
       <ShapeProperties canvas={canvas} selectedObject={selectedObject} />

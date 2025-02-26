@@ -25,13 +25,11 @@ const CanvasBoard: React.FC = () => {
     state.canvasManager.canvases.find((canvas) => canvas.active)
   );
   const activeTool = useAppSelector(
-    (state: RootState) => state.canvas.activeTool
+    (state: RootState) => state.tool.activeTool
   );
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = useState<Canvas | null>(null);
-  const [isPanning, setIsPanning] = useState(false);
-  const [isDrawing, setIsDrawing] = useState(false);
 
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
 
@@ -41,9 +39,9 @@ const CanvasBoard: React.FC = () => {
   });
 
   useCanvasResize({canvas, dimensions, setDimensions});
-  useCanvasPanning({canvas, isPanning});
+  useCanvasPanning({canvas, activeTool});
   useCanvasDrawing({canvas, activeTool});
-  useCanvasFreeDrawing({canvas, isDrawing});
+  useCanvasFreeDrawing({canvas, activeTool});
   useCanvasPolygon({canvas, activeTool});
   useCanvasCopyPaste({canvas});
   useObjectDeletion({canvas});
@@ -93,13 +91,7 @@ const CanvasBoard: React.FC = () => {
     <div className={clsx(styles['canvas-board'])}>
       <Sidebar canvas={canvas} />
       <canvas id="canvas" ref={canvasRef} className={styles['canvas']} />
-      <CanvasTools
-        canvas={canvas}
-        isPanning={isPanning}
-        onSetIsPanning={setIsPanning}
-        isDrawing={isDrawing}
-        onSetIsDrawing={setIsDrawing}
-      />
+      <CanvasTools canvas={canvas} />
       <Properties canvas={canvas} />
     </div>
   );

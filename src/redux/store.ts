@@ -3,7 +3,7 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import {
   authReducer,
-  canvasReducer,
+  toolReducer,
   canvasManagerReducer,
   canvasObjectReducer,
 } from './slice';
@@ -14,7 +14,7 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    canvas: canvasReducer,
+    tool: toolReducer,
     canvasObject: canvasObjectReducer,
     canvasManager: canvasManagerReducer,
   },

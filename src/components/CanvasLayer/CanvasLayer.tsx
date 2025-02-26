@@ -12,7 +12,7 @@ import {
 import {Canvas} from 'fabric';
 import {useDispatch} from 'react-redux';
 import styles from './CanvasLayer.module.scss';
-import {canvasActions} from '@/redux/slice/canvasSlice';
+import {toolActions} from '@/redux/slice/toolSlice';
 import {useAppSelector} from '@/redux/store';
 import LayerList from './LayerList';
 

@@ -1,14 +1,15 @@
 import {useEffect} from 'react';
 import {Canvas, Point} from 'fabric';
+import {ApplicationTool} from '@/types/application';
 
 interface UseCanvasPanningProps {
   canvas: Canvas | null;
-  isPanning: boolean;
+  activeTool: ApplicationTool;
 }
 
-const useCanvasPanning = ({canvas, isPanning}: UseCanvasPanningProps) => {
+const useCanvasPanning = ({canvas, activeTool}: UseCanvasPanningProps) => {
   useEffect(() => {
-    if (!canvas || !isPanning) return;
+    if (!canvas || activeTool !== 'panning') return;
 
     let isPanningLocal = false;
     let lastPosX: number | null = null;
@@ -67,7 +68,7 @@ const useCanvasPanning = ({canvas, isPanning}: UseCanvasPanningProps) => {
       canvas.off('mouse:up', handleMouseUp);
       canvas.off('mouse:wheel', handleMouseWheel);
     };
-  }, [canvas, isPanning]);
+  }, [canvas, activeTool]);
 };
 
 export default useCanvasPanning;
