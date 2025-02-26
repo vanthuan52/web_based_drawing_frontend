@@ -1,14 +1,9 @@
 import {all} from 'redux-saga/effects';
 import {authSaga} from './authSaga';
-import {canvasSaga} from './canvasSaga';
+import {toolSaga} from './toolSaga';
 import {canvasManagerSaga} from './canvasManagerSaga';
 import {canvasObjectSaga} from './canvasObjectSaga';
 
 export default function* rootSaga() {
-  yield all([
-    authSaga(),
-    canvasSaga(),
-    canvasObjectSaga(),
-    canvasManagerSaga(),
-  ]);
+  yield all([authSaga(), toolSaga(), canvasObjectSaga(), canvasManagerSaga()]);
 }

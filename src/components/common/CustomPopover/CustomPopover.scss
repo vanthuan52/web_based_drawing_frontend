@@ -1,7 +1,10 @@
 .popover-container {
-  position: relative;
   display: inline-block;
   height: 100%;
+}
+
+.popover-trigger {
+  display: flex;
 }
 
 .popover-content {

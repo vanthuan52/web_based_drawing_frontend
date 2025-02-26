@@ -1,7 +1,7 @@
 import {useState, useEffect, useCallback} from 'react';
 import {FabricObject, Canvas} from 'fabric';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
-import {CanvasObjectType, FabricObjectProperty} from '@/types/canvas';
+import {ObjectProperty, FabricObjectType} from '@/types/canvas';
 import {useAppDispatch} from '@/redux/store';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
 
@@ -22,7 +22,7 @@ const useCanvasSelection = ({canvas = null}: UseCanvasSelectionProps) => {
     setSelectedObject(object);
 
     // basic properties of an object
-    const properties = {} as FabricObjectProperty;
+    const properties = {} as ObjectProperty;
     properties.left = Math.round(object.left ?? 0).toString();
     properties.top = Math.round(object.top ?? 0).toString();
     properties.color = object.get('fill') ?? DEFAULT_OBJECT_COLOR;
@@ -37,21 +37,28 @@ const useCanvasSelection = ({canvas = null}: UseCanvasSelectionProps) => {
     properties.width = '0';
     properties.height = '0';
 
-    const type = object.type as CanvasObjectType;
+    properties.width = Math.round(
+      (object.width ?? 0) * (object.scaleX ?? 1)
+    ).toString();
+    properties.height = Math.round(
+      (object.height ?? 0) * (object.scaleY ?? 1)
+    ).toString();
 
-    if (type === 'rect') {
-      properties.width = Math.round(
-        (object.width ?? 0) * (object.scaleX ?? 1)
-      ).toString();
-      properties.height = Math.round(
-        (object.height ?? 0) * (object.scaleY ?? 1)
-      ).toString();
-    } else if (type === 'circle') {
+    const type = object.type as FabricObjectType;
+
+    if (type === 'circle') {
       properties.diameter = Math.round(
         (object.get('radius') ?? 0) * 2 * (object.scaleX ?? 1)
       ).toString();
     } else if (type === 'ellipse') {
       // do something
+    } else if (type === 'textbox') {
+      properties.fontFamily = object.get('fontFamily');
+      properties.fontWeight = object.get('fontWeight');
+      properties.fontSize = object.get('fontSize');
+      properties.textAlign = object.get('textAlign');
+      properties.originX = object.get('originX');
+      properties.originX = object.get('originY');
     }
 
     dispatch(canvasObjectActions.setSelectedObject(object));

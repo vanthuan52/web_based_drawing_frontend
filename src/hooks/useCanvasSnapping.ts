@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useEffect} from 'react';
 import {Canvas} from 'fabric/*';
 import {handleObjectMoving, clearGuidelines} from '@/utils/snappingHelper';
 import {Guideline} from '@/types/canvas';

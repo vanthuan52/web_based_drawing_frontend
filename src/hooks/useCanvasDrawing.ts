@@ -11,13 +11,13 @@ import {
   Circle,
   Polygon,
 } from 'fabric';
-import {CanvasTool} from '@/types/canvas';
+import {ApplicationTool} from '@/types/application';
 import {useDispatch} from 'react-redux';
-import {canvasActions} from '@/redux/slice/canvasSlice';
+import {toolActions} from '@/redux/slice/toolSlice';
 
 interface UseCanvasDrawingProps {
   canvas: Canvas | null;
-  activeTool: CanvasTool;
+  activeTool: ApplicationTool;
   color?: string;
   thickness?: number;
 }
@@ -162,7 +162,7 @@ const useCanvasDrawing = ({
       if (currentShape.current && activeTool === 'line') {
         //currentShape.current.set({selectable: true});
         currentShape.current = null;
-        dispatch(canvasActions.resetActiveTool());
+        dispatch(toolActions.resetActiveTool());
       }
       if (activeTool !== 'pencil') {
         canvas.isDrawingMode = false;
@@ -170,17 +170,17 @@ const useCanvasDrawing = ({
 
       if (activeTool === 'circle') {
         currentShape.current = null;
-        dispatch(canvasActions.resetActiveTool());
+        dispatch(toolActions.resetActiveTool());
         setStartPoint(null);
       }
 
       if (activeTool === 'ellipse') {
         currentShape.current = null;
-        dispatch(canvasActions.resetActiveTool());
+        dispatch(toolActions.resetActiveTool());
       }
       if (activeTool === 'rect') {
         currentShape.current = null;
-        dispatch(canvasActions.resetActiveTool());
+        dispatch(toolActions.resetActiveTool());
       }
     };
 

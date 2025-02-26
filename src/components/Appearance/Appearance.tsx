@@ -7,7 +7,7 @@ import Input from '../Common/Input/Input';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
-import {FabricObjectProperty} from '@/types/canvas';
+import {ObjectProperty} from '@/types/canvas';
 
 interface AppearanceProps {
   canvas: Canvas | null;
@@ -30,7 +30,7 @@ const Appearance = ({canvas, selectedObject}: AppearanceProps) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
         opacity: value.toString(),
-      } as FabricObjectProperty)
+      } as ObjectProperty)
     );
 
     selectedObject.set({opacity: value / 100});
@@ -42,7 +42,7 @@ const Appearance = ({canvas, selectedObject}: AppearanceProps) => {
       dispatch(
         canvasObjectActions.updateObjectProperties({
           color: color.hex,
-        } as FabricObjectProperty)
+        } as ObjectProperty)
       );
       if (selectedObject && canvas) {
         selectedObject.set({fill: color.hex});

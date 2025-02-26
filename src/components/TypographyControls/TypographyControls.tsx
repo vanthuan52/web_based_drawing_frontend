@@ -9,51 +9,75 @@ import {
   ArrowUpFromLine,
   UnfoldVertical,
 } from 'lucide-react';
+import {Tooltip} from 'react-tooltip';
 import clsx from 'clsx';
 import useTextEditing from '@/hooks/useTextEditing';
 import styles from './TypographyControls.module.scss';
 import Input from '../Common/Input/Input';
+import {TOOLTIP_CONTENT} from '@/constant/common';
+import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
+import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
+import {ObjectProperty} from '@/types/canvas';
 
 interface TypographyControlsProps {
   canvas: Canvas | null;
 }
 
 type TextAlignType = 'left' | 'center' | 'right';
-type VerticalAlignType = 'top' | 'center' | 'bottom';
+type VerticalAlignType = 'top' | 'middle' | 'bottom';
 
 const Typography = ({canvas}: TypographyControlsProps) => {
+  const dispatch = useAppDispatch();
   const {updateText} = useTextEditing({canvas});
 
-  const [font, setFont] = useState('Inter');
-  const [fontWeight, setFontWeight] = useState('Semi Bold');
-  const [fontSize, setFontSize] = useState(18);
-  const [textAlign, setTextAlign] = useState<TextAlignType>('left');
-  const [originY, setOriginY] = useState<VerticalAlignType>('center');
+  const {fontFamily, fontSize, fontWeight, textAlign, originY} = useAppSelector(
+    (state: RootState) => state.canvasObject
+  );
 
   const handleFontChange = (event: any) => {
-    setFont(event.target.value);
     updateText('fontFamily', event.target.value);
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        fontFamily: event.target.value,
+      } as ObjectProperty)
+    );
   };
 
   const handleFontSizeChange = (event: any) => {
     const size = Number(event.target.value);
-    setFontSize(size);
     updateText('fontSize', size);
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        fontSize: event.target.value,
+      } as ObjectProperty)
+    );
   };
 
   const handleFontWeightChange = (event: any) => {
-    setFontWeight(event.target.value);
     updateText('fontWeight', fontWeight);
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        fontWeight: event.target.value,
+      } as ObjectProperty)
+    );
   };
 
   const handleTextAlignChange = (align: TextAlignType) => {
-    setTextAlign(align);
     updateText('textAlign', align);
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        textAlign: align,
+      } as ObjectProperty)
+    );
   };
 
   const handleVerticalAlignChange = (align: VerticalAlignType) => {
-    setOriginY(align);
     updateText('originY', align);
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        originY: align,
+      } as ObjectProperty)
+    );
   };
 
   return (
@@ -63,9 +87,11 @@ const Typography = ({canvas}: TypographyControlsProps) => {
       </div>
       <div className={styles['typography-body']}>
         {/* Font Family */}
-        <div className={styles['typography-font']}>
+        <div
+          className={styles['typography-font']}
+          data-tooltip-id={TOOLTIP_CONTENT.font_family.id}>
           <select
-            value={font}
+            value={fontFamily}
             onChange={handleFontChange}
             className={styles['typography-font__family']}>
             <option value="Inter">Inter</option>
@@ -76,14 +102,15 @@ const Typography = ({canvas}: TypographyControlsProps) => {
         {/* Font weight & Font size */}
         <div className={styles['typography-font']}>
           <select
+            data-tooltip-id={TOOLTIP_CONTENT.font_weight.id}
             value={fontWeight}
             onChange={handleFontWeightChange}
             className={styles['typography-font__weight']}>
-            <option value="Regular">Regular</option>
-            <option value="Semi Bold">Semi Bold</option>
+            <option value="normal">Normal</option>
             <option value="Bold">Bold</option>
           </select>
           <Input
+            data-tooltip-id={TOOLTIP_CONTENT.font_size.id}
             className={styles['typography-font__size']}
             type="text"
             value={fontSize}
@@ -91,26 +118,11 @@ const Typography = ({canvas}: TypographyControlsProps) => {
           />
         </div>
 
-        {/* Line Height & Letter Spacing */}
-        {/* <div className={styles['typography-spacing']}>
-          <TextField
-            className={styles['typography-spacing__lineheight']}
-            label="A"
-            value="Auto"
-            size="small"
-          />
-          <TextField
-            className={styles['typography-spacing__letterspacing']}
-            label="| A"
-            value="0%"
-            size="small"
-          />
-        </div> */}
-
         {/* Text Alignment */}
         <div className={styles['typography-alignment']}>
           <div className={styles['typography-alignment__text']}>
             <div
+              data-tooltip-id={TOOLTIP_CONTENT.align_left.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: textAlign === 'left',
               })}
@@ -118,6 +130,7 @@ const Typography = ({canvas}: TypographyControlsProps) => {
               <AlignLeft />
             </div>
             <div
+              data-tooltip-id={TOOLTIP_CONTENT.align_center.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: textAlign === 'center',
               })}
@@ -125,6 +138,7 @@ const Typography = ({canvas}: TypographyControlsProps) => {
               <AlignCenter />
             </div>
             <div
+              data-tooltip-id={TOOLTIP_CONTENT.align_right.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: textAlign === 'right',
               })}
@@ -136,6 +150,7 @@ const Typography = ({canvas}: TypographyControlsProps) => {
           {/* Vertical Alignment */}
           <div className={styles['typography-alignment__vertical']}>
             <div
+              data-tooltip-id={TOOLTIP_CONTENT.align_top.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: originY === 'top',
               })}
@@ -143,13 +158,15 @@ const Typography = ({canvas}: TypographyControlsProps) => {
               <ArrowUpFromLine />
             </div>
             <div
+              data-tooltip-id={TOOLTIP_CONTENT.align_middle.id}
               className={clsx(styles['typography-alignment__position'], {
-                [styles['active']]: originY === 'center',
+                [styles['active']]: originY === 'middle',
               })}
-              onClick={() => handleVerticalAlignChange('center')}>
+              onClick={() => handleVerticalAlignChange('middle')}>
               <UnfoldVertical />
             </div>
             <div
+              data-tooltip-id={TOOLTIP_CONTENT.align_bottom.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: originY === 'bottom',
               })}
@@ -159,6 +176,52 @@ const Typography = ({canvas}: TypographyControlsProps) => {
           </div>
         </div>
       </div>
+
+      <Tooltip
+        id={TOOLTIP_CONTENT.font_family.id}
+        place="top"
+        content={TOOLTIP_CONTENT.font_family.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.font_weight.id}
+        place="top"
+        content={TOOLTIP_CONTENT.font_weight.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.font_size.id}
+        place="top"
+        content={TOOLTIP_CONTENT.font_size.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.align_left.id}
+        place="top"
+        content={TOOLTIP_CONTENT.align_left.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.align_center.id}
+        place="top"
+        content={TOOLTIP_CONTENT.align_center.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.align_right.id}
+        place="top"
+        content={TOOLTIP_CONTENT.align_right.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.align_top.id}
+        place="top"
+        content={TOOLTIP_CONTENT.align_top.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.align_middle.id}
+        place="top"
+        content={TOOLTIP_CONTENT.align_middle.content}
+      />
+      <Tooltip
+        id={TOOLTIP_CONTENT.align_bottom.id}
+        place="top"
+        content={TOOLTIP_CONTENT.align_bottom.content}
+      />
     </div>
   );
 };

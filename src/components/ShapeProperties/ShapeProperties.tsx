@@ -2,7 +2,7 @@ import React from 'react';
 import {Tooltip} from 'react-tooltip';
 import {Canvas, FabricObject} from 'fabric';
 import './ShapeProperties.scss';
-import {FabricObjectProperty} from '@/types/canvas';
+import {ObjectProperty} from '@/types/canvas';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import Input from '@/components/Common/Input/Input';
@@ -28,7 +28,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
         left: stringValue,
-      } as FabricObjectProperty)
+      } as ObjectProperty)
     );
 
     selectedObject.set({left: intValue});
@@ -45,7 +45,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
         top: stringValue,
-      } as FabricObjectProperty)
+      } as ObjectProperty)
     );
 
     selectedObject.set({top: intValue});
@@ -62,7 +62,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
         width: stringValue,
-      } as FabricObjectProperty)
+      } as ObjectProperty)
     );
 
     const originalWidth = selectedObject.width || 1;
@@ -88,7 +88,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
         height: stringValue,
-      } as FabricObjectProperty)
+      } as ObjectProperty)
     );
 
     const originalHeight = selectedObject.height || 1;
@@ -114,7 +114,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
         diameter: stringValue,
-      } as FabricObjectProperty)
+      } as ObjectProperty)
     );
 
     selectedObject.set({

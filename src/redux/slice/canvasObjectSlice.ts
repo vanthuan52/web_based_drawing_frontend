@@ -1,16 +1,16 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {FabricObject} from 'fabric';
 import {
-  CanvasObjectType,
-  FabricObjectProperty,
+  FabricObjectType,
   UpdateObjectPorperty,
+  ObjectProperty,
 } from '@/types/canvas';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
 
-interface CanvasObjectState extends FabricObjectProperty {
+interface CanvasObjectState extends ObjectProperty {
   selectedObject: FabricObject | null;
   isLoading: boolean;
-  type: CanvasObjectType | null;
+  type: FabricObjectType | null;
 }
 
 const initialState: CanvasObjectState = {
@@ -26,6 +26,16 @@ const initialState: CanvasObjectState = {
   strokeColor: DEFAULT_OBJECT_COLOR,
   strokeWidth: '1',
   opacity: '100',
+  scaleX: '1',
+  scaleY: '1',
+  radius: '1',
+  textAlign: 'left',
+  fontFamily: 'Inter',
+  fontSize: '24',
+  fontWeight: 'normal',
+  fontStyle: 'normal',
+  originX: 'left',
+  originY: 'top',
 };
 
 const canvasObjectSlice = createSlice({
@@ -46,10 +56,7 @@ const canvasObjectSlice = createSlice({
       const property = action.payload;
       return {...state, [property.key]: property.value};
     },
-    updateObjectProperties: (
-      state,
-      action: PayloadAction<FabricObjectProperty>
-    ) => {
+    updateObjectProperties: (state, action: PayloadAction<ObjectProperty>) => {
       const properties = action.payload;
       return {...state, ...properties};
     },
@@ -65,6 +72,16 @@ const canvasObjectSlice = createSlice({
         strokeColor: DEFAULT_OBJECT_COLOR,
         strokeWidth: '1',
         opacity: '100',
+        scaleX: '1',
+        scaleY: '1',
+        radius: '1',
+        textAlign: 'left',
+        fontFamily: 'Inter',
+        fontSize: '24',
+        fontWeight: 'normal',
+        fontStyle: 'normal',
+        originX: 'left',
+        originY: 'top',
       };
     },
   },

@@ -2,11 +2,7 @@ import {useEffect, useState, useCallback} from 'react';
 import {Canvas, FabricObject} from 'fabric';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
 import {DEFAULT_OBJECT_PROPERTIES} from '@/constant/common';
-import {
-  CanvasObjectType,
-  FabricObjectProperty,
-  ObjectProperty,
-} from '@/types/canvas';
+import {FabricObjectType, ObjectProperty} from '@/types/canvas';
 
 interface UseCanvasProperties {
   canvas: Canvas | null;
@@ -16,7 +12,7 @@ const useCanvasProperties = ({canvas = null}: UseCanvasProperties) => {
   const [selectedObject, setSelectedObject] = useState<FabricObject | null>(
     null
   );
-  const [properties, setProperties] = useState<FabricObjectProperty>(
+  const [properties, setProperties] = useState<ObjectProperty>(
     DEFAULT_OBJECT_PROPERTIES
   );
 
@@ -58,7 +54,7 @@ const useCanvasProperties = ({canvas = null}: UseCanvasProperties) => {
     if (!object) return;
 
     // basic properties of an object
-    const properties = {} as FabricObjectProperty;
+    const properties = {} as ObjectProperty;
     properties.left = Math.round(object.left ?? 0).toString();
     properties.top = Math.round(object.top ?? 0).toString();
     properties.color = object.get('fill') ?? DEFAULT_OBJECT_COLOR;
@@ -73,7 +69,7 @@ const useCanvasProperties = ({canvas = null}: UseCanvasProperties) => {
     properties.width = '0';
     properties.height = '0';
 
-    const type = object.type as CanvasObjectType;
+    const type = object.type as FabricObjectType;
 
     if (type === 'rect') {
       properties.width = Math.round(
@@ -93,7 +89,7 @@ const useCanvasProperties = ({canvas = null}: UseCanvasProperties) => {
   }, []);
 
   const updateObjectProperty = (
-    property: ObjectProperty,
+    property: FabricObjectType,
     value: string | number
   ) => {
     if (!selectedObject || !canvas) return;
@@ -102,7 +98,7 @@ const useCanvasProperties = ({canvas = null}: UseCanvasProperties) => {
     canvas.renderAll();
   };
 
-  const updateObjectProperties = (properties: FabricObjectProperty) => {
+  const updateObjectProperties = (properties: ObjectProperty) => {
     if (!selectedObject || !canvas) return;
     console.log('update');
     selectedObject.set(properties);
