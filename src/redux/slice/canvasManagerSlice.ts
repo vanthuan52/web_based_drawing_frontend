@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {DEFAULT_INITIAL_CANVAS} from '@/constant/common';
-import {MAX_CANVASES} from '@/constant/string';
+import {MAX_CANVASES} from '@/constant/canvas';
 
 interface CanvasState {
   id: string;

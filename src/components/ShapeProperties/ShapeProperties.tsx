@@ -1,15 +1,19 @@
 import React from 'react';
 import {Tooltip} from 'react-tooltip';
-import {Canvas, FabricObject} from 'fabric';
+import {Canvas} from 'fabric';
 import './ShapeProperties.scss';
-import {ObjectProperty} from '@/types/canvas';
+import {
+  CustomFabricObject,
+  FabricObjectProperty,
+  ObjectProperty,
+} from '@/types/canvas';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import Input from '@/components/Common/Input/Input';
 
 interface ShapePropertiesProps {
   canvas: Canvas | null;
-  selectedObject: FabricObject | null;
+  selectedObject: CustomFabricObject | null;
 }
 
 const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
@@ -19,17 +23,21 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
     (state: RootState) => state.canvasObject
   );
 
+  const updateShapeProperty = (key: FabricObjectProperty, value: string) => {
+    dispatch(
+      canvasObjectActions.updateObjectProperties({
+        [key]: value,
+      } as ObjectProperty)
+    );
+  };
+
   const handleLeftChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const intValue = parseInt(e.target.value.replace(/,/g, ''), 10) || 0;
     const stringValue = intValue.toString();
 
     if (!selectedObject || !canvas) return;
 
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        left: stringValue,
-      } as ObjectProperty)
-    );
+    updateShapeProperty('left', stringValue);
 
     selectedObject.set({left: intValue});
     selectedObject.setCoords();
@@ -42,11 +50,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
 
     if (!selectedObject || !canvas) return;
 
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        top: stringValue,
-      } as ObjectProperty)
-    );
+    updateShapeProperty('top', stringValue);
 
     selectedObject.set({top: intValue});
     selectedObject.setCoords();
@@ -59,11 +63,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
 
     if (!selectedObject || !canvas) return;
 
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        width: stringValue,
-      } as ObjectProperty)
-    );
+    updateShapeProperty('width', stringValue);
 
     const originalWidth = selectedObject.width || 1;
 
@@ -85,11 +85,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
 
     if (!selectedObject || !canvas) return;
 
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        height: stringValue,
-      } as ObjectProperty)
-    );
+    updateShapeProperty('height', stringValue);
 
     const originalHeight = selectedObject.height || 1;
 
@@ -111,11 +107,7 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
 
     if (!selectedObject || !canvas || selectedObject.type !== 'circle') return;
 
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        diameter: stringValue,
-      } as ObjectProperty)
-    );
+    updateShapeProperty('diameter', stringValue);
 
     selectedObject.set({
       radius: intValue / 2, // half of diameter
@@ -127,49 +119,51 @@ const ShapeProperties = ({canvas, selectedObject}: ShapePropertiesProps) => {
     canvas.renderAll();
   };
 
+  const shapeProperties = [
+    {
+      label: 'X',
+      value: left,
+      setter: handleLeftChange,
+      prop: 'left',
+      tooltipId: 'x-position-tooltip',
+    },
+    {
+      label: 'Y',
+      value: top,
+      setter: handleTopChange,
+      prop: 'top',
+      tooltipId: 'y-position-tooltip',
+    },
+    {
+      label: 'W',
+      value: width,
+      setter: handleWidthChange,
+      prop: 'width',
+      tooltipId: 'width-tooltip',
+    },
+    {
+      label: 'H',
+      value: height,
+      setter: handleHeightChange,
+      prop: 'height',
+      tooltipId: 'height-tooltip',
+    },
+    {
+      label: 'D',
+      value: diameter,
+      setter: handleDiameterChange,
+      prop: 'diameter',
+      tooltipId: 'diameter-tooltip',
+    },
+  ];
+
   return (
     <div className="property">
       <div className="property-header">
         <span className="property-title">Properties</span>
       </div>
       <div className="property-body">
-        {[
-          {
-            label: 'X',
-            value: left,
-            setter: handleLeftChange,
-            prop: 'left',
-            tooltipId: 'x-position-tooltip',
-          },
-          {
-            label: 'Y',
-            value: top,
-            setter: handleTopChange,
-            prop: 'top',
-            tooltipId: 'y-position-tooltip',
-          },
-          {
-            label: 'W',
-            value: width,
-            setter: handleWidthChange,
-            prop: 'width',
-            tooltipId: 'width-tooltip',
-          },
-          {
-            label: 'H',
-            value: height,
-            setter: handleHeightChange,
-            prop: 'height',
-            tooltipId: 'height-tooltip',
-          },
-          {
-            label: 'D',
-            value: diameter,
-            setter: handleDiameterChange,
-            prop: 'diameter',
-            tooltipId: 'diameter-tooltip',
-          },
-        ].map(({label, value, setter, prop, tooltipId}) => (
+        {shapeProperties.map(({label, value, setter, prop, tooltipId}) => (
           <div key={label} className="property-item">
             <div className="property-item__value" data-tooltip-id={tooltipId}>
               <div className="property-item__label">{label}</div>

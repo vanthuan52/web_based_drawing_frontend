@@ -6,6 +6,7 @@ import {
   toolReducer,
   canvasManagerReducer,
   canvasObjectReducer,
+  canvasReducer,
 } from './slice';
 import rootSaga from './saga/rootSaga';
 
@@ -15,6 +16,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     tool: toolReducer,
+    canvas: canvasReducer,
     canvasObject: canvasObjectReducer,
     canvasManager: canvasManagerReducer,
   },

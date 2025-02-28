@@ -10,7 +10,7 @@ import {
   Settings,
 } from 'lucide-react';
 import styles from './Navigation.module.scss';
-import NavigationItem from '../NavigationItem/NavigationItem';
+import NavigationItem from '@/components/NavigationItem/NavigationItem';
 
 const NAV_ITEMS = [
   {name: 'Home', icon: <Home />, action: () => {}},

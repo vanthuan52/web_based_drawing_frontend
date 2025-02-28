@@ -17,7 +17,7 @@ import Input from '../Common/Input/Input';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
-import {ObjectProperty} from '@/types/canvas';
+import {FabricObjectProperty, ObjectProperty} from '@/types/canvas';
 
 interface TypographyControlsProps {
   canvas: Canvas | null;
@@ -34,50 +34,38 @@ const Typography = ({canvas}: TypographyControlsProps) => {
     (state: RootState) => state.canvasObject
   );
 
-  const handleFontChange = (event: any) => {
-    updateText('fontFamily', event.target.value);
+  const updateTypography = (key: FabricObjectProperty, value: string) => {
     dispatch(
       canvasObjectActions.updateObjectProperties({
-        fontFamily: event.target.value,
+        [key]: value,
       } as ObjectProperty)
     );
+  };
+
+  const handleFontChange = (event: any) => {
+    updateText('fontFamily', event.target.value);
+    updateTypography('fontFamily', event.target.value);
   };
 
   const handleFontSizeChange = (event: any) => {
-    const size = Number(event.target.value);
+    const size = parseInt(event.target.value, 10) || 11;
     updateText('fontSize', size);
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        fontSize: event.target.value,
-      } as ObjectProperty)
-    );
+    updateTypography('fontSize', event.target.value);
   };
 
   const handleFontWeightChange = (event: any) => {
-    updateText('fontWeight', fontWeight);
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        fontWeight: event.target.value,
-      } as ObjectProperty)
-    );
+    updateText('fontWeight', event.target.value);
+    updateTypography('fontWeight', event.target.value);
   };
 
   const handleTextAlignChange = (align: TextAlignType) => {
     updateText('textAlign', align);
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        textAlign: align,
-      } as ObjectProperty)
-    );
+    updateTypography('textAlign', align);
   };
 
   const handleVerticalAlignChange = (align: VerticalAlignType) => {
     updateText('originY', align);
-    dispatch(
-      canvasObjectActions.updateObjectProperties({
-        originY: align,
-      } as ObjectProperty)
-    );
+    updateTypography('originY', align);
   };
 
   return (
@@ -107,7 +95,7 @@ const Typography = ({canvas}: TypographyControlsProps) => {
             onChange={handleFontWeightChange}
             className={styles['typography-font__weight']}>
             <option value="normal">Normal</option>
-            <option value="Bold">Bold</option>
+            <option value="bold">Bold</option>
           </select>
           <Input
             data-tooltip-id={TOOLTIP_CONTENT.font_size.id}

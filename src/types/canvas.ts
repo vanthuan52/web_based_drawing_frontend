@@ -1,30 +1,38 @@
-import {FabricObjectProps, Line} from 'fabric';
+import {FabricObject, Line} from 'fabric';
+
+export type CustomFabricObject = FabricObject & {
+  id?: string;
+  name?: string;
+  status?: boolean;
+};
+
+export type PlainFabricObject = Record<string, any>;
 
 export interface Guideline extends Line {
   id: string;
 }
 
-export interface ObjectProperty {
-  left: string;
-  top: string;
-  width: string;
-  height: string;
-  diameter: string;
-  color: string;
-  strokeColor: string;
-  strokeWidth: string;
-  opacity: string;
-  scaleX: string;
-  scaleY: string;
-  radius: string;
-  textAlign: string;
-  fontFamily: string;
-  fontWeight: string;
-  fontSize: string;
-  fontStyle: string;
-  originX: string;
-  originY: string;
-}
+// export interface ObjectProperty {
+//   left: string;
+//   top: string;
+//   width: string;
+//   height: string;
+//   diameter: string;
+//   color: string;
+//   strokeColor: string;
+//   strokeWidth: string;
+//   opacity: string;
+//   scaleX: string;
+//   scaleY: string;
+//   radius: string;
+//   textAlign: string;
+//   fontFamily: string;
+//   fontWeight: string;
+//   fontSize: string;
+//   fontStyle: string;
+//   originX: string;
+//   originY: string;
+// }
 
 export type FabricObjectProperty =
   | 'left'
@@ -47,6 +55,8 @@ export type FabricObjectProperty =
   | 'originX'
   | 'originY';
 
+export type ObjectProperty = Record<FabricObjectProperty, string>;
+
 export type FabricObjectType =
   | 'textbox'
   | 'text'
@@ -59,12 +69,6 @@ export type FabricObjectType =
   | 'point'
   | 'pencil'
   | 'ellipse';
-
-export interface CanvasObject {
-  id: string;
-  type: FabricObjectType;
-  props: Partial<FabricObjectProps>;
-}
 
 export interface UpdateObjectPorperty {
   key: FabricObjectProperty;

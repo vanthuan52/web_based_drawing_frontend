@@ -48,7 +48,7 @@ const useTextEditing = ({canvas}: UseTextEditingProps) => {
     canvas.renderAll();
   };
 
-  const updateText = (property: keyof Textbox, value: any) => {
+  const updateText = (property: keyof Textbox, value: string | number) => {
     if (!selectedText || !canvas) return;
     selectedText.set(property, value);
     canvas.renderAll();

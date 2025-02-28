@@ -1,5 +1,7 @@
 import {useEffect} from 'react';
-import {Canvas, FabricObject} from 'fabric';
+import {Canvas} from 'fabric';
+import {CANVAS_GRID_SIZE, CANVAS_SNAP_THRESHOLD} from '@/constant/canvas';
+import {CustomFabricObject} from '@/types/canvas';
 
 interface UseSnappingProps {
   canvas: Canvas | null;
@@ -9,8 +11,8 @@ interface UseSnappingProps {
 
 const useSnapping = ({
   canvas,
-  gridSize = 2,
-  snapThreshold = 5,
+  gridSize = CANVAS_GRID_SIZE,
+  snapThreshold = CANVAS_SNAP_THRESHOLD,
 }: UseSnappingProps) => {
   useEffect(() => {
     if (!canvas) return;
@@ -19,7 +21,7 @@ const useSnapping = ({
       return Math.round(value / gridSize) * gridSize;
     };
 
-    const snapToNearestPoint = (obj: FabricObject) => {
+    const snapToNearestPoint = (obj: CustomFabricObject) => {
       const objects = canvas.getObjects();
 
       let nearestX = obj.left;

@@ -1,25 +1,25 @@
 import React, {useState, useEffect} from 'react';
-import {Canvas, FabricObject} from 'fabric';
+import {Canvas} from 'fabric';
 import styles from './CroppingSetting.module.scss';
 import {Button, MenuItem, Select} from '@mui/material';
+import {CustomFabricObject} from '@/types/canvas';
 
 interface CroppingSettingProps {
   canvas: Canvas | null;
   refreshKey: any;
 }
 
-interface CustomFabricObject extends FabricObject {
-  name: string;
-}
 const CroppingSetting = ({canvas, refreshKey}: CroppingSettingProps) => {
-  const [frames, setFrames] = useState<FabricObject[]>([]);
-  const [selectedFrame, setSelectedFrame] = useState<FabricObject | null>(null);
+  const [frames, setFrames] = useState<CustomFabricObject[]>([]);
+  const [selectedFrame, setSelectedFrame] = useState<CustomFabricObject | null>(
+    null
+  );
 
   const updateFrames = () => {
     if (!canvas) return;
     const framesFromCanvas = canvas
       .getObjects('rect')
-      .filter((obj: FabricObject) => {
+      .filter((obj: CustomFabricObject) => {
         return obj.get('name') && obj.get('name').startsWith('Frame');
       });
 
@@ -36,7 +36,7 @@ const CroppingSetting = ({canvas, refreshKey}: CroppingSettingProps) => {
   const handleFrameSelect = (value: string) => {
     if (!canvas) return;
     const selected = frames.find(
-      (frame: FabricObject) => frame.get('name') === value
+      (frame: CustomFabricObject) => frame.get('name') === value
     );
     if (!selected) return;
     setSelectedFrame(selected);
@@ -47,7 +47,7 @@ const CroppingSetting = ({canvas, refreshKey}: CroppingSettingProps) => {
   const exportFrameAsPng = () => {
     if (!canvas || !selectedFrame) return;
 
-    frames.forEach((frame: FabricObject) => {
+    frames.forEach((frame: CustomFabricObject) => {
       frame.set('visible', false);
     });
 
@@ -69,7 +69,7 @@ const CroppingSetting = ({canvas, refreshKey}: CroppingSettingProps) => {
       strokeWidth: 1,
     });
 
-    frames.forEach((frame: FabricObject) => {
+    frames.forEach((frame: CustomFabricObject) => {
       frame.set('visible', true);
     });
 

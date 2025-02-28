@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {toast} from 'react-toastify';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {LogInFormType, SignUpFormType} from '@/constant/validation/authSchema';
 import {User, UserRole} from '@/types/entity';
 import {removeToken} from '@/utils/tokenHelper';

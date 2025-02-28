@@ -1,17 +1,20 @@
 import {useEffect, useState, useCallback} from 'react';
-import {Canvas, FabricObject} from 'fabric';
+import {Canvas} from 'fabric';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
 import {DEFAULT_OBJECT_PROPERTIES} from '@/constant/common';
-import {FabricObjectType, ObjectProperty} from '@/types/canvas';
+import {
+  CustomFabricObject,
+  FabricObjectType,
+  ObjectProperty,
+} from '@/types/canvas';
 
 interface UseCanvasProperties {
   canvas: Canvas | null;
 }
 
 const useCanvasProperties = ({canvas = null}: UseCanvasProperties) => {
-  const [selectedObject, setSelectedObject] = useState<FabricObject | null>(
-    null
-  );
+  const [selectedObject, setSelectedObject] =
+    useState<CustomFabricObject | null>(null);
   const [properties, setProperties] = useState<ObjectProperty>(
     DEFAULT_OBJECT_PROPERTIES
   );
@@ -50,43 +53,46 @@ const useCanvasProperties = ({canvas = null}: UseCanvasProperties) => {
     };
   }, [canvas]);
 
-  const handleObjectSelection = useCallback((object: FabricObject | null) => {
-    if (!object) return;
+  const handleObjectSelection = useCallback(
+    (object: CustomFabricObject | null) => {
+      if (!object) return;
 
-    // basic properties of an object
-    const properties = {} as ObjectProperty;
-    properties.left = Math.round(object.left ?? 0).toString();
-    properties.top = Math.round(object.top ?? 0).toString();
-    properties.color = object.get('fill') ?? DEFAULT_OBJECT_COLOR;
-    properties.strokeColor = object.get('stroke') ?? DEFAULT_OBJECT_COLOR;
-    properties.strokeWidth = object.get('strokeWidth') ?? 0;
-    properties.opacity =
-      object.opacity !== undefined
-        ? `${Math.round(object.opacity * 100)}`
-        : '100';
+      // basic properties of an object
+      const properties = {} as ObjectProperty;
+      properties.left = Math.round(object.left ?? 0).toString();
+      properties.top = Math.round(object.top ?? 0).toString();
+      properties.color = object.get('fill') ?? DEFAULT_OBJECT_COLOR;
+      properties.strokeColor = object.get('stroke') ?? DEFAULT_OBJECT_COLOR;
+      properties.strokeWidth = object.get('strokeWidth') ?? 0;
+      properties.opacity =
+        object.opacity !== undefined
+          ? `${Math.round(object.opacity * 100)}`
+          : '100';
 
-    properties.diameter = '0';
-    properties.width = '0';
-    properties.height = '0';
+      properties.diameter = '0';
+      properties.width = '0';
+      properties.height = '0';
 
-    const type = object.type as FabricObjectType;
+      const type = object.type as FabricObjectType;
 
-    if (type === 'rect') {
-      properties.width = Math.round(
-        (object.width ?? 0) * (object.scaleX ?? 1)
-      ).toString();
-      properties.height = Math.round(
-        (object.height ?? 0) * (object.scaleY ?? 1)
-      ).toString();
-    } else if (type === 'circle') {
-      properties.diameter = Math.round(
-        (object.get('radius') ?? 0) * 2 * (object.scaleX ?? 1)
-      ).toString();
-    } else if (type === 'ellipse') {
-      // do something
-    }
-    setProperties(properties);
-  }, []);
+      if (type === 'rect') {
+        properties.width = Math.round(
+          (object.width ?? 0) * (object.scaleX ?? 1)
+        ).toString();
+        properties.height = Math.round(
+          (object.height ?? 0) * (object.scaleY ?? 1)
+        ).toString();
+      } else if (type === 'circle') {
+        properties.diameter = Math.round(
+          (object.get('radius') ?? 0) * 2 * (object.scaleX ?? 1)
+        ).toString();
+      } else if (type === 'ellipse') {
+        // do something
+      }
+      setProperties(properties);
+    },
+    []
+  );
 
   const updateObjectProperty = (
     property: FabricObjectType,

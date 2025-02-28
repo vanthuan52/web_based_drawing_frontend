@@ -13,7 +13,6 @@ const CanvasManager: React.FC = () => {
   );
 
   const handleNewCanvas = () => {
-    const id = `canvas-${Date.now()}`;
     dispatch(canvasManagerActions.addCanvas());
   };
 

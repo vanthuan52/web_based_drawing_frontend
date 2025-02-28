@@ -1,17 +1,17 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {SketchPicker} from 'react-color';
 import {Tooltip} from 'react-tooltip';
-import {Canvas, FabricObject} from 'fabric';
+import {Canvas} from 'fabric';
 import styles from './Appearance.module.scss';
 import Input from '../Common/Input/Input';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
-import {ObjectProperty} from '@/types/canvas';
+import {CustomFabricObject, ObjectProperty} from '@/types/canvas';
 
 interface AppearanceProps {
   canvas: Canvas | null;
-  selectedObject: FabricObject | null;
+  selectedObject: CustomFabricObject | null;
 }
 
 const Appearance = ({canvas, selectedObject}: AppearanceProps) => {

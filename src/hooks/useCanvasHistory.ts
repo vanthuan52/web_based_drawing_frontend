@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
-import {Canvas, FabricObject} from 'fabric';
+import {Canvas} from 'fabric';
+import {CustomFabricObject} from '@/types/canvas';
 
 interface UseCanvasHistoryProps {
   canvas: Canvas | null;

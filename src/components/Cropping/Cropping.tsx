@@ -1,9 +1,9 @@
 import React from 'react';
-import {Canvas, FabricObject, Rect} from 'fabric';
+import {Canvas, Rect} from 'fabric';
 import {CropIcon} from 'lucide-react';
 import styles from './Cropping.module.scss';
 import Button from '../Common/Button/Button';
-
+import {CustomFabricObject} from '@/types/canvas';
 interface CroppingProps {
   canvas: Canvas | null;
   onFramesUpdated: any;
@@ -42,7 +42,7 @@ const Cropping = ({canvas, onFramesUpdated}: CroppingProps) => {
     onFramesUpdated();
   };
 
-  const maintainStrokeWidth = (object: FabricObject) => {
+  const maintainStrokeWidth = (object: CustomFabricObject) => {
     const scaleX = object.scaleX || 1;
     const scaleY = object.scaleY || 1;
 

@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
-import {ActiveSelection, Canvas, FabricObject, Group} from 'fabric';
+import {ActiveSelection, Canvas} from 'fabric';
+import {CustomFabricObject} from '@/types/canvas';
 
 interface UseCanvasCopyPaste {
   canvas: Canvas | null;
 }
 const useCanvasCopyPaste = ({canvas}: UseCanvasCopyPaste) => {
-  const [clipboard, setClipboard] = useState<FabricObject | null>(null);
+  const [clipboard, setClipboard] = useState<CustomFabricObject | null>(null);
 
   /**
    * Copies the selected object(s) from the canvas
