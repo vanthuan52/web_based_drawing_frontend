@@ -3,15 +3,16 @@ import {SketchPicker} from 'react-color';
 import {Tooltip} from 'react-tooltip';
 import {FlipVertical2} from 'lucide-react';
 import styles from './Stroke.module.scss';
-import Input from '../Common/Input/Input';
-import {Canvas, FabricObject} from 'fabric';
+import Input from '@/components/Common/Input/Input';
+import {Canvas} from 'fabric';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
-import {ObjectProperty} from '@/types/canvas';
+import {CustomFabricObject, ObjectProperty} from '@/types/canvas';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
+import {TOOLTIP_CONTENT} from '@/constant/common';
 
 interface ThemeProps {
   canvas: Canvas | null;
-  selectedObject: FabricObject | null;
+  selectedObject: CustomFabricObject | null;
 }
 
 const Stroke = ({canvas, selectedObject}: ThemeProps) => {
@@ -109,16 +110,15 @@ const Stroke = ({canvas, selectedObject}: ThemeProps) => {
               </button>
             </div>
           )}
-
           <Tooltip
-            id="stroke-color-tooltip"
+            id={TOOLTIP_CONTENT.stroke_color.id}
             place="top"
-            content="Stroke Color"
+            content={TOOLTIP_CONTENT.stroke_color.content}
           />
           <Tooltip
-            id="stroke-width-tooltip"
+            id={TOOLTIP_CONTENT.stroke_width.id}
             place="top"
-            content="Stroke Width"
+            content={TOOLTIP_CONTENT.stroke_width.content}
           />
         </div>
       </div>

@@ -1,14 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {FabricObject} from 'fabric';
 import {
   FabricObjectType,
   UpdateObjectPorperty,
   ObjectProperty,
+  CustomFabricObject,
 } from '@/types/canvas';
 import {DEFAULT_OBJECT_COLOR} from '@/constant/string';
 
 interface CanvasObjectState extends ObjectProperty {
-  selectedObject: FabricObject | null;
+  selectedObject: CustomFabricObject | null;
   isLoading: boolean;
   type: FabricObjectType | null;
 }
@@ -42,7 +42,10 @@ const canvasObjectSlice = createSlice({
   name: 'canvasObject',
   initialState,
   reducers: {
-    setSelectedObject: (state, action: PayloadAction<FabricObject | null>) => {
+    setSelectedObject: (
+      state,
+      action: PayloadAction<CustomFabricObject | null>
+    ) => {
       // remove all getter, setter, method of fabric class
       state.selectedObject = JSON.parse(JSON.stringify(action.payload));
     },

@@ -1,5 +1,6 @@
 import {Canvas, Line, FabricObject} from 'fabric';
 import {Guideline} from '@/types/canvas';
+import {CANVAS_SNAPPING_DISTANCE} from '@/constant/canvas';
 
 /**
  * This 'helper' enables snapping an object to the edges and the
@@ -9,8 +10,6 @@ import {Guideline} from '@/types/canvas';
  * @param param0
  */
 
-// Minimum distance to snap an object to a guideline
-const SNAPPING_DISTANCE = 10;
 export const CANVAS_POSITION = {
   VERTICAL: 'vertical',
   HORIZONTAL: 'horizontal',
@@ -56,7 +55,7 @@ export const handleObjectMoving = (
   let snapped = false;
 
   // Snap to left edge
-  if (Math.abs(left) < SNAPPING_DISTANCE) {
+  if (Math.abs(left) < CANVAS_SNAPPING_DISTANCE) {
     obj.set({left: 0});
     newGuidelines.push(
       addGuideline(canvas, 0, CANVAS_POSITION.VERTICAL_LEFT, 'vertical')
@@ -65,7 +64,7 @@ export const handleObjectMoving = (
   }
 
   // Snap to top edge
-  if (Math.abs(top) < SNAPPING_DISTANCE) {
+  if (Math.abs(top) < CANVAS_SNAPPING_DISTANCE) {
     obj.set({top: 0});
     newGuidelines.push(
       addGuideline(canvas, 0, CANVAS_POSITION.HORIZONTAL_TOP, 'horizontal')
@@ -74,7 +73,7 @@ export const handleObjectMoving = (
   }
 
   // Snap to right edge
-  if (Math.abs(right - canvasWidth) < SNAPPING_DISTANCE) {
+  if (Math.abs(right - canvasWidth) < CANVAS_SNAPPING_DISTANCE) {
     obj.set({left: canvasWidth - (obj.width ?? 0) * (obj.scaleX ?? 1)});
     newGuidelines.push(
       addGuideline(
@@ -88,7 +87,7 @@ export const handleObjectMoving = (
   }
 
   // Snap to bottom edge
-  if (Math.abs(bottom - canvasHeight) < SNAPPING_DISTANCE) {
+  if (Math.abs(bottom - canvasHeight) < CANVAS_SNAPPING_DISTANCE) {
     obj.set({top: canvasHeight - (obj.height ?? 0) * (obj.scaleY ?? 1)});
     newGuidelines.push(
       addGuideline(
@@ -102,7 +101,7 @@ export const handleObjectMoving = (
   }
 
   // snap to vertical center
-  if (Math.abs(centerX - canvasWidth / 2) < SNAPPING_DISTANCE) {
+  if (Math.abs(centerX - canvasWidth / 2) < CANVAS_SNAPPING_DISTANCE) {
     obj.set({
       left: canvasWidth / 2 - ((obj.width ?? 0) * (obj.scaleX ?? 1)) / 2,
     });
@@ -118,7 +117,7 @@ export const handleObjectMoving = (
   }
 
   // snap to horizontal center
-  if (Math.abs(centerY - canvasHeight / 2) < SNAPPING_DISTANCE) {
+  if (Math.abs(centerY - canvasHeight / 2) < CANVAS_SNAPPING_DISTANCE) {
     obj.set({
       top: canvasHeight / 2 - ((obj.height ?? 0) * (obj.scaleY ?? 1)) / 2,
     });

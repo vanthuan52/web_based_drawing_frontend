@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {
   Canvas,
-  FabricObject,
   Rect,
   Line,
   Point,
@@ -14,6 +13,7 @@ import {
 import {ApplicationTool} from '@/types/application';
 import {useDispatch} from 'react-redux';
 import {toolActions} from '@/redux/slice/toolSlice';
+import {CustomFabricObject} from '@/types/canvas';
 
 interface UseCanvasDrawingProps {
   canvas: Canvas | null;
@@ -35,22 +35,24 @@ const useCanvasDrawing = ({
 }: UseCanvasDrawingProps) => {
   const dispatch = useDispatch();
   const [startPoint, setStartPoint] = useState<CursorPosition | null>(null);
-  const currentShape = useRef<FabricObject | null>(null);
+  const currentShape = useRef<CustomFabricObject | null>(null);
+  const snapThreshold = 10; // Snap threshold for aligning lines
 
+  const allowedActions: ApplicationTool[] = [
+    'line',
+    'rect',
+    'circle',
+    'ellipse',
+  ];
   useEffect(() => {
     if (!canvas) return;
+
     const startDrawing = (event: any) => {
       if (!canvas) return;
-      if (
-        activeTool !== 'line' &&
-        activeTool !== 'rect' &&
-        activeTool !== 'circle' &&
-        activeTool !== 'ellipse'
-      ) {
-        return;
-      }
+      if (!allowedActions.includes(activeTool)) return;
 
       const pointer = canvas.getPointer(event.e);
+      setStartPoint({x: pointer.x, y: pointer.y});
 
       switch (activeTool) {
         case 'line': {
@@ -59,6 +61,8 @@ const useCanvasDrawing = ({
             {
               stroke: color,
               strokeWidth: thickness,
+              selectable: true,
+              evented: true,
             }
           );
           canvas.add(currentShape.current);
@@ -93,7 +97,6 @@ const useCanvasDrawing = ({
         }
 
         case 'circle': {
-          setStartPoint({x: pointer.x, y: pointer.y});
           currentShape.current = new Circle({
             left: pointer.x,
             top: pointer.y,
@@ -112,13 +115,24 @@ const useCanvasDrawing = ({
     };
 
     const drawing = (event: any) => {
-      if (!canvas || !currentShape.current) return;
+      if (!canvas || !currentShape.current || !startPoint) return;
+      if (!allowedActions.includes(activeTool)) return;
 
       const pointer = canvas.getPointer(event.e);
+      let newX = pointer.x;
+      let newY = pointer.y;
+
       switch (activeTool) {
         case 'line': {
+          // apply snap-to-grid logic for lines
+          if (Math.abs(pointer.x - startPoint.x) < snapThreshold) {
+            newX = startPoint.x;
+          }
+          if (Math.abs(pointer.y - startPoint.y) < snapThreshold) {
+            newY = startPoint.y;
+          }
           const line = currentShape.current as Line;
-          line.set({x2: pointer.x, y2: pointer.y});
+          line.set({x2: newX, y2: newY});
           break;
         }
         case 'rect': {
@@ -151,6 +165,9 @@ const useCanvasDrawing = ({
           });
           break;
         }
+        default: {
+          break;
+        }
       }
 
       canvas.renderAll();
@@ -158,30 +175,15 @@ const useCanvasDrawing = ({
 
     const stopDrawing = () => {
       if (!canvas) return;
+      if (!allowedActions.includes(activeTool)) return;
 
       if (currentShape.current && activeTool === 'line') {
-        //currentShape.current.set({selectable: true});
-        currentShape.current = null;
-        dispatch(toolActions.resetActiveTool());
-      }
-      if (activeTool !== 'pencil') {
-        canvas.isDrawingMode = false;
+        currentShape.current.set({selectable: true});
       }
 
-      if (activeTool === 'circle') {
-        currentShape.current = null;
-        dispatch(toolActions.resetActiveTool());
-        setStartPoint(null);
-      }
-
-      if (activeTool === 'ellipse') {
-        currentShape.current = null;
-        dispatch(toolActions.resetActiveTool());
-      }
-      if (activeTool === 'rect') {
-        currentShape.current = null;
-        dispatch(toolActions.resetActiveTool());
-      }
+      currentShape.current = null;
+      dispatch(toolActions.resetActiveTool());
+      setStartPoint(null);
     };
 
     canvas.on('mouse:down', startDrawing);

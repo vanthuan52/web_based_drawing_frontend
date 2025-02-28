@@ -1,14 +1,15 @@
 import React from 'react';
-import {Canvas, FabricObject} from 'fabric';
+import {Canvas} from 'fabric';
 import {Trash} from 'lucide-react';
 import {Tooltip} from 'react-tooltip';
 import Button from '@/components/Common/Button/Button';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import './ObjectAction.scss';
+import {CustomFabricObject} from '@/types/canvas';
 
 interface ObjectActionProps {
   canvas: Canvas | null;
-  selectedObject: FabricObject | null;
+  selectedObject: CustomFabricObject | null;
 }
 
 const ObjectAction = ({canvas, selectedObject}: ObjectActionProps) => {
@@ -17,7 +18,6 @@ const ObjectAction = ({canvas, selectedObject}: ObjectActionProps) => {
       canvas.remove(selectedObject);
       canvas.discardActiveObject();
       canvas.renderAll();
-      //setSelectedObject(null);
     }
   };
 

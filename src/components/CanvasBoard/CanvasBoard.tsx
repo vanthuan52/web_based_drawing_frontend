@@ -18,6 +18,7 @@ import useSnapping from '@/hooks/useSnapping';
 import useObjectSnapping from '@/hooks/useObjectSnapping';
 import useCanvasCopyPaste from '@/hooks/useCanvasCopyPaste';
 import useObjectDeletion from '@/hooks/useObjectDeletion';
+import useRegisterFabricObjects from '@/hooks/useRegisterFabricObjects';
 
 const CanvasBoard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ const CanvasBoard: React.FC = () => {
     height: window.innerHeight - 2,
   });
 
+  useRegisterFabricObjects({canvas});
   useCanvasResize({canvas, dimensions, setDimensions});
   useCanvasPanning({canvas, activeTool});
   useCanvasDrawing({canvas, activeTool});
@@ -45,7 +47,7 @@ const CanvasBoard: React.FC = () => {
   useCanvasPolygon({canvas, activeTool});
   useCanvasCopyPaste({canvas});
   useObjectDeletion({canvas});
-  useObjectSnapping({canvas, guidelines, setGuidelines});
+  //useObjectSnapping({canvas, guidelines, setGuidelines});
   useSnapping({canvas});
 
   //const {undo, redo, canUndo, canRedo} = useCanvasHistory({canvas});

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {ChevronDown} from 'lucide-react';
 import {Canvas, Point} from 'fabric';
-import Input from '../Common/Input/Input';
+import {Tooltip} from 'react-tooltip';
+import Input from '@/components/Common/Input/Input';
 import styles from './CanvasZooming.module.scss';
 import useCanvasZooming from '@/hooks/useCanvasZooming';
-import {Tooltip} from 'react-tooltip';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 
 interface CanvasZoomingProps {
@@ -13,8 +13,7 @@ interface CanvasZoomingProps {
 
 const CanvasZooming = ({canvas}: CanvasZoomingProps) => {
   const [zoomingRatio, setZoomingRatio] = useState<string>('100');
-  const [isZooming, setIsZooming] = useState<boolean>(true);
-  useCanvasZooming({canvas, isZooming, setZoomingRatio});
+  useCanvasZooming({canvas, setZoomingRatio});
 
   useEffect(() => {
     if (!canvas) return;
@@ -30,8 +29,7 @@ const CanvasZooming = ({canvas}: CanvasZoomingProps) => {
       let zoomValue = parseInt(zoomingRatio, 10);
       if (isNaN(zoomValue)) return;
 
-      // limit zooming is from 50 - 500% (by fabric)
-      zoomValue = Math.max(50, Math.min(zoomValue, 500));
+      zoomValue = Math.max(1, Math.min(zoomValue, 2000));
       setZoomingRatio(`${zoomValue}`);
 
       const center = canvas.getCenter();

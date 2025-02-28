@@ -3,17 +3,12 @@ import {Canvas, Point} from 'fabric';
 
 interface UseCanvasZoomingProps {
   canvas: Canvas | null;
-  isZooming: boolean;
   setZoomingRatio: (scale: string) => void;
 }
 
-const useCanvasZooming = ({
-  canvas,
-  isZooming,
-  setZoomingRatio,
-}: UseCanvasZoomingProps) => {
+const useCanvasZooming = ({canvas, setZoomingRatio}: UseCanvasZoomingProps) => {
   useEffect(() => {
-    if (!canvas || !isZooming) return;
+    if (!canvas) return;
 
     const handleMouseWheel = (e: any) => {
       const event = e.e as WheelEvent;
@@ -22,7 +17,7 @@ const useCanvasZooming = ({
 
       const zoom = canvas.getZoom();
       const delta = event.deltaY > 0 ? -0.05 : 0.05;
-      const newZoom = Math.min(Math.max(zoom + delta, 0.5), 5);
+      const newZoom = Math.min(Math.max(zoom + delta, 0.01), 20);
 
       // point to the pointer wheng zooming
       const pointer = canvas.getPointer(event);
@@ -40,7 +35,7 @@ const useCanvasZooming = ({
     return () => {
       canvas.off('mouse:wheel', handleMouseWheel);
     };
-  }, [canvas, isZooming, setZoomingRatio]);
+  }, [canvas]);
 };
 
 export default useCanvasZooming;
