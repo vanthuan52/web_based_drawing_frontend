@@ -19,6 +19,7 @@ import useObjectSnapping from '@/hooks/useObjectSnapping';
 import useCanvasCopyPaste from '@/hooks/useCanvasCopyPaste';
 import useObjectDeletion from '@/hooks/useObjectDeletion';
 import useRegisterFabricObjects from '@/hooks/useRegisterFabricObjects';
+import useCanvasExpandable from '@/hooks/useCanvasExpandable';
 
 const CanvasBoard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -29,17 +30,19 @@ const CanvasBoard: React.FC = () => {
     (state: RootState) => state.tool.activeTool
   );
 
+  const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = useState<Canvas | null>(null);
 
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
 
   const [dimensions, setDimensions] = useState({
-    width: window.innerWidth - 250 - 250 - 3,
-    height: window.innerHeight - 2,
+    width: window.innerWidth - 250 - 250,
+    height: window.innerHeight,
   });
 
   useRegisterFabricObjects({canvas});
+  useCanvasExpandable({canvas, canvasContainerRef, dimensions});
   useCanvasResize({canvas, dimensions, setDimensions});
   useCanvasPanning({canvas, activeTool});
   useCanvasDrawing({canvas, activeTool});
@@ -61,7 +64,6 @@ const CanvasBoard: React.FC = () => {
     const initCanvas = new Canvas(canvasRef.current, {
       width: dimensions.width,
       height: dimensions.height,
-      backgroundColor: '#fff',
     });
 
     initCanvas.clear();
@@ -92,7 +94,9 @@ const CanvasBoard: React.FC = () => {
   return (
     <div className={clsx(styles['canvas-board'])}>
       <Sidebar canvas={canvas} />
-      <canvas id="canvas" ref={canvasRef} className={styles['canvas']} />
+      <div className={styles['canvas-wrapper']} ref={canvasContainerRef}>
+        <canvas id="canvas" ref={canvasRef} className={styles['canvas']} />
+      </div>
       <CanvasTools canvas={canvas} />
       <Properties canvas={canvas} />
     </div>
