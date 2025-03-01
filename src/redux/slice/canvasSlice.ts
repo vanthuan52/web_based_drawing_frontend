@@ -24,10 +24,16 @@ const canvasSlice = createSlice({
     addObjectToLayers: (state, action: PayloadAction<PlainFabricObject>) => {
       state.layers.push(action.payload);
     },
+    removeObjectsFromLayers: (state, action: PayloadAction<string[]>) => {
+      const objectIds = action.payload;
+      state.layers = state.layers.filter(
+        (obj: PlainFabricObject) => !objectIds.includes(obj.id ?? '')
+      );
+    },
     removeObjectFromLayers: (state, action: PayloadAction<string>) => {
       const objectId = action.payload;
       state.layers = state.layers.filter(
-        (obj: any) => (obj.id ?? '') !== objectId
+        (obj: PlainFabricObject) => (obj.id ?? '') !== objectId
       );
     },
     resetLayers: (state) => {

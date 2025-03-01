@@ -36,6 +36,8 @@ const LayerList = ({canvas}: LayerListProps) => {
       .getObjects()
       .find((obj: CustomFabricObject) => obj.get('id') === layerId);
     if (!object) return;
+
+    setSelectedLayer(object.get('id'));
     canvas.setActiveObject(object);
     canvas.renderAll();
   };
@@ -47,17 +49,14 @@ const LayerList = ({canvas}: LayerListProps) => {
           <Button
             className={styles['layer-actions__button']}
             onClick={() => {}}
-            disabled={!selectedLayer || layers[0].get('id') === selectedLayer}>
+            disabled={!selectedLayer}>
             <ChevronUp size={20} />
           </Button>
 
           <Button
             className={styles['layer-actions__button']}
             onClick={() => {}}
-            disabled={
-              !selectedLayer ||
-              layers[layers.length - 1].get('id') === selectedLayer
-            }>
+            disabled={!selectedLayer}>
             <ChevronDown size={20} />
           </Button>
 
