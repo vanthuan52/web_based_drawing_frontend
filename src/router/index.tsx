@@ -12,6 +12,7 @@ import LoginPage from '@/pages/login/login';
 import RegisterPage from '@/pages/register/register';
 import HomePage from '@/pages/home/home';
 import BoardPage from '@/pages/board/board';
+import FabricBoard from '@/components/FabricBoard/FabricBoard';
 
 export const router = createBrowserRouter([
   {
@@ -44,11 +45,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTER_PATH.home,
-        element: (
-          <ProtectedRoute>
-            <HomePage />
-          </ProtectedRoute>
-        ),
+        element: <FabricBoard />,
       },
     ],
   },
