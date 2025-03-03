@@ -3,7 +3,7 @@ import {SketchPicker} from 'react-color';
 import {Tooltip} from 'react-tooltip';
 import {Canvas} from 'fabric';
 import styles from './Appearance.module.scss';
-import Input from '../Common/Input/Input';
+import Input from '@/components/Common/Input/Input';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';

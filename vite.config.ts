@@ -1,14 +1,13 @@
 import {defineConfig} from 'vite';
 import autoprefixer from 'autoprefixer';
 import react from '@vitejs/plugin-react-swc';
-
 // https://vite.dev/config/
 export default defineConfig(() => {
   return {
     plugins: [react()],
     base: './',
     build: {
-      outDir: 'build',
+      outDir: 'dist',
     },
     resolve: {
       alias: [{find: '@', replacement: '/src'}],
