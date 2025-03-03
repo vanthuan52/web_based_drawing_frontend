@@ -9,7 +9,7 @@ import Stroke from '@/components/Stroke/Stroke';
 import ShapeProperties from '@/components/ShapeProperties/ShapeProperties';
 import useCanvasSelection from '@/hooks/useCanvasSelection';
 import ObjectAction from '@/components/ObjectAction/ObjectAction';
-import styles from './properties.module.scss';
+import styles from './Properties.module.scss';
 
 interface ElementPropertyProps {
   canvas: Canvas | null;
