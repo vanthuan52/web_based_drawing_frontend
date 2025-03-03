@@ -1,4 +1,5 @@
-import {Canvas} from 'fabric/*';
+import {CustomFabricObject} from '@/types/canvas';
+import {Canvas, util} from 'fabric';
 import {useEffect} from 'react';
 
 interface UseCanvasExpandableProps {
@@ -23,7 +24,11 @@ const useCanvasExpandable = ({
 
     // Expand canvas dynamically when objects go outside
     const updateCanvasSize = () => {
-      const objects = canvas.getObjects();
+      const zoom = canvas.getZoom(); // Get current zoom level
+      const objects = canvas
+        .getObjects()
+        .filter((obj: CustomFabricObject) => !obj.isGuideline);
+
       if (objects.length === 0) {
         container.style.overflow = 'hidden';
         canvas.setDimensions({
@@ -48,8 +53,79 @@ const useCanvasExpandable = ({
       });
 
       // Expand canvas dynamically
-      const newWidth = Math.max(maxX + 100, container.clientWidth);
-      const newHeight = Math.max(maxY + 100, container.clientHeight);
+      const extraPadding = 100;
+      const newWidth = Math.max(
+        maxX / zoom + extraPadding,
+        container.clientWidth / zoom
+      );
+      const newHeight = Math.max(
+        maxY / zoom + extraPadding,
+        container.clientHeight / zoom
+      );
+
+      /* if there's a object that is offset to the left or top,
+       The entire canvas content needs to be shifted*/
+      let offsetX = 0;
+      let offsetY = 0;
+      if (minX < 0) offsetX = Math.abs(minX) + extraPadding;
+      if (minY < 0) offsetY = Math.abs(minY) + extraPadding;
+
+      // move all objects to the right and bottom if needed
+      if (offsetX > 0 || offsetY > 0) {
+        let animationInProgress = true;
+
+        objects.forEach((obj) => {
+          util.animate({
+            startValue: obj.left!,
+            endValue: obj.left! + offsetX,
+            duration: 300, // Adjust for smoothness
+            onChange: (value) => {
+              obj.set({left: value});
+              obj.setCoords(); // Ensure bounding box updates
+              canvas.renderAll();
+            },
+            onComplete: () => {
+              animationInProgress = false;
+              obj.setCoords(); // Final update for click accuracy
+            },
+          });
+
+          util.animate({
+            startValue: obj.top!,
+            endValue: obj.top! + offsetY,
+            duration: 300, // Adjust for smoothness
+            onChange: (value) => {
+              obj.set({top: value});
+              obj.setCoords();
+              canvas.renderAll();
+            },
+            onComplete: () => {
+              animationInProgress = false;
+              obj.setCoords();
+            },
+          });
+        });
+
+        // Smoothly adjust the scroll position
+        util.animate({
+          startValue: container.scrollLeft,
+          endValue: container.scrollLeft + offsetX,
+          duration: 300,
+          onChange: (value) => (container.scrollLeft = value),
+        });
+
+        util.animate({
+          startValue: container.scrollTop,
+          endValue: container.scrollTop + offsetY,
+          duration: 300,
+          onChange: (value) => (container.scrollTop = value),
+        });
+
+        // Ensure final render to sync bounding box
+        setTimeout(() => {
+          if (!animationInProgress) canvas.renderAll();
+        }, 310);
+      }
 
       canvas.setDimensions({width: newWidth, height: newHeight});
     };

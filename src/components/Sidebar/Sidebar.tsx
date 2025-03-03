@@ -16,8 +16,8 @@ const Sidebar = ({canvas}: SidebarProps) => {
         <span className={styles['sidebar-header__label']}>Sidebar</span>
       </div>
       <div className={styles['sidebar-body']}>
-        <CanvasLayer canvas={canvas} />
         <CanvasManager />
+        <CanvasLayer canvas={canvas} />
       </div>
     </aside>
   );

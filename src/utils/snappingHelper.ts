@@ -1,6 +1,8 @@
-import {Canvas, Line, FabricObject} from 'fabric';
-import {Guideline} from '@/types/canvas';
+import {Canvas, Line} from 'fabric';
+import {Guideline, CustomFabricObject} from '@/types/canvas';
 import {CANVAS_SNAPPING_DISTANCE} from '@/constant/canvas';
+
+// Currently, we don't use this
 
 /**
  * This 'helper' enables snapping an object to the edges and the
@@ -32,7 +34,7 @@ export const CANVAS_POSITION = {
  */
 export const handleObjectMoving = (
   canvas: Canvas,
-  obj: FabricObject,
+  obj: CustomFabricObject,
   guidelines: Guideline[],
   setGuidelines: (guidelines: Guideline[]) => void
 ) => {

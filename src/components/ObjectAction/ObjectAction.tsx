@@ -13,14 +13,6 @@ interface ObjectActionProps {
 }
 
 const ObjectAction = ({canvas, selectedObject}: ObjectActionProps) => {
-  const handleDeleteObject = () => {
-    if (selectedObject && canvas) {
-      canvas.remove(selectedObject);
-      canvas.discardActiveObject();
-      canvas.renderAll();
-    }
-  };
-
   return (
     <div className={'actions'}>
       <div className={'actions-header'}>
@@ -33,8 +25,7 @@ const ObjectAction = ({canvas, selectedObject}: ObjectActionProps) => {
           <Button
             className={'actions-item__button'}
             color={'danger'}
-            disabled={!selectedObject}
-            onClick={handleDeleteObject}>
+            disabled={true}>
             <Trash size={18} className={'actions-item__icon'} />
           </Button>
         </div>

@@ -4,12 +4,14 @@ export type CustomFabricObject = FabricObject & {
   id?: string;
   name?: string;
   status?: boolean;
+  isGuideline?: boolean;
 };
 
 export type PlainFabricObject = Record<string, any>;
 
 export interface Guideline extends Line {
   id: string;
+  isGuideline: boolean;
 }
 
 // export interface ObjectProperty {

@@ -19,7 +19,7 @@ const useRegisterFabricObjects = ({canvas}: UseRegisterFabricObjectsProps) => {
 
     const handleObjectAdded = (event: any) => {
       const obj = event.target as CustomFabricObject;
-      if (!obj) return;
+      if (!obj || obj.isGuideline) return;
 
       if (!obj.get('id')) obj.set({id: `${uuidv4()}`});
       if (!obj.get('name')) obj.set({name: obj.type});

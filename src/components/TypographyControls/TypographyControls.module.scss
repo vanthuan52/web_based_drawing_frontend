@@ -98,6 +98,11 @@
       &.active {
         background: #ddd;
       }
+
+      &.disabled {
+        background: none;
+        cursor: not-allowed;
+      }
     }
   }
 
