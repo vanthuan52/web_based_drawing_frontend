@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
 import {Canvas} from 'fabric';
-import styles from './CanvasBoard.module.scss';
+import styles from './FabricBoard.module.scss';
 import CanvasTools from '@/components/CanvasTools/CanvasTools';
 import {Guideline} from '@/types/canvas';
 import Properties from '@/components/Properties/Properties';
@@ -15,13 +15,14 @@ import useCanvasResize from '@/hooks/useCanvasResize';
 import useCanvasFreeDrawing from '@/hooks/useCanvasFreeDrawing';
 import useCanvasPolygon from '@/hooks/useCanvasPolygon';
 import useSnapping from '@/hooks/useSnapping';
-import useObjectSnapping from '@/hooks/useObjectSnapping';
+import useObjectAlignment from '@/hooks/useObjectAlignment';
 import useCanvasCopyPaste from '@/hooks/useCanvasCopyPaste';
 import useObjectDeletion from '@/hooks/useObjectDeletion';
 import useRegisterFabricObjects from '@/hooks/useRegisterFabricObjects';
 import useCanvasExpandable from '@/hooks/useCanvasExpandable';
+import {CANVAS_DIMENSION_MULTIPLER} from '@/constant/string';
 
-const CanvasBoard: React.FC = () => {
+const FabricBoard: React.FC = () => {
   const dispatch = useAppDispatch();
   const activeCanvas = useAppSelector((state: RootState) =>
     state.canvasManager.canvases.find((canvas) => canvas.active)
@@ -34,6 +35,7 @@ const CanvasBoard: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = useState<Canvas | null>(null);
 
+  // instructions for object alginment
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
 
   const [dimensions, setDimensions] = useState({
@@ -42,15 +44,15 @@ const CanvasBoard: React.FC = () => {
   });
 
   useRegisterFabricObjects({canvas});
-  useCanvasExpandable({canvas, canvasContainerRef, dimensions});
   useCanvasResize({canvas, dimensions, setDimensions});
+  useCanvasExpandable({canvas, canvasContainerRef, dimensions});
   useCanvasPanning({canvas, activeTool});
   useCanvasDrawing({canvas, activeTool});
   useCanvasFreeDrawing({canvas, activeTool});
   useCanvasPolygon({canvas, activeTool});
   useCanvasCopyPaste({canvas});
   useObjectDeletion({canvas});
-  //useObjectSnapping({canvas, guidelines, setGuidelines});
+  useObjectAlignment({canvas, guidelines, setGuidelines});
   useSnapping({canvas});
 
   //const {undo, redo, canUndo, canRedo} = useCanvasHistory({canvas});
@@ -103,4 +105,4 @@ const CanvasBoard: React.FC = () => {
   );
 };
 
-export default CanvasBoard;
+export default FabricBoard;

@@ -3,6 +3,7 @@ import {Canvas, Line, Polygon} from 'fabric';
 import {ApplicationTool} from '@/types/application';
 import {useDispatch} from 'react-redux';
 import {toolActions} from '@/redux/slice/toolSlice';
+import {CustomFabricObject} from '@/types/canvas';
 
 interface UseCanvasPolygonProps {
   canvas: Canvas | null;
@@ -64,6 +65,7 @@ const useCanvasPolygon = ({
           selectable: false,
           evented: false,
         });
+        (newLine as CustomFabricObject).isGuideline = true;
         canvas.add(newLine);
         tempLines.current.push(newLine);
       }
@@ -76,6 +78,7 @@ const useCanvasPolygon = ({
           selectable: false,
           evented: false,
         });
+        (previewLine.current as CustomFabricObject).isGuideline = true;
         canvas.add(previewLine.current);
       }
     };

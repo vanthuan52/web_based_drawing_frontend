@@ -1,17 +1,17 @@
-import {Canvas, Line, FabricObject} from 'fabric';
-import {Guideline} from '@/types/canvas';
+import {Canvas, Line} from 'fabric';
+import {CustomFabricObject} from '@/types/canvas';
 import {CANVAS_SNAPPING_DISTANCE} from '@/constant/canvas';
 
 export const handleObjectMoving = (
   canvas: Canvas,
-  obj: FabricObject,
-  guidelines: Guideline[],
-  setGuidelines: (guidelines: Guideline[]) => void
+  obj: CustomFabricObject,
+  guidelines: CustomFabricObject[],
+  setGuidelines: (guidelines: CustomFabricObject[]) => void
 ) => {
   if (!canvas || !obj) return;
 
   const objects = canvas.getObjects().filter((o) => o !== obj);
-  let newGuidelines: Guideline[] = [];
+  let newGuidelines: CustomFabricObject[] = [];
   clearGuidelines(canvas);
 
   let snapped = false;
@@ -85,7 +85,7 @@ const addGuideline = (
   canvas: Canvas,
   position: number,
   type: 'vertical' | 'horizontal'
-): Guideline => {
+): CustomFabricObject => {
   const line =
     type === 'vertical'
       ? new Line([position, 0, position, canvas.height ?? 0], {
@@ -104,27 +104,19 @@ const addGuideline = (
           strokeDashArray: [5, 5],
           opacity: 0.8,
         });
-  // Object with status equal to false will be deleted automatically
-  line.set({
-    status: false,
-  });
+
+  (line as CustomFabricObject).isGuideline = true;
 
   canvas.add(line);
-  return line as Guideline;
+  return line as CustomFabricObject;
 };
 
 export const clearGuidelines = (canvas: Canvas) => {
-  const objects = canvas
-    .getObjects('line')
-    .filter((obj) => obj.get('status') === false) as Guideline[];
-  objects.forEach((obj) => canvas.remove(obj));
+  const objects = canvas.getObjects('line') as CustomFabricObject[];
+  objects.forEach((obj) => {
+    if ((obj as any).isGuideline) {
+      canvas.remove(obj);
+    }
+  });
   canvas.renderAll();
-};
-
-/**
- * Checks if a guideline already exists to avoid duplicates
- */
-const guidelineExists = (canvas: Canvas, id: string) => {
-  const objects = canvas.getObjects('line') as Guideline[];
-  return objects.some((obj: Guideline) => obj.id === id);
 };

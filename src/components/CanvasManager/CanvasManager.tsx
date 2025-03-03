@@ -28,13 +28,13 @@ const CanvasManager: React.FC = () => {
     <div className={styles['canvas-management']}>
       <div className={styles['canvases']}>
         <div className={styles['canvases-header']}>
-          <span className={styles['canvases-title']}>Canvas Management</span>
-          <button
+          <span className={styles['canvases-title']}>Pages</span>
+          {/* <button
             onClick={handleNewCanvas}
             disabled={canvases.length >= 5}
             className={styles['canvases-header__button']}>
             <Plus size={20} />
-          </button>
+          </button> */}
         </div>
         <div className={styles['canvases-body']}>
           {canvases.map((canvas) => (

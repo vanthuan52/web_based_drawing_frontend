@@ -88,6 +88,10 @@
     &.hidden {
       display: none;
     }
+
+    &.disabled {
+      cursor: not-allowed;
+    }
   }
 
   &-item:hover {

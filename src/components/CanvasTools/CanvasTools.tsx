@@ -25,6 +25,7 @@ import {toolActions} from '@/redux/slice/toolSlice';
 import {ApplicationTool, ToolItems} from '@/types/application';
 import CustomPopover from '@/components//Common/CustomPopover/CustomPopoper';
 import ToolItem from './ToolItem';
+import {canvasActions} from '@/redux/slice/canvasSlice';
 
 const controlTools: ToolItems = {
   select: {
@@ -145,7 +146,14 @@ const CanvasTools = ({
         canvas?.clear();
         canvas?.renderAll();
         dispatch(toolActions.setActiveTool('select'));
+        dispatch(canvasActions.resetLayers());
         break;
+      }
+      case 'undo': {
+        dispatch(toolActions.setActiveTool('select'));
+      }
+      case 'redo': {
+        dispatch(toolActions.setActiveTool('select'));
       }
       default:
         break;
@@ -196,6 +204,7 @@ const CanvasTools = ({
                     key={tool.id}
                     className={clsx(styles['menu-item'], {
                       [styles['active']]: activeTool === tool.id,
+                      [styles['disabled']]: tool.id !== 'clear',
                     })}
                     onClick={() => setActiveTool(tool.id)}>
                     <div className={styles['menu-item__icon']}>{tool.icon}</div>

@@ -78,6 +78,7 @@ const useCanvasSelection = ({canvas = null}: UseCanvasSelectionProps) => {
       handleObjectSelection(event.selected?.[0]);
 
     const handleCleared = () => {
+      setSelectedObject(null);
       dispatch(canvasObjectActions.resetSelectedObject());
       dispatch(canvasObjectActions.resetProperty());
     };

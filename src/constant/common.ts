@@ -43,7 +43,7 @@ export const FABRIC_OBJECT_PROPERTIES = {
 
 export const DEFAULT_INITIAL_CANVAS = {
   id: 'canvas-1',
-  name: 'Untitled-1',
+  name: 'Page 1',
   json: null,
   active: true,
 };
@@ -139,7 +139,7 @@ export const TOOLTIP_CONTENT = {
   },
   hide_show: {
     id: 'hide-show-tooltip',
-    content: 'Hide/Shon',
+    content: 'Hide/Show',
   },
   move_up: {
     id: 'move-up-tooltip',
@@ -151,7 +151,7 @@ export const TOOLTIP_CONTENT = {
   },
   delete_button: {
     id: 'delete-button-tooltip',
-    content: 'Delete object(s)',
+    content: 'Delete layer',
   },
 };
 

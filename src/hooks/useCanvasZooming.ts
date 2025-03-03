@@ -19,7 +19,7 @@ const useCanvasZooming = ({canvas, setZoomingRatio}: UseCanvasZoomingProps) => {
       const delta = event.deltaY > 0 ? -0.05 : 0.05;
       const newZoom = Math.min(Math.max(zoom + delta, 0.01), 20);
 
-      // point to the pointer wheng zooming
+      // point to the pointer when zooming
       const pointer = canvas.getPointer(event);
       canvas.zoomToPoint(new Point(pointer.x, pointer.y), newZoom);
 

@@ -55,17 +55,36 @@
   &-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 5px;
     padding: 5px 10px;
     cursor: pointer;
+
+    &__info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    &__label {
+      font-size: vars.$font-size-md;
+    }
+
+    &__action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 5px;
+    }
 
     &.selected {
       background-color: rgb(193, 212, 212);
       font-weight: vars.$font-semibold;
     }
 
-    &__label {
-      font-size: vars.$font-size-md;
+    &:hover {
+      background-color: #ccc;
+      transition: 0.3s ease-in-out;
     }
   }
 }

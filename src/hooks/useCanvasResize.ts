@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Canvas} from 'fabric/*';
+import {Canvas} from 'fabric';
 
 interface UseCanvasSnappingProps {
   canvas: Canvas | null;
@@ -14,7 +14,10 @@ const useCanvasResize = ({
   // Firstly, grab the user's screen to set canvas width and height
   useEffect(() => {
     const handleResize = () => {
-      setDimensions({width: window.innerWidth, height: window.innerHeight});
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
     };
 
     window.addEventListener('resize', handleResize);

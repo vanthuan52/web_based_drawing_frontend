@@ -3,29 +3,29 @@ import {Canvas} from 'fabric';
 import {
   handleObjectMoving,
   clearGuidelines,
-} from '@/utils/objectSnappingHelper';
-import {Guideline} from '@/types/canvas';
+} from '@/utils/objectAlignmentHelper';
+import {CustomFabricObject} from '@/types/canvas';
 
 /**
- * useObjectSnapping
+ * useObjectAlignment
  *
- * This hook provides snapping functionality for objects on a Fabric.js canvas.
+ * This hook provides alignment functionality for objects on a Fabric.js canvas.
  * It allows objects to align with other objects' edges and centers.
  *
  * Supported snapping positions:
  * - Object-to-object alignment for precise positioning
  */
 
-interface UseObjectSnappingProps {
+interface UseObjectAlignmentProps {
   canvas: Canvas | null;
-  guidelines: Guideline[];
+  guidelines: CustomFabricObject[];
   setGuidelines: any;
 }
-const useObjectSnapping = ({
+const useObjectAlignment = ({
   canvas,
   guidelines,
   setGuidelines,
-}: UseObjectSnappingProps) => {
+}: UseObjectAlignmentProps) => {
   useEffect(() => {
     if (!canvas) return;
 
@@ -39,4 +39,4 @@ const useObjectSnapping = ({
   }, [canvas]);
 };
 
-export default useObjectSnapping;
+export default useObjectAlignment;

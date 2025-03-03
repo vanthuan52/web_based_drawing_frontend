@@ -23,8 +23,8 @@ interface TypographyControlsProps {
   canvas: Canvas | null;
 }
 
-type TextAlignType = 'left' | 'center' | 'right';
-type VerticalAlignType = 'top' | 'middle' | 'bottom';
+type TextAlignType = 'none' | 'left' | 'center' | 'right';
+type VerticalAlignType = 'none' | 'top' | 'middle' | 'bottom';
 
 const Typography = ({canvas}: TypographyControlsProps) => {
   const dispatch = useAppDispatch();
@@ -141,6 +141,7 @@ const Typography = ({canvas}: TypographyControlsProps) => {
               data-tooltip-id={TOOLTIP_CONTENT.align_top.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: originY === 'top',
+                [styles['disabled']]: true,
               })}
               onClick={() => handleVerticalAlignChange('top')}>
               <ArrowUpFromLine />
@@ -149,6 +150,7 @@ const Typography = ({canvas}: TypographyControlsProps) => {
               data-tooltip-id={TOOLTIP_CONTENT.align_middle.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: originY === 'middle',
+                [styles['disabled']]: true,
               })}
               onClick={() => handleVerticalAlignChange('middle')}>
               <UnfoldVertical />
@@ -157,6 +159,7 @@ const Typography = ({canvas}: TypographyControlsProps) => {
               data-tooltip-id={TOOLTIP_CONTENT.align_bottom.id}
               className={clsx(styles['typography-alignment__position'], {
                 [styles['active']]: originY === 'bottom',
+                [styles['disabled']]: true,
               })}
               onClick={() => handleVerticalAlignChange('bottom')}>
               <ArrowDownToLine />

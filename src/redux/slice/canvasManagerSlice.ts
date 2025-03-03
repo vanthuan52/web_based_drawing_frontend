@@ -25,7 +25,7 @@ const canvasManagerSlice = createSlice({
       if (state.canvases.length < MAX_CANVASES) {
         const newCanvas: CanvasState = {
           id: `canvas-${state.canvases.length + 1}`,
-          name: `Untitled-${state.canvases.length + 1}`,
+          name: `Page ${state.canvases.length + 1}`,
           json: null,
           active: true,
         };
