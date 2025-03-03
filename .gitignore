@@ -11,6 +11,7 @@ lerna-debug.log*
 node_modules
 .env
 .env.development
+build
 dist
 dist-ssr
 *.local
@@ -25,6 +26,7 @@ dist-ssr
 .publish
 coverage/
 dist/
+build/
 node_modules/
 reports/
 webpack.stats.json

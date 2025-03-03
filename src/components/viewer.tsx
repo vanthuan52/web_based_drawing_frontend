@@ -14,9 +14,14 @@ import {
 } from '@mui/material';
 import {MenuIcon} from 'lucide-react';
 import Toolbars from './toolBar';
-import {DrawingMode, Point} from '@/types/board';
 import useMultiSelect from '@/hooks/useMultiSelect';
 import imageHelper from '@/utils/imageHelper';
+
+type DrawingMode = 'none' | 'circle' | 'rect' | 'line' | 'polygon';
+type Point = {
+  x: number;
+  y: number;
+};
 
 const DXFViewer: React.FC = () => {
   const [file, setFile] = useState<any>(null);
