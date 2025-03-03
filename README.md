@@ -2,9 +2,9 @@
 
 A simple web based drawing, built with React and Fabric JS.
 
-[Demo](https://next-tiptap.vercel.app/)
+[Demo](https://web-based-drawing-frontend.vercel.app/)
 
-![Web based drawing Demo](https://imgur.com/a/MSluUPu)
+![Web based drawing Demo](https://i.imgur.com/a/MSluUPu)
 
 ### Features
 
