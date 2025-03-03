@@ -23,7 +23,7 @@ import useTextEditing from '@/hooks/useTextEditing';
 import {RootState, useAppSelector} from '@/redux/store';
 import {toolActions} from '@/redux/slice/toolSlice';
 import {ApplicationTool, ToolItems} from '@/types/application';
-import CustomPopover from '@/components//Common/CustomPopover/CustomPopoper';
+import CustomPopover from '@/components/Common/CustomPopover';
 import ToolItem from './ToolItem';
 import {canvasActions} from '@/redux/slice/canvasSlice';
 
@@ -151,9 +151,11 @@ const CanvasTools = ({
       }
       case 'undo': {
         dispatch(toolActions.setActiveTool('select'));
+        break;
       }
       case 'redo': {
         dispatch(toolActions.setActiveTool('select'));
+        break;
       }
       default:
         break;

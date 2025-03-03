@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import {ChevronDown} from 'lucide-react';
 import styles from './CanvasTools.module.scss';
-import CustomPopover from '@/components/Common/CustomPopover/CustomPopoper';
+import CustomPopover from '@/components/Common/CustomPopover';
 import {ApplicationTool, ToolItems} from '@/types/application';
 
 interface ToolItemProps {

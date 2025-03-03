@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ChevronDown} from 'lucide-react';
 import {Canvas, Point} from 'fabric';
 import {Tooltip} from 'react-tooltip';
-import Input from '@/components/Common/Input/Input';
+import Input from '@/components/Common/Input';
 import styles from './CanvasZooming.module.scss';
 import useCanvasZooming from '@/hooks/useCanvasZooming';
 import {TOOLTIP_CONTENT} from '@/constant/common';

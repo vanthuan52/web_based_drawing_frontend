@@ -13,7 +13,7 @@ import {
 import {Tooltip} from 'react-tooltip';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import {CustomFabricObject, PlainFabricObject} from '@/types/canvas';
-import Button from '@/components/Common/Button/Button';
+import Button from '@/components/Common/Button';
 import styles from './CanvasLayer.module.scss';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import useCanvasSelection from '@/hooks/useCanvasSelection';

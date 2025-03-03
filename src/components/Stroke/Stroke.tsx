@@ -1,10 +1,10 @@
 import React, {useState, useCallback} from 'react';
 import {SketchPicker} from 'react-color';
 import {Tooltip} from 'react-tooltip';
+import {Canvas} from 'fabric';
 import {FlipVertical2} from 'lucide-react';
 import styles from './Stroke.module.scss';
-import Input from '@/components/Common/Input/Input';
-import {Canvas} from 'fabric';
+import Input from '@/components/Common/Input';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';
 import {CustomFabricObject, ObjectProperty} from '@/types/canvas';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';

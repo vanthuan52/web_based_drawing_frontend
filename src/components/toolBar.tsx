@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Line, Polygon, Circle} from 'fabric';
-import Button from './Common/Button/Button';
+import Button from '@/components/Common/Button/Button';
 import {IToolbar} from '@/types/toolbar';
 import {
   TextField,

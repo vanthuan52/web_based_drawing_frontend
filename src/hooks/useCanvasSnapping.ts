@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {Canvas} from 'fabric/*';
+import {Canvas} from 'fabric';
 import {handleObjectMoving, clearGuidelines} from '@/utils/snappingHelper';
 import {Guideline} from '@/types/canvas';
 

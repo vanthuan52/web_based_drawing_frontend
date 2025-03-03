@@ -2,7 +2,7 @@ import React from 'react';
 import {Canvas, Rect} from 'fabric';
 import {CropIcon} from 'lucide-react';
 import styles from './Cropping.module.scss';
-import Button from '../Common/Button/Button';
+import Button from '@/components/Common/Button';
 import {CustomFabricObject} from '@/types/canvas';
 interface CroppingProps {
   canvas: Canvas | null;
