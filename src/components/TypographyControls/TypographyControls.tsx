@@ -13,7 +13,7 @@ import {Tooltip} from 'react-tooltip';
 import clsx from 'clsx';
 import useTextEditing from '@/hooks/useTextEditing';
 import styles from './TypographyControls.module.scss';
-import Input from '../Common/Input/Input';
+import Input from '@/components/Common/Input';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import {RootState, useAppDispatch, useAppSelector} from '@/redux/store';
 import {canvasObjectActions} from '@/redux/slice/canvasObjectSlice';

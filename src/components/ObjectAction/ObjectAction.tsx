@@ -2,7 +2,7 @@ import React from 'react';
 import {Canvas} from 'fabric';
 import {Trash} from 'lucide-react';
 import {Tooltip} from 'react-tooltip';
-import Button from '@/components/Common/Button/Button';
+import Button from '@/components/Common/Button';
 import {TOOLTIP_CONTENT} from '@/constant/common';
 import './ObjectAction.scss';
 import {CustomFabricObject} from '@/types/canvas';
