@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import {Outlet, useLocation} from 'react-router-dom';
-import styles from './mainLayout.module.scss';
 import clsx from 'clsx';
+import styles from './mainLayout.module.scss';
+import CatLoader from '@/components/LoadingOverlay/CatLoader';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -12,6 +13,7 @@ const MainLayout = () => {
 
   return (
     <React.Fragment>
+      <CatLoader />
       <div
         className={clsx(styles['main-layout'])}
         style={{overflowX: 'hidden', overflowY: 'hidden'}}>

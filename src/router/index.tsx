@@ -11,8 +11,8 @@ import BoardLayout from '@/layouts/boardLayout/boardLayout';
 import LoginPage from '@/pages/login/login';
 import RegisterPage from '@/pages/register/register';
 import HomePage from '@/pages/home/home';
-import BoardPage from '@/pages/board/board';
-import FabricBoard from '@/components/FabricBoard/FabricBoard';
+import CatLoader from '@/components/LoadingOverlay/CatLoader';
+import CartoonLayout from '@/layouts/cartoonLayout/cartoonLayout';
 
 export const router = createBrowserRouter([
   {
@@ -32,11 +32,11 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    element: <BoardLayout />,
+    element: <CartoonLayout />,
     children: [
       {
         path: ROUTER_PATH.board,
-        element: <BoardPage />,
+        element: <CatLoader />,
       },
     ],
   },
