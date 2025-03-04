@@ -16,7 +16,7 @@ const useCanvasResize = ({
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: window.innerHeight - 50, // minus nagivation height
       });
     };
 

@@ -40,12 +40,17 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
   {
-    element: <MainLayout />,
+    element: <BoardLayout />,
     children: [
       {
         path: ROUTER_PATH.home,
-        element: <FabricBoard />,
+        element: (
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

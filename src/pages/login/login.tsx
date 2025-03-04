@@ -12,9 +12,9 @@ import Input from '@/components/Common/Input/Input';
 import Button from '@/components/Common/Button/Button';
 import {authActions} from '@/redux/slice/authSlice';
 
-const defaultValues: LogInFormType = {
-  email: '',
-  password: '',
+export const defaultLoginValues: LogInFormType = {
+  email: 'allow_access@gmail.com',
+  password: 'Abc@12345',
 };
 
 const LoginPage = () => {
@@ -23,7 +23,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const form = useForm({
-    defaultValues,
+    defaultValues: defaultLoginValues,
     resolver: yupResolver(loginSchema),
     mode: 'onTouched',
   });

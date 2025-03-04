@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import {RootState} from '@/redux/store';
 import styles from './CanvasManager.module.scss';
 import {canvasManagerActions} from '@/redux/slice/canvasManagerSlice';
+import {MAX_CANVASES} from '@/constant/canvas';
 
 const CanvasManager: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,12 +30,12 @@ const CanvasManager: React.FC = () => {
       <div className={styles['canvases']}>
         <div className={styles['canvases-header']}>
           <span className={styles['canvases-title']}>Pages</span>
-          {/* <button
+          <button
             onClick={handleNewCanvas}
-            disabled={canvases.length >= 5}
+            disabled={canvases.length >= MAX_CANVASES - 4}
             className={styles['canvases-header__button']}>
             <Plus size={20} />
-          </button> */}
+          </button>
         </div>
         <div className={styles['canvases-body']}>
           {canvases.map((canvas) => (

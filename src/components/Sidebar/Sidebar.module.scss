@@ -3,7 +3,8 @@
 .sidebar {
   left: 0;
   top: 0;
-  height: 100vh;
+  height: calc(100vh - 50px);
+  max-height: calc(100vh - 50px);
   width: vars.$sidebar-width;
   min-width: vars.$sidebar-width;
   background: #fff;
