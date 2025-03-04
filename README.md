@@ -9,8 +9,10 @@ A simple web based drawing, built with React and Fabric JS.
 ### Features
 
 - Canvas, layers management
+- Objects copy/paste, alignment, snapping
 - Zooming, panning
-- Responsive design
+- Responsive design (50%)
+- Authentication
 
 ### Tech Stack
 

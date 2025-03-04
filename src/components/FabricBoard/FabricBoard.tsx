@@ -39,8 +39,8 @@ const FabricBoard: React.FC = () => {
   const [guidelines, setGuidelines] = useState<Guideline[]>([]);
 
   const [dimensions, setDimensions] = useState({
-    width: window.innerWidth - 250 - 250,
-    height: window.innerHeight,
+    width: window.innerWidth - 250 - 250, // minus sidebar width & properties width
+    height: window.innerHeight - 50, // minus nagivation height
   });
 
   useRegisterFabricObjects({canvas});

@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  padding: 10px 10px;
+  padding: 9px 10px;
   cursor: pointer;
   color: vars.$text-color;
 
@@ -19,6 +19,6 @@
 }
 
 .nav-item__name {
-  font-size: vars.$font-size-md;
+  font-size: vars.$font-size-sm;
   font-weight: vars.$font-semibold;
 }

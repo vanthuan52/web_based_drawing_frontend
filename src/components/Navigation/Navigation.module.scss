@@ -1,11 +1,31 @@
 @use '@/styles/variables' as vars;
 
 .navigation {
+  height: 50px;
+  max-height: 50px;
   background-color: vars.$primary-bg-color;
-  color: white;
-  text-align: center;
-  overflow-y: auto;
+  overflow-y: hidden;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 10px;
-  padding-left: 10px;
+  border-bottom: 1px solid #ccc;
+
+  &-items {
+    display: flex;
+    gap: 10px;
+  }
+
+  &-auth {
+    display: flex;
+    padding: 0 10px;
+
+    &__active {
+      font-size: vars.$font-size-md;
+      font-weight: vars.$font-semibold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
 }

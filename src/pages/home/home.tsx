@@ -1,10 +1,12 @@
 import React from 'react';
-import DXFEditor from '@/components/viewer';
+import FabricBoard from '@/components/FabricBoard/FabricBoard';
+import Navigation from '@/components/Navigation/Navigation';
 
 const HomePage = () => {
   return (
     <div>
-      <DXFEditor />
+      <Navigation />
+      <FabricBoard />
     </div>
   );
 };
