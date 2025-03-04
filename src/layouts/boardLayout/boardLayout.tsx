@@ -3,6 +3,7 @@ import {Outlet, useLocation} from 'react-router-dom';
 import styles from './boardLayout.module.scss';
 import clsx from 'clsx';
 import Navigation from '@/components/Navigation/Navigation';
+import LoadingOverlay from '@/components/LoadingOverlay/LoadingOverlay';
 
 const BoardLayout = () => {
   const location = useLocation();
@@ -13,6 +14,7 @@ const BoardLayout = () => {
 
   return (
     <React.Fragment>
+      <LoadingOverlay />
       <div className={clsx(styles['board-layout'])}>
         <Outlet />
       </div>
